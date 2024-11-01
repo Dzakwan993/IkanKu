@@ -10,12 +10,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ikanku.ui.theme.IkanKuTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val poppins = FontFamily(
+            Font(R.font.poppins_regular, FontWeight.Normal),
+            Font(R.font.poppins_bold, FontWeight.Bold)
+        )
         enableEdgeToEdge()
         setContent {
             IkanKuTheme {
