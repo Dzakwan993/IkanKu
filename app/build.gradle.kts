@@ -55,7 +55,14 @@ android {
 }
 
 dependencies {
+
     implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
+
+
+    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
