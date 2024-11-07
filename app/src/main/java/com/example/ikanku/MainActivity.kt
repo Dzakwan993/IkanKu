@@ -1,5 +1,6 @@
 package com.example.ikanku
 
+import TopBar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,7 +15,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.ikanku.ui.screen.TopBar
 import com.example.ikanku.ui.theme.IkanKuTheme
 
 class MainActivity : ComponentActivity() {
