@@ -20,11 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.ikanku.R
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBarPenjual() {
     val items = listOf(
-        BottomNavItem.Home,
-        BottomNavItem.Search,
-        BottomNavItem.Profile // Removed Category
+        BottomNavItemPenjual.Home,
+        BottomNavItemPenjual.Products,
+        BottomNavItemPenjual.Orders,
+        BottomNavItemPenjual.Settings
     )
 
     val poppins = FontFamily(
@@ -36,7 +37,7 @@ fun BottomNavBar() {
         NavigationBar(
             containerColor = Color(0xFF177BCD),
             modifier = Modifier
-                .fillMaxWidth() // Fill the width of the screen
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
         ) {
             items.forEach { item ->
@@ -47,7 +48,7 @@ fun BottomNavBar() {
                             contentDescription = item.label
                         )
                     },
-                    label = { Text(item.label, color = Color.White) },
+                    label = { Text(item.label, color = Color.White, fontFamily = poppins) },
                     selected = false,
                     onClick = { /* Handle navigation here */ }
                 )
@@ -56,14 +57,15 @@ fun BottomNavBar() {
     }
 }
 
-sealed class BottomNavItem(val label: String, val iconRes: Int) {
-    object Home : BottomNavItem("Beranda", R.drawable.beranda)
-    object Search : BottomNavItem("Telusuri", R.drawable.telusuri)
-    object Profile : BottomNavItem("Profil", R.drawable.profil) // Removed Category
+sealed class BottomNavItemPenjual(val label: String, val iconRes: Int) {
+    object Home : BottomNavItemPenjual("Beranda", R.drawable.beranda)
+    object Products : BottomNavItemPenjual("Produk", R.drawable.produk_penjual)
+    object Orders : BottomNavItemPenjual("Pesanan", R.drawable.pesanan_penjual)
+    object Settings : BottomNavItemPenjual("Pengaturan", R.drawable.pengaturan_penjual)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BottomNavBarPreview() {
-    BottomNavBar()
+fun BottomNavBarPenjualPreview() {
+    BottomNavBarPenjual()
 }

@@ -44,7 +44,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2" // atau versi yang cocok dengan versi Compose Anda
+        kotlinCompilerExtensionVersion = "1.5.2" // Pastikan versi ini cocok dengan Compose Anda
     }
 
     packaging {
@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -63,16 +63,23 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Dependensi tambahan untuk gambar dan ViewModel
-    implementation("io.coil-kt:coil-compose:2.4.0") // Untuk memuat gambar dengan Coil
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1") // ViewModel untuk Compose
+    // Gambar dan ViewModel untuk Compose
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom)) // BOM untuk testing
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+    implementation ("com.google.accompanist:accompanist-pager:0.36.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.36.0")
+
+
+
 }
