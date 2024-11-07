@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.ikanku.ui.components.PromotionSectionRowCarousel
 
 @Composable
-fun BerandaScreen(viewModel: BerandaViewModel = viewModel()) {
+fun BerandaScreen(viewModel: Modifier = viewModel()) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
