@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ikanku.ui.components.BottomNavBar
-
 import com.example.ikanku.ui.components.CategorySection
 import com.example.ikanku.ui.components.PromotionSection
 import com.example.ikanku.ui.components.RecommendationSection
@@ -21,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.ikanku.ui.components.PromotionSectionRowCarousel
 
 @Composable
-fun BerandaScreen(viewModel: Modifier = viewModel()) {
+fun BerandaScreen(viewModel: BerandaViewModel = viewModel()) { // Ubah Modifier menjadi BerandaViewModel
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
