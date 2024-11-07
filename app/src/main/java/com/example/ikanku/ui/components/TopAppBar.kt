@@ -73,5 +73,3 @@ fun PreviewCustomTopAppBar() {
         onBackClick = { /* Aksi kembali dapat ditambahkan di sini */ }
     )
 }
-
-

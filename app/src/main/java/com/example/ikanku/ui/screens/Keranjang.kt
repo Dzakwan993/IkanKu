@@ -14,8 +14,6 @@ import com.example.ikanku.viewmodel.ShoppingCartViewModel
 import com.example.ikanku.model.CartItemModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.R
@@ -58,9 +56,6 @@ fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewMo
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A73E8))
             ) {
-                Text("Beli Sekarang", color = Color.White, fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
             }
         }
     }
