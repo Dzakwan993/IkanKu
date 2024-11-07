@@ -1,28 +1,48 @@
-package com.yourpackage.ikanku.ui.components
+// CategoryCard.kt
+package com.example.ikanku.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.ikanku.model.Category
 
 @Composable
-fun CategoryCard(categoryName: String, imageResId: Int) {
+fun CategoryCard(category: Category) {
     Card(
-        modifier = Modifier.size(100.dp, 80.dp),
-        shape = RoundedCornerShape(8.dp)
+        modifier = Modifier
+            .width(100.dp)
+            .height(100.dp) // Mengubah tinggi menjadi 100dp untuk proporsi yang lebih baik
+            .padding(4.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(6.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(8.dp)
         ) {
-            Image(painter = painterResource(id = imageResId), contentDescription = categoryName)
-            Text(categoryName, fontWeight = FontWeight.Bold)
+            Image(
+                painter = painterResource(id = category.imageRes),
+                contentDescription = category.name,
+                modifier = Modifier
+                    .size(50.dp) // Mengatur ukuran gambar agar lebih menonjol
+                    .clip(CircleShape)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = category.name,
+                fontSize = 14.sp,
+                color = Color.Black
+            )
         }
     }
 }

@@ -23,7 +23,7 @@ import com.example.ikanku.R
 fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewModel()) {
     Scaffold(
         topBar = {
-            CustomTopAppBar(title = "Keranjang Belanja", onBackClick = {}) // Using CustomTopAppBar
+            CustomTopAppBar(title = "Keranjang ", onBackClick = {}) // Using CustomTopAppBar
         }
     ) { paddingValues ->
         Column(
@@ -43,7 +43,8 @@ fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewMo
                         imageRes = item.imageRes,
                         quantity = item.quantity,
                         onIncrease = { viewModel.increaseQuantity(index) },
-                        onDecrease = { viewModel.decreaseQuantity(index) }
+                        onDecrease = { viewModel.decreaseQuantity(index) },
+                        onDelete = { viewModel.removeItem(index) }
                     )
                 }
             }

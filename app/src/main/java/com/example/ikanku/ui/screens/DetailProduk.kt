@@ -44,8 +44,8 @@ import com.example.ikanku.R
 import com.example.ikanku.ui.theme.IkanKuTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.HorizontalPagerIndicator
 
 
 @Composable
