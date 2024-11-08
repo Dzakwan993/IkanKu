@@ -1,6 +1,9 @@
 package com.example.ikanku.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -8,25 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.ikanku.R
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.size
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.example.ikanku.R
 
 @Composable
 fun BottomNavBar() {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Search,
-        BottomNavItem.Category,
-        BottomNavItem.Profile
+        BottomNavItem.Profile // Removed Category
     )
 
     val poppins = FontFamily(
@@ -38,7 +36,7 @@ fun BottomNavBar() {
         NavigationBar(
             containerColor = Color(0xFF177BCD),
             modifier = Modifier
-                .size(width = 412.dp, height = 127.dp)
+                .fillMaxWidth() // Fill the width of the screen
                 .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
         ) {
             items.forEach { item ->
@@ -58,15 +56,10 @@ fun BottomNavBar() {
     }
 }
 
-
-
 sealed class BottomNavItem(val label: String, val iconRes: Int) {
-
-
     object Home : BottomNavItem("Beranda", R.drawable.beranda)
     object Search : BottomNavItem("Telusuri", R.drawable.telusuri)
-    object Category : BottomNavItem("Kategori", R.drawable.kategori)
-    object Profile : BottomNavItem("Profil", R.drawable.profil)
+    object Profile : BottomNavItem("Profil", R.drawable.profil) // Removed Category
 }
 
 @Preview(showBackground = true)
