@@ -39,7 +39,6 @@ fun BerandaScreen(viewModel: BerandaViewModel = viewModel()) {
         ) {
             item { CategorySection(categories = viewModel.categories) }
             item { PromotionSection(promotions = viewModel.promotions) }
-
             item { RecommendationSection(recommendations = viewModel.recommendations) }
             item { ProductListSection(products = viewModel.products) }
         }
