@@ -85,7 +85,7 @@ fun DikemasCard(dikemas: Dikemas) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(25.dp))
 
                 // Button positioned below the price and quantity row
                 Row(
@@ -95,12 +95,14 @@ fun DikemasCard(dikemas: Dikemas) {
                     Button(
                         onClick = { /* Add desired action here */ },
                         modifier = Modifier
-                            .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(16.dp)),
+                            .width(120.dp) // Set the width manually
+                            .height(40.dp) // Set the height manually
+                            .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(32.dp)),
                         colors = ButtonDefaults.outlinedButtonColors(
                             containerColor = Color.White,
                             contentColor = Color.Black
                         ),
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(60.dp)
                     ) {
                         Text(text = "Dikemas")
                     }

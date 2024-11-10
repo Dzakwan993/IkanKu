@@ -23,4 +23,9 @@ class ShoppingCartViewModel : ViewModel() {
             cartItems[index] = cartItems[index].copy(quantity = cartItems[index].quantity - 1)
         }
     }
+
+    // Remove the item from the cart at the given index
+    fun removeItem(index: Int) {
+        cartItems.removeAt(index)
+    }
 }

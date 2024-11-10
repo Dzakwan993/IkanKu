@@ -15,16 +15,17 @@ import com.example.ikanku.ui.components.CustomTopAppBar
 import com.example.ikanku.ui.components.DikemasCard
 import com.example.ikanku.ui.components.OrderStatusTabs
 import com.example.ikanku.R
+import com.example.ikanku.ui.components.OrderAmbilPesananItem
 
 @Composable
 fun DikemasScreen() {
-    var selectedTab by remember { mutableStateOf(1) } // State to keep track of the selected tab
+    var selectedTab by remember { mutableStateOf(1) } // State untuk mengelola tab yang dipilih
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()) // Enable scrolling
-            .padding(bottom = 80.dp) // Padding untuk memberi ruang bagi BottomNavBar
+            .verticalScroll(rememberScrollState()) // Mengaktifkan scroll
+            .padding(bottom = 80.dp) // Padding untuk memberi ruang pada BottomNavBar
     ) {
         // Custom Top App Bar
         CustomTopAppBar(
@@ -40,7 +41,7 @@ fun DikemasScreen() {
 
         // List of DikemasCard items
         Column(modifier = Modifier.padding(8.dp)) {
-            // Sample data for demonstration
+            // Tampilkan hanya satu DikemasCard item
             val dikemasItems = listOf(
                 Dikemas(
                     name = "Ikan Nila",
@@ -49,25 +50,19 @@ fun DikemasScreen() {
                     quantity = 1,
                     imageResId = R.drawable.ikan_nila,
                     status = "Pesanan Anda sedang dikemas*"
-                ),
-                Dikemas(
-                    name = "Ikan Patin",
-                    weightVariation = "1.5 Kg",
-                    price = "50.000",
-                    quantity = 2,
-                    imageResId = R.drawable.ikan_patin,
-                    status = "Pesanan Anda sedang dikemas*"
                 )
             )
 
-            // Display each DikemasCard
             dikemasItems.forEach { dikemas ->
                 DikemasCard(dikemas = dikemas)
             }
+
+            // Tambahkan komponen OrderAmbilPesananItem di sini
+            OrderAmbilPesananItem()
         }
     }
 
-    // Add BottomNavBar at the bottom of the screen
+    // Tambahkan BottomNavBar di bagian bawah layar
     Box(
         modifier = Modifier
             .fillMaxSize(),

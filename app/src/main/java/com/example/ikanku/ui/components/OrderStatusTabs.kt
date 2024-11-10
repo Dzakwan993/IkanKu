@@ -51,7 +51,6 @@ fun OrderStatusTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
                     Spacer(modifier = Modifier.height(6.dp))
                 }
             }
-
         }
     }
 }

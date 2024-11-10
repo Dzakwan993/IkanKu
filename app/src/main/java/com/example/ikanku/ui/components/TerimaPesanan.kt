@@ -90,7 +90,7 @@ fun PesananDiterimaCard(
                 ) {
                     Button(
                         onClick = onReorderClick,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5C6BC0)),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                         modifier = Modifier
                             .width(190.dp) // Set width manually
                             .height(40.dp) // Set height manually
