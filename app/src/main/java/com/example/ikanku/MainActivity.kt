@@ -1,6 +1,5 @@
 package com.example.ikanku
 
-import TopBar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -50,6 +49,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     IkanKuTheme {
-        TopBar()
+        Greeting("Android")
     }
 }

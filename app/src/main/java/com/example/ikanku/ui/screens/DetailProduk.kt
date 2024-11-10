@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -46,6 +48,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.pager.HorizontalPagerIndicator
+
 
 
 @Composable
@@ -462,13 +465,7 @@ fun TopBar(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1f)
         )
 
-        Icon(
-            painter = painterResource(id = R.drawable.keranjang), // Ganti dengan nama ikon di drawable
-            contentDescription = null,
-            tint = Color(0xFF2541D0),
-            modifier = Modifier.padding(end = 16.dp)
 
-        )
     }
 
 }

@@ -2,7 +2,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,15 +20,13 @@ fun MainScreen() {
     Scaffold(
         topBar = { TopBar() }
     ) { paddingValues ->
-        // Konten utama
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color.LightGray) // Contoh warna background
+                .background(Color.LightGray)
         ) {
-            // Tambahkan konten di sini, misalnya daftar atau konten lain yang bisa digulir
-            Spacer(modifier = Modifier.height(600.dp)) // Placeholder konten panjang untuk menggulir
+            Spacer(modifier = Modifier.height(600.dp))
         }
     }
 }
@@ -36,6 +34,8 @@ fun MainScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar() {
+    var searchText by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,8 +64,8 @@ fun TopBar() {
         }
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = "",
-            onValueChange = {},
+            value = searchText,
+            onValueChange = { searchText = it },
             placeholder = { Text("Telusuri", color = Color.Gray) },
             leadingIcon = {
                 Icon(
@@ -87,6 +87,64 @@ fun TopBar() {
             )
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarWithBackIcon() {
+    var searchText by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
+            .background(Color(0xFF177BCD))
+            .padding(16.dp)
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { /* Back Action */ }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.back),
+                    contentDescription = "Back",
+                    tint = Color.White
+                )
+            }
+            Spacer(modifier = Modifier.width(2.dp))
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                placeholder = { Text("Telusuri", color = Color.Gray) },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.cari),
+                        contentDescription = "Search Icon",
+                        tint = Color.Gray
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Color.White),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Black
+                )
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TopBarWithBackIconPreview() {
+    TopBarWithBackIcon()
 }
 
 @Preview(showBackground = true)

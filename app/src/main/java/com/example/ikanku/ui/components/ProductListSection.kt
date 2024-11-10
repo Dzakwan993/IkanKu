@@ -33,3 +33,15 @@ fun ProductListSection(products: List<Product>) {
         }
     }
 }
+
+@Composable
+fun ProductListWithoutLiatLebihSection(products: List<Product>) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            products.forEach { product ->
+                ProductItemCard(product = product)
+            }
+        }
+
+    }
+}
