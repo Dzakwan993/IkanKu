@@ -56,12 +56,18 @@ android {
 
 dependencies {
     implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
-    implementation(libs.androidx.core.ktx)
+
+
+
+            implementation(libs.androidx.core.ktx)
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation ("androidx.compose.material3:material3:1.1.0")
+    implementation ("androidx.compose.material:material:1.4.3")
+
 
     // Dependensi tambahan untuk gambar dan ViewModel
     implementation("io.coil-kt:coil-compose:2.4.0") // Untuk memuat gambar dengan Coil

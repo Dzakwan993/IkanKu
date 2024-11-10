@@ -15,10 +15,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.model.Recommendation
 import com.example.ikanku.viewmodel.BerandaViewModel
+
+import com.example.ikanku.R
+import com.yourpackage.ikanku.model.Fish
+
 
 @Composable
 fun RecommendationCard(recommendation: Recommendation) {
@@ -87,12 +92,14 @@ fun RecommendationCard(recommendation: Recommendation) {
 
 @Preview(showBackground = true)
 @Composable
+
 fun PreviewRecommendationCard() {
     val viewModel = BerandaViewModel()
     val sampleRecommendation = viewModel.recommendations[0]
 
     RecommendationCard(recommendation = sampleRecommendation)
 }
+
 
 
 

@@ -64,7 +64,8 @@ fun PilihVariasiBottomSheetContent(
 
         // Tombol masukkan keranjang
         TombolMasukkanKeranjang(
-            onClick = onAddToCartClick
+            onClick = onAddToCartClick,
+            text = "Masukkan Keranjang"
         )
     }
 }

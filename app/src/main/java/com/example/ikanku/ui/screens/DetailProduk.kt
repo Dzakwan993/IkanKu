@@ -20,13 +20,18 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Divider
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,13 +55,15 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.pager.HorizontalPagerIndicator
 
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailProduk(
     modifier: Modifier = Modifier,
     onAddToCartClick: () -> Unit // Menambahkan parameter untuk aksi tombol
 ) {
-    var showDialog by remember { mutableStateOf(false) }
+//    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+
+
 
     Box(
         modifier = Modifier
@@ -88,14 +95,11 @@ fun DetailProduk(
             onClick = {
 //                coroutineScope.launch { sheetState.show() } // Menampilkan bottom sheet saat tombol diklik
             },
+            text = "Masukkan Keranjang",
             modifier = Modifier.align(Alignment.BottomCenter) // Menempatkan tombol di bagian bawah dalam Box
         )
     }
 
-    if(showDialog) {
-//        panggil fungsi di sini
-
-    }
 
 
 }
