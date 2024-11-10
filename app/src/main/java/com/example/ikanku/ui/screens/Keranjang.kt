@@ -1,4 +1,3 @@
-// File: ui/screens/Keranjang.kt
 package com.example.ikanku.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -58,7 +57,6 @@ fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewMo
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A73E8))
             ) {
-                Text("Beli Sekarang", color = Color.White, fontSize = 18.sp)
             }
         }
     }

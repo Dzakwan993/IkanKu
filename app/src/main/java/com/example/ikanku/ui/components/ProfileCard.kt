@@ -51,7 +51,7 @@ fun ProfileCard(profile: Profile, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = { /* Settings action */ }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.setting),
+                    painter = painterResource(id = R.drawable.pensil),
                     contentDescription = "Settings Icon",
                     tint = Color.Gray
                 )

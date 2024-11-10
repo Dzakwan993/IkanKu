@@ -8,13 +8,17 @@ import com.example.ikanku.model.OrderStatusItem
 class ProfileViewModel : ViewModel() {
     val profile = Profile(
         name = "Miftahul Fazra",
-        imageRes = R.drawable.profil_kucing // Pastikan gambar ini ada di folder drawable
+        imageRes = R.drawable.profil_kucing
     )
 
     val orderStatusItems = listOf(
         OrderStatusItem(label = "Belum Bayar", iconRes = R.drawable.belum_bayar),
         OrderStatusItem(label = "Dikemas", iconRes = R.drawable.dikemas),
         OrderStatusItem(label = "Dikirim", iconRes = R.drawable.dikirim),
-        OrderStatusItem(label = "Selesai", iconRes = R.drawable.pesanan_selesai)
+        OrderStatusItem(label = "Selesai", iconRes = R.drawable.pesanan_selesai),
+        OrderStatusItem(label = "Ditolak", iconRes = R.drawable.pesanan_ditolak)
     )
+
+    // Data counts untuk setiap status pesanan
+    val counts = listOf(3, 0, 5, 1, 2) // Sesuaikan dengan data dinamis jika ada
 }

@@ -8,6 +8,8 @@ class BerandaViewModel : ViewModel() {
     val categories = listOf(
         Category("Hias", R.drawable.kategori_ikanhias),
         Category("Air Tawar", R.drawable.kategori_airtawar),
+        Category("Bibit", R.drawable.kategori_bibit),
+        Category("Bibit", R.drawable.kategori_bibit),
         Category("Bibit", R.drawable.kategori_bibit)
     )
 
@@ -25,8 +27,15 @@ class BerandaViewModel : ViewModel() {
     )
 
     val recommendations = listOf(
-        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Discus", "Ikan discus dari Amazon", "Rp. 100.000", 4.5),
-        Recommendation(R.drawable.gambar_rekomen_2, "Ikan Cupang", "Ikan lokal yang cantik", "Rp. 40.000", 4.0)
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Discus", "Ikan discus dari Amazon", "100.000", 4.5),
+        Recommendation(R.drawable.gambar_rekomen_2, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
+        Recommendation(R.drawable.gambar_rekomen_1, "Ikan Cupang", "Ikan lokal yang cantik", "40.000", 4.0),
     )
 
     val products = listOf(

@@ -7,5 +7,7 @@ data class Profile(
 
 data class OrderStatusItem(
     val label: String,
-    val iconRes: Int
+    val iconRes: Int,
+    val count: Int = 0 // Default count = 0 jika tidak di-set
 )
+
