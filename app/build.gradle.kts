@@ -67,6 +67,9 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0") // Untuk memuat gambar dengan Coil
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1") // ViewModel untuk Compose
 
+    implementation("com.google.accompanist:accompanist-pager:0.28.0") // Accompanist Pager
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Accompanist Pager Indicator
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
