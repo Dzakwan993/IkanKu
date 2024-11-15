@@ -11,9 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.model.Category
+
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.ikanku.R
+import com.example.ikanku.ui.components.CartItem
+
 
 @Composable
 fun CategoryCard(category: Category) {
@@ -46,3 +52,4 @@ fun CategoryCard(category: Category) {
         }
     }
 }
+

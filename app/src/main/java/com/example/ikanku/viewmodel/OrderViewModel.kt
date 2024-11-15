@@ -9,14 +9,6 @@ class OrderViewModel : ViewModel() {
     val orders = listOf(
         Order(
             imageRes = R.drawable.ikan_nila,
-            productName = "Bibit Ikan Lele",
-            variant = "Pilih Variasi Berat 2 Kg",
-            price = "Rp80.000",
-            quantity = 2,
-            status = OrderStatus.PENDING_CONFIRMATION
-        ),
-        Order(
-            imageRes = R.drawable.ikan_nila,
             productName = "Ikan Nila",
             variant = "Pilih Variasi Berat 1 Kg",
             price = "Rp40.000",
@@ -29,8 +21,7 @@ class OrderViewModel : ViewModel() {
             variant = "Pilih Variasi Berat 1.5 Kg",
             price = "Rp60.000",
             quantity = 3,
-            status = OrderStatus.REJECTED,
-            rejectionReason = "Stok habis" // Adding rejection reason for rejected order
+            status = OrderStatus.REJECTED
         )
     )
 }

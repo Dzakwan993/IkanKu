@@ -20,7 +20,8 @@ import com.example.ikanku.ui.theme.IkanKuTheme
 @Composable
 fun TombolMasukkanKeranjang(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    text: String
 ) {
     Button(
         onClick = onClick,
@@ -32,7 +33,7 @@ fun TombolMasukkanKeranjang(
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD))
     ) {
         Text(
-            text = "Masukkan Keranjang",
+            text = text,
             color = Color.White,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
@@ -48,7 +49,8 @@ fun TombolMasukkanKeranjang(
 fun PilihVariasiPreview() {
     IkanKuTheme {
         TombolMasukkanKeranjang(
-            onClick = {}
+            onClick = {},
+            text = "bismillah"
         )
     }
 }

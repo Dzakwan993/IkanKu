@@ -60,7 +60,7 @@ fun BottomNavBarPenjual() {
 sealed class BottomNavItemPenjual(val label: String, val iconRes: Int) {
     object Home : BottomNavItemPenjual("Beranda", R.drawable.beranda)
     object Products : BottomNavItemPenjual("Produk", R.drawable.produk_penjual)
-    object Orders : BottomNavItemPenjual("Pesanan", R.drawable.pesanan_penjual)
+    object Orders : BottomNavItemPenjual("Pesanan", R.drawable.pesanan)
     object Settings : BottomNavItemPenjual("Pengaturan", R.drawable.pengaturan_penjual)
 }
 

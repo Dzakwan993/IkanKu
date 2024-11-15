@@ -55,20 +55,19 @@ android {
 }
 
 dependencies {
-
     implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
 
 
-    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
+            implementation(libs.androidx.core.ktx)
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation ("androidx.compose.material3:material3:1.1.0")
+    implementation ("androidx.compose.material:material:1.4.3")
+
 
     // Dependensi tambahan untuk gambar dan ViewModel
     implementation("io.coil-kt:coil-compose:2.4.0") // Untuk memuat gambar dengan Coil
@@ -85,4 +84,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Accompanist Pager dan Pager Indicator
+    implementation("com.google.accompanist:accompanist-pager:0.28.0") // Accompanist Pager
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Accompanist Pager Indicator
 }

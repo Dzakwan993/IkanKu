@@ -14,22 +14,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.model.Recommendation
+import com.example.ikanku.viewmodel.BerandaViewModel
+
+import com.example.ikanku.R
+import com.yourpackage.ikanku.model.Fish
+
 
 @Composable
 fun RecommendationCard(recommendation: Recommendation) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier.size(width = 200.dp, height = 250.dp),
+        modifier = Modifier.size(width = 160.dp, height = 200.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(8.dp)
+            verticalArrangement = Arrangement.Top,
+            modifier = Modifier.padding(16.dp)
         ) {
             Image(
                 painter = painterResource(id = recommendation.imageRes),
@@ -41,16 +48,17 @@ fun RecommendationCard(recommendation: Recommendation) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = recommendation.title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
                 color = Color.Black
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = recommendation.description,
                 fontSize = 12.sp,
                 color = Color.Gray
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -58,7 +66,7 @@ fun RecommendationCard(recommendation: Recommendation) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = recommendation.price,
+                    text = "Rp ${recommendation.price}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
@@ -71,9 +79,27 @@ fun RecommendationCard(recommendation: Recommendation) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = recommendation.rating.toString(), fontSize = 12.sp, color = Color.Gray)
+                    Text(
+                        text = recommendation.rating.toString(),
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
                 }
             }
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+
+fun PreviewRecommendationCard() {
+    val viewModel = BerandaViewModel()
+    val sampleRecommendation = viewModel.recommendations[0]
+
+    RecommendationCard(recommendation = sampleRecommendation)
+}
+
+
+
+

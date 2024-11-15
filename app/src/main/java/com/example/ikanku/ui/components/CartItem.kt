@@ -1,5 +1,6 @@
-// File: ui/components/CartItem.kt
-package com.example.ikanku.ui.components
+    // File: ui/components/CartItem.kt
+    package com.example.ikanku.ui.components
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -141,6 +142,5 @@ private fun PreviewCartItem() {
     )
 
 }
-
 
 
