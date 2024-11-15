@@ -36,7 +36,7 @@ fun TokoSayaScreen(
         ProfilPenjualCard(
             profilPenjual = ProfilPenjual(
                 name = "Tibelat Farm",
-                imageRes = R.drawable.tibelat_farm // Ganti dengan resource gambar profil yang sesuai
+                imageRes = R.drawable.beranda // Ganti dengan resource gambar profil yang sesuai
             ),
             modifier = Modifier.padding(vertical = 16.dp)
         )

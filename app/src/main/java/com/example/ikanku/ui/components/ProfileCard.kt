@@ -15,10 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ikanku.R
 import com.example.ikanku.model.Profile
+import com.example.ikanku.viewmodel.ProfileViewModel
 
 @Composable
 fun ProfileCard(profile: Profile, modifier: Modifier = Modifier) {
@@ -58,4 +61,18 @@ fun ProfileCard(profile: Profile, modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileCardPreview() {
+    // Initialize the ProfileViewModel
+    val profileViewModel: ProfileViewModel = viewModel()
+
+    // Access the profile from the ViewModel
+    val profile = profileViewModel.profile
+
+    // Display the ProfileCard with data from the ViewModel
+    ProfileCard(profile = profile)
 }

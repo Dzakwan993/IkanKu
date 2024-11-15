@@ -22,19 +22,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.CategoryClickSection
 import com.example.ikanku.ui.components.CategorySection
 import com.example.ikanku.ui.components.PromotionSectionRowCarousel
 
 
 @Composable
-fun Kategori(viewModel: BerandaViewModel = viewModel()) {
+fun Kategori(viewModel: BerandaViewModel = viewModel(), navController: NavController) {
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding(),
-        topBar = { TopBar() }, // Menjadikan TopBar sticky di bagian atas
+        topBar = { TopBar(navController = navController) }, // Menjadikan TopBar sticky di bagian atas
         bottomBar = { BottomNavBar() }
     ) { innerPadding ->
         LazyColumn(
@@ -45,7 +47,7 @@ fun Kategori(viewModel: BerandaViewModel = viewModel()) {
             verticalArrangement = Arrangement.spacedBy(4.dp),
             contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding())
         ) {
-            item { CategoryClickSection(categories = viewModel.categories) }
+            item { CategoryClickSection(categories = viewModel.categories, navController = navController) }
             item { RecommendationSection(recommendations = viewModel.recommendations) }
             item { ProductListSection(products = viewModel.products) }
         }
@@ -55,7 +57,8 @@ fun Kategori(viewModel: BerandaViewModel = viewModel()) {
 @Composable
 @Preview(showBackground = true)
 fun KategoriPreview() {
+    val navController = rememberNavController()
     val previewViewModel = BerandaViewModel()
-    Kategori(viewModel = previewViewModel)
+    Kategori(viewModel = previewViewModel, navController)
 }
 

@@ -11,11 +11,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.R
 import com.example.ikanku.model.Category
 
 @Composable
-fun CategorySection(categories: List<Category>) {
+fun CategorySection(categories: List<Category>, navController: NavController) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = "Semua kategori",
@@ -29,14 +30,14 @@ fun CategorySection(categories: List<Category>) {
             contentPadding = PaddingValues(horizontal = 12.dp)
         ) {
             items(categories.size) { index ->
-                CategoryCard(category = categories[index]) // Memanggil `CategoryCard`
+                CategoryCard(category = categories[index], navController = navController) // Memanggil `CategoryCard`
             }
         }
     }
 }
 
 @Composable
-fun CategoryClickSection(categories: List<Category>) {
+fun CategoryClickSection(categories: List<Category>, navController: NavController) {
     Column(modifier = Modifier.padding(16.dp)) {
         Row {
             Icon(
@@ -58,7 +59,7 @@ fun CategoryClickSection(categories: List<Category>) {
             contentPadding = PaddingValues(horizontal = 12.dp)
         ) {
             items(categories.size) { index ->
-                CategoryCard(category = categories[index]) // Memanggil `CategoryCard`
+                CategoryCard(category = categories[index], navController = navController) // Memanggil `CategoryCard`
             }
         }
     }

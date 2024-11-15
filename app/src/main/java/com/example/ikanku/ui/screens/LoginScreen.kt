@@ -15,18 +15,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.TopBarLogin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     var phoneNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var selectedTab by remember { mutableStateOf("Login") }
 
     Scaffold(
-        topBar = { TopBarLogin(selectedTab) { selectedTab = it } }
+        topBar = {
+            TopBarLogin(
+                selectedTab = "login",
+                onTabSelected = { /* Handle tab selection */ },
+                navController = navController
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -85,7 +92,9 @@ fun LoginScreen() {
 
             // Login Button
             Button(
-                onClick = { /* Handle login */ },
+                onClick = {
+                    navController.navigate("startup_screen")
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,8 +136,4 @@ fun LoginScreen() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen()
-}
+

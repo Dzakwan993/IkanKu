@@ -57,6 +57,7 @@ fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewMo
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A73E8))
             ) {
+                Text("Selanjutnya", color = Color.White, fontSize = 16.sp)
             }
         }
     }

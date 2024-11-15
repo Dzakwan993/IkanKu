@@ -30,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 
 @Composable
@@ -131,7 +133,8 @@ fun TopBarWithCart(
 @Composable
 fun TopBarLogin(
     selectedTab: String = "Login",
-    onTabSelected: (String) -> Unit = {}
+    onTabSelected: (String) -> Unit = {},
+    navController: NavController
 ) {
     Surface(
         modifier = Modifier
@@ -161,7 +164,10 @@ fun TopBarLogin(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(
-                    onClick = { onTabSelected("Login") },
+                    onClick = {
+                        onTabSelected("Login")
+                        navController.navigate("login_screen")
+                              },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = if (selectedTab == "Login") Color.White else Color.LightGray
                     )
@@ -174,7 +180,11 @@ fun TopBarLogin(
                 }
 
                 TextButton(
-                    onClick = { onTabSelected("Daftar") },
+                    onClick = {
+                        onTabSelected("Daftar")
+                        navController.navigate("register_screen")
+
+                              },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = if (selectedTab == "Daftar") Color.White else Color.LightGray
                     )
@@ -214,7 +224,14 @@ fun TopBarLogin(
 @Preview(showBackground = true)
 @Composable
 fun TopBarLoginPreview() {
-    TopBarLogin()
+    val navController = rememberNavController() // Create a mock navController
+    TopBarLogin(
+        selectedTab = "Login",
+        onTabSelected = { selectedTab ->
+            // You can handle tab selection if needed, or leave it empty
+        },
+        navController = navController // Pass the mock navController here
+    )
 }
 
 
