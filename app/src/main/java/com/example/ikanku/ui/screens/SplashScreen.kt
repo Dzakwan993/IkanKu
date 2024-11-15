@@ -40,3 +40,33 @@ fun SplashScreen() {
 fun SplashScreenPreview() {
     SplashScreen()
 }
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewLogin() {
+    LoginScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewLDaftarScreen() {
+    RegisterScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviwOTP() {
+    ConfirmationScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviwIsiData() {
+    CompleteDataScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LupaSandiPreview() {
+    ForgotPasswordScreen()
+}

@@ -87,7 +87,7 @@
                         .padding(horizontal = 16.dp)
                     ,
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.Yellow)
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         AddressRow()

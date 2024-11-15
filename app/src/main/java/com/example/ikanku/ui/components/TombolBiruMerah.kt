@@ -29,6 +29,7 @@ fun TombolMerahBiru(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Button(
+            elevation = ButtonDefaults.buttonElevation(8.dp),
             onClick = { /* Aksi batal */ },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF3848)),
             modifier = Modifier.weight(1f)
@@ -43,6 +44,7 @@ fun TombolMerahBiru(
         Spacer(modifier = Modifier.width(8.dp))
 
         Button(
+            elevation = ButtonDefaults.buttonElevation(8.dp),
             onClick = { /* Aksi buat pesanan */ },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
             modifier = Modifier.weight(1f)
@@ -59,8 +61,8 @@ fun TombolMerahBiru(
 fun PreviewAddress() {
 
     TombolMerahBiru(
-        judulBiru = "Buat Pesanan" ,
-        judulMerah ="Batal"
+        judulBiru = "Terima" ,
+        judulMerah ="Tolak"
     )
 
 }

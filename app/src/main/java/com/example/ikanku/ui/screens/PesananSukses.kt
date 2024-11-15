@@ -68,7 +68,7 @@ fun OrderSummaryScreen() {
                     .weight(1f)
                     ,
                 shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.Yellow)
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
 
 

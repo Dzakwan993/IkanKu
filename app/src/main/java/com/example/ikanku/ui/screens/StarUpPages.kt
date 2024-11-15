@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import Rekomendasi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.R
+import com.example.ikanku.model.CartItemModel
+import com.example.ikanku.viewmodel.BerandaViewModel
+import com.example.ikanku.viewmodel.ShoppingCartViewModel
 
 @Composable
 fun StartupScreen(
-    onWebsiteClick: () -> Unit = {},
+    onWebsiteClick:  () -> Unit = {},
     onLoginClick: () -> Unit = {}
 ) {
     Column(
@@ -109,4 +114,80 @@ fun StartupScreen(
 @Composable
 fun StartupScreenPreview() {
     StartupScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BerandaPreview() {
+    val previewViewModel = BerandaViewModel()
+    Row {
+        BerandaScreen(viewModel = previewViewModel)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewBayar() {
+    HalamanBayar()
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun RekomendasiPreview() {
+    Rekomendasi()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun KategoriPreviewDua() {
+    Kategori()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPencarian() {
+    Pencarian()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewHasilPencarian() {
+    SearchResultScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetail() {
+    DetailProduk(onAddToCartClick = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewProfile() {
+    MetodePembayaran()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewKeranjang() {
+    val viewModel = ShoppingCartViewModel().apply {
+        cartItems = mutableStateListOf(
+            CartItemModel("Ikan Tuna", "500g", "Rp 50.000", R.drawable.ikan_nila, 1),
+            CartItemModel("Ikan Salmon", "300g", "Rp 75.000", R.drawable.ikan_patin, 2)
+        )
+    }
+    ShoppingCartScreenWithCustomAppBar(viewModel = viewModel)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPesananSukses() {
+    OrderSummaryScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewNoInternet() {
+    NoInternetScreen()
 }

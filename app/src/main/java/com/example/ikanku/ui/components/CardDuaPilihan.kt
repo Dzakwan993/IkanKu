@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.components
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +20,12 @@ import com.example.ikanku.ui.screens.PesananBaru
 import com.example.ikanku.viewmodel.OrderRejectedViewModel
 
 @Composable
-fun OrderCardDitolak(order: Order) {
+fun CardDuaPilihan(
+    order: Order,
+    pilihanBiru: String,
+    pilihanMerah: String
+
+) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -41,7 +47,10 @@ fun OrderCardDitolak(order: Order) {
             )
             Spacer(modifier = Modifier.width(16.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+
+
+            ) {
                 Text(
                     text = order.productName,
                     fontSize = 18.sp,
@@ -65,29 +74,30 @@ fun OrderCardDitolak(order: Order) {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Display the "Ditolak, Lihat Alasan" button
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Button(
-                        onClick = { /* Handle see reason action */ },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier.height(36.dp)
-                    ) {
-                        Text("Ditolak, Lihat Alasan", color = Color.White)
-                    }
-                }
+
+
+
             }
         }
+
+        TombolMerahBiru(
+            
+            judulBiru = pilihanBiru,
+            judulMerah =pilihanMerah
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
 @Composable
 @Preview(showBackground = true, )
-fun PreviewOrderCard() {
+fun CardDuaPilihanPreview() {
     val previewViewModel = OrderRejectedViewModel()
     val sampleOrder = previewViewModel.rejectedOrders.firstOrNull() ?: return
-    OrderCardDitolak(order = sampleOrder)
+    CardDuaPilihan(
+        order = sampleOrder,
+        pilihanBiru = "Terima",
+        pilihanMerah = "Tolak"
+    )
 }

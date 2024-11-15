@@ -12,8 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.ikanku.R
 import com.example.ikanku.ui.theme.IkanKuTheme
 import com.yourpackage.ikanku.model.Fish
-import com.yourpackage.ikanku.ui.screens.BerandaScreen
-import com.yourpackage.ikanku.ui.screens.PromoBanner
+
 
 @Composable
 fun PromoCard(discountText: String, imageResId: Int) {

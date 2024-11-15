@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ikanku.model.Dikemas
 import com.example.ikanku.ui.components.TopBarWithCart
 import com.example.ikanku.ui.components.ProfileCard
 import com.example.ikanku.ui.components.BottomNavBar
@@ -114,6 +115,42 @@ fun ProfileOptionCard(text: String) {
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    val viewModel = viewModel<ProfileViewModel>()
-    ProfileScreen(viewModel = viewModel)
+    DikemasScreen()
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDikirim() {
+    DikirimScreen(
+        onBackClick = {},
+        onDeliveryClick = {},
+        onReorderClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetailPengirimann() {
+    DetailPengiriman()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewSelesai() {
+    SelesaiScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDitolak() {
+    RejectedOrdersScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewUlasann() {
+    Ulasan()
+}
+
+

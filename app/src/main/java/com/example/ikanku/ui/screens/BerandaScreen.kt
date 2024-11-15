@@ -49,6 +49,13 @@ fun BerandaScreen(viewModel: BerandaViewModel = viewModel()) {
 @Preview(showBackground = true)
 fun BerandaScreenPreview() {
     val previewViewModel = BerandaViewModel()
-    BerandaScreen(viewModel = previewViewModel)
+    Row {
+        BerandaScreen(viewModel = previewViewModel)
+
+
+
+    }
+
+
 }
 
