@@ -22,7 +22,7 @@ fun Rekomendasi(viewModel: BerandaViewModel = viewModel()) {
     Scaffold(
         topBar = {
             TopBarWithCart(
-                title = "Profile",
+                title = "Rekomendasi",
                 onBackClick = { /* Handle back navigation here */ },
                 onCartClick = { /* Handle cart click */ }
             )

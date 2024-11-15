@@ -123,6 +123,55 @@ fun PasswordField(label: String, placeholder: String, value: String, onValueChan
 
 @Preview(showBackground = true)
 @Composable
+fun PreviewProfil() {
+    DataProfileScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
 fun ChangePasswordScreenPreview() {
     ChangePasswordScreen()
 }
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewUbahEmail() {
+    ChangeEmailScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewUbahEmailOTP() {
+    VerifyEmailScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPusatBantuan() {
+    HelpCenterScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewAlamat() {
+    AddressScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewTambahAlamat() {
+    AddAddressScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewUbahNomor() {
+    UbahNomorPonselScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewUbahNomorOTP() {
+    VerificationScreen()
+}
+
