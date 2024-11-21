@@ -18,16 +18,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.TopBarLogin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfirmationScreen() {
+fun ConfirmationScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBarLogin(
                 selectedTab = "Daftar",
-                onTabSelected = { /* Handle tab selection */ }
+                onTabSelected = { /* Handle tab selection */ },
+                navController = navController
             )
         }
     ) { paddingValues ->
@@ -138,5 +141,6 @@ fun ConfirmationScreen() {
 @Preview(showBackground = true)
 @Composable
 fun ConfirmationScreenPreview() {
-    ConfirmationScreen()
+    val navController = rememberNavController()
+    ConfirmationScreen(navController = navController)
 }

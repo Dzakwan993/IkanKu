@@ -14,8 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.R
-import com.example.ikanku.model.ProfilPenjual
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.ikanku.model.ProfilPenjual
 
 @Composable
 fun ProfilPenjualCard(profilPenjual: ProfilPenjual, modifier: Modifier = Modifier) {

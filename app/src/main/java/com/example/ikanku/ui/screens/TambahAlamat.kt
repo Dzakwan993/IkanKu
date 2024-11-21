@@ -230,6 +230,15 @@ fun CitySelectionAddresBottomSheet(
     val cities = listOf(
         "Batam - Kec. Batu Aji - 29422",
         "Batam - Kec. Batam Kota - 29444",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
+        "Batam - Kec. Sekupang - 29445",
         "Batam - Kec. Sekupang - 29445"
         // Add more cities as needed
     )

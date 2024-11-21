@@ -19,19 +19,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.TopBarLogin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForgotPasswordScreen() {
+fun ForgotPasswordScreen(navController: NavController) {
     val email = remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             TopBarLogin(
                 selectedTab = "Login",
-                onTabSelected = { /* Handle tab selection */ }
+                onTabSelected = { /* Handle tab selection */ },
+                navController = navController
+
             )
         }
     ) { paddingValues ->
@@ -123,5 +127,6 @@ fun ForgotPasswordScreen() {
 @Preview(showBackground = true)
 @Composable
 fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen()
+    val navController = rememberNavController()
+    ForgotPasswordScreen(navController = navController)
 }

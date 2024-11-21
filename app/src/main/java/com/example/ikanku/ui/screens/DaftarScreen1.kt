@@ -14,18 +14,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.TopBarLogin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navController: NavController) {
     var phoneNumber by remember { mutableStateOf("") } // State untuk menyimpan input nomor ponsel
+    val isPhoneNumberValid = phoneNumber.length == 13 // Simple validation for phone number length
 
     Scaffold(
         topBar = {
             TopBarLogin(
                 selectedTab = "Daftar",
-                onTabSelected = { /* Handle tab selection */ }
+                onTabSelected = { /* Handle tab selection */ },
+                navController = navController
             )
         }
     ) { paddingValues ->
@@ -99,7 +103,14 @@ fun RegisterScreen() {
 
                 // Tombol Lanjut
                 Button(
-                    onClick = { /* Handle continue action */ },
+                    onClick = {
+                        if (phoneNumber.isNotEmpty() && isPhoneNumberValid) {
+                            // Navigate to the next screen if phone number is valid
+                            navController.navigate("next_screen")
+                        } else {
+                            // Show error message
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -116,5 +127,7 @@ fun RegisterScreen() {
 @Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
-    RegisterScreen()
+    val navController = rememberNavController() // Use rememberNavController for preview
+    RegisterScreen(navController = navController)
 }
+

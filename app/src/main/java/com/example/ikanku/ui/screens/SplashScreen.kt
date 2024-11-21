@@ -3,18 +3,26 @@ package com.example.ikanku.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.ikanku.R
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(navController: NavController) {
+    LaunchedEffect(Unit) {
+        delay(1500) // Tunggu 3 detik
+        navController.navigate("login_screen") {
+            popUpTo("splash_screen") { inclusive = true }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -26,47 +34,10 @@ fun SplashScreen() {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logo_ikanku), // Ganti dengan nama file drawable untuk ikon ikan
+                painter = painterResource(id = R.drawable.logo_ikanku),
                 contentDescription = "Logo Ikan",
                 modifier = Modifier.size(200.dp)
             )
-
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SplashScreenPreview() {
-    SplashScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLogin() {
-    LoginScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLDaftarScreen() {
-    RegisterScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviwOTP() {
-    ConfirmationScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviwIsiData() {
-    CompleteDataScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LupaSandiPreview() {
-    ForgotPasswordScreen()
 }

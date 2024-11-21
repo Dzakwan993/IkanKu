@@ -18,12 +18,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.TopBarLogin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompleteDataScreen() {
+fun CompleteDataScreen(navController: NavController) {
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("") }
@@ -34,7 +36,8 @@ fun CompleteDataScreen() {
         topBar = {
             TopBarLogin(
                 selectedTab = "Daftar",
-                onTabSelected = { /* Handle tab selection */ }
+                onTabSelected = { /* Handle tab selection */ },
+                navController = navController
             )
         }
     ) { paddingValues ->
@@ -235,5 +238,6 @@ fun CitySelectionBottomSheet(
 @Preview(showBackground = true)
 @Composable
 fun CompleteDataScreenPreview() {
-    CompleteDataScreen()
+    val navController = rememberNavController()
+    CompleteDataScreen(navController = navController)
 }

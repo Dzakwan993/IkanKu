@@ -11,25 +11,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.model.Category
 
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.ikanku.R
-import com.example.ikanku.ui.components.CartItem
-
-
 @Composable
-fun CategoryCard(category: Category) {
+fun CategoryCard(category: Category, navController: NavController) {
     Card(
         modifier = Modifier
             .width(100.dp)
             .height(100.dp) // Mengubah tinggi menjadi 100dp untuk proporsi yang lebih baik
             .padding(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(6.dp)
+        elevation = CardDefaults.cardElevation(6.dp),
+
+                onClick = {
+            // Navigasi ke halaman Kategori setelah kategori diklik
+            navController.navigate("kategori_screen")
+        }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,4 +53,5 @@ fun CategoryCard(category: Category) {
         }
     }
 }
+
 

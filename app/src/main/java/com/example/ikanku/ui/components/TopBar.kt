@@ -12,28 +12,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.example.ikanku.R
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MainScreen() {
-    Scaffold(
-        topBar = { TopBar() }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color.LightGray)
-        ) {
-            Spacer(modifier = Modifier.height(600.dp))
-        }
-    }
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavController) {
     var searchText by remember { mutableStateOf("") }
 
     Column(
@@ -54,7 +40,7 @@ fun TopBar() {
                 color = Color.White
             )
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = { /* Cart Action */ }) {
+            IconButton(onClick = { navController.navigate("keranjang_screen") }) {
                 Icon(
                     painter = painterResource(id = R.drawable.keranjang),
                     contentDescription = "Cart",
@@ -88,6 +74,7 @@ fun TopBar() {
         )
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -147,8 +134,3 @@ fun TopBarWithBackIconPreview() {
     TopBarWithBackIcon()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    MainScreen()
-}

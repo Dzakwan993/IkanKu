@@ -9,9 +9,9 @@ import com.example.ikanku.R
 class ShoppingCartViewModel : ViewModel() {
     // Data sample untuk item di keranjang
     var cartItems = mutableStateListOf(
-        CartItemModel("Ikan Nila", "Pilih Variasi Berat 1 Kg", "Rp. 40.000", R.drawable.back),
-        CartItemModel("Ikan Patin", "Pilih Variasi Berat 500 gr", "Rp. 30.000", R.drawable.back),
-        CartItemModel("Ikan Lele", "Pilih Variasi Berat 2 Kg", "Rp. 50.000", R.drawable.back)
+        CartItemModel("Ikan Nila", "Pilih Variasi Berat 1 Kg", "Rp. 40.000", R.drawable.ikan_nila),
+        CartItemModel("Ikan Patin", "Pilih Variasi Berat 500 gr", "Rp. 30.000", R.drawable.ikan_patin),
+        CartItemModel("Ikan Lele", "Pilih Variasi Berat 2 Kg", "Rp. 50.000", R.drawable.ikan_mandarin)
     )
 
     fun increaseQuantity(index: Int) {

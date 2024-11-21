@@ -87,4 +87,7 @@ dependencies {
     // Accompanist Pager dan Pager Indicator
     implementation("com.google.accompanist:accompanist-pager:0.28.0") // Accompanist Pager
     implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Accompanist Pager Indicator
+
+    implementation ("androidx.navigation:navigation-compose:2.7.0")
+
 }
