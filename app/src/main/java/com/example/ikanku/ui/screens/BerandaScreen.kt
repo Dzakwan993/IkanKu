@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.ikanku.model.Category
 import com.example.ikanku.ui.components.PromotionSectionRowCarousel
 
 @Composable
@@ -43,6 +44,14 @@ fun BerandaScreen(viewModel: BerandaViewModel = viewModel()) {
             item { ProductListSection(products = viewModel.products) }
         }
     }
+}
+
+fun CategorySection(categories: List<Category>) {
+    TODO("Not yet implemented")
+}
+
+fun TopBar() {
+    TODO("Not yet implemented")
 }
 
 @Composable
