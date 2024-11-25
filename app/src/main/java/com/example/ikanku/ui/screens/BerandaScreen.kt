@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.ikanku.ui.components.PromotionSectionRowCarousel
 
 @Composable
 fun BerandaScreen(navController: NavController, viewModel: BerandaViewModel = viewModel()) {
@@ -29,7 +28,7 @@ fun BerandaScreen(navController: NavController, viewModel: BerandaViewModel = vi
             .fillMaxSize()
             .navigationBarsPadding(),
         topBar = { TopBar(navController = navController) },
-        bottomBar = { BottomNavBar() }
+        bottomBar = { BottomNavBar(navController = navController) }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -40,9 +39,9 @@ fun BerandaScreen(navController: NavController, viewModel: BerandaViewModel = vi
             contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding())
         ) {
             item { CategorySection(categories = viewModel.categories, navController = navController) }
-            item { PromotionSection(promotions = viewModel.promotions) }
-            item { RecommendationSection(recommendations = viewModel.recommendations) }
-            item { ProductListSection(products = viewModel.products) }
+            item { PromotionSection(promotions = viewModel.promotions, navController = navController) }
+            item { RecommendationSection(recommendations = viewModel.recommendations, navController = navController) }
+            item { ProductListSection(products = viewModel.products, navController = navController) }
         }
     }
 }

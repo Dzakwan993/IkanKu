@@ -1,6 +1,7 @@
 package com.example.ikanku.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -13,21 +14,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @Composable
-fun DetailPengiriman() {
+fun DetailPengiriman(navController: NavController) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
                 title = "Detail Pengiriman",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = { navController.popBackStack()}
             )
         },
         bottomBar = {
-            BottomNavBar()
+            BottomNavBar(navController = navController)
         }
     ) { paddingValues ->
         Column(
@@ -113,21 +116,29 @@ fun DetailPengiriman() {
                             Text("Bukti Pengiriman", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Row {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Image(
                                     painter = painterResource(id = R.drawable.bukti_map1),
                                     contentDescription = null,
-                                    modifier = Modifier.size(120.dp)
+                                    modifier = Modifier
+                                        .size(120.dp)
+                                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(4.dp)) // Border dengan warna dan bentuk
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+
                                 Image(
                                     painter = painterResource(id = R.drawable.bukti_map2),
                                     contentDescription = null,
-                                    modifier = Modifier.size(120.dp)
+                                    modifier = Modifier
+                                        .size(120.dp)
+                                        .border(2.dp, Color.Gray, shape = RoundedCornerShape(4.dp)) // Border dengan warna dan bentuk
                                 )
                             }
+
                         }
                     }
+
                 }
             }
         }
@@ -137,5 +148,6 @@ fun DetailPengiriman() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDetailPengiriman() {
-    DetailPengiriman()
+    val navController = rememberNavController()
+    DetailPengiriman(navController = navController)
 }

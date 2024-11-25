@@ -13,18 +13,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 
 @Composable
-fun BottomNavBarPenjual() {
+fun BottomNavBarPenjual(navController: NavController) {
     val items = listOf(
         BottomNavItemPenjual.Home,
         BottomNavItemPenjual.Products,
-        BottomNavItemPenjual.Orders,
         BottomNavItemPenjual.Settings
     )
 
@@ -50,22 +53,25 @@ fun BottomNavBarPenjual() {
                     },
                     label = { Text(item.label, color = Color.White, fontFamily = poppins) },
                     selected = false,
-                    onClick = { /* Handle navigation here */ }
+                    onClick = {
+                        navController.navigate(item.route) // Navigasi ke rute terkait
+                    }
                 )
             }
         }
     }
 }
 
-sealed class BottomNavItemPenjual(val label: String, val iconRes: Int) {
-    object Home : BottomNavItemPenjual("Beranda", R.drawable.beranda)
-    object Products : BottomNavItemPenjual("Produk", R.drawable.produk_penjual)
-    object Orders : BottomNavItemPenjual("Pesanan", R.drawable.pesanan)
-    object Settings : BottomNavItemPenjual("Pengaturan", R.drawable.pengaturan_penjual)
+sealed class BottomNavItemPenjual(val label: String, val iconRes: Int, val route: String) {
+    object Home : BottomNavItemPenjual("Beranda", R.drawable.beranda, "toko_saya_screen")
+    object Products : BottomNavItemPenjual("Produk", R.drawable.produk_penjual, "produk_penjual_screen")
+    object Settings : BottomNavItemPenjual("Pesanan", R.drawable.pengaturan_penjual, "pengaturan_penjual")
 }
 
 @Preview(showBackground = true)
 @Composable
 fun BottomNavBarPenjualPreview() {
-    BottomNavBarPenjual()
+    // Preview tidak memiliki `NavController`, jadi kosongkan
+    BottomNavBarPenjual(navController = rememberNavController())
 }
+

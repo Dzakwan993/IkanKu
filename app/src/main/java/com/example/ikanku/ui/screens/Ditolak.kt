@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
 import com.example.ikanku.ui.components.OrderCardDitolak
@@ -16,7 +18,7 @@ import com.example.ikanku.ui.components.OrderStatusTabs
 import com.example.ikanku.viewmodel.OrderRejectedViewModel
 
 @Composable
-fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel()) {
+fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel(), navController: NavController) {
 
     Scaffold(
         modifier = Modifier
@@ -26,9 +28,9 @@ fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel()) {
             Column {
                 CustomTopAppBar(
                     title = "Pesanan Ditolak",
-                    onBackClick = { /* Handle back navigation */ }
+                    onBackClick = { navController.popBackStack() }
                 )
-                OrderStatusTabs(selectedTab = 3, onTabSelected = { /* Aksi untuk memilih tab */ })
+                OrderStatusTabs(selectedTab = 4, onTabSelected = { /* Aksi untuk memilih tab */ }, navController = navController)
             }
 
         },
@@ -46,7 +48,7 @@ fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel()) {
         ) {
 
             items(viewModel.rejectedOrders) { order ->
-                OrderCardDitolak(order)
+                OrderCardDitolak(order, navController = navController)
             }
         }
     }
@@ -55,6 +57,7 @@ fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel()) {
 @Composable
 @Preview(showBackground = true, )
 fun RejectedOrdersScreenPreview() {
-    val previewViewModel = OrderRejectedViewModel() // ViewModel khusus pesanan ditolak
-    RejectedOrdersScreen(viewModel = previewViewModel)
+    val previewViewModel = OrderRejectedViewModel()
+    val navController = rememberNavController()// ViewModel khusus pesanan ditolak
+    RejectedOrdersScreen(viewModel = previewViewModel, navController = navController)
 }

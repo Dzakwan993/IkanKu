@@ -21,10 +21,16 @@
     import androidx.compose.foundation.shape.CircleShape
     import androidx.compose.foundation.shape.RoundedCornerShape
     import androidx.compose.foundation.verticalScroll
+    import androidx.compose.material.ExperimentalMaterialApi
+    import androidx.compose.material.ModalBottomSheetLayout
+    import androidx.compose.material.ModalBottomSheetValue
     import androidx.compose.material.SnackbarDefaults.backgroundColor
     import androidx.compose.material.TabRowDefaults.Divider
+    import androidx.compose.material.TextField
+    import androidx.compose.material.TextFieldDefaults
     import androidx.compose.material.icons.Icons
     import androidx.compose.material.icons.filled.Info
+    import androidx.compose.material.rememberModalBottomSheetState
     import androidx.compose.material3.AlertDialog
     import androidx.compose.material3.AlertDialogDefaults
 
@@ -45,6 +51,7 @@
     import androidx.compose.runtime.getValue
     import androidx.compose.runtime.mutableStateOf
     import androidx.compose.runtime.remember
+    import androidx.compose.runtime.rememberCoroutineScope
     import androidx.compose.runtime.setValue
     import androidx.compose.ui.Alignment
     import androidx.compose.ui.Modifier
@@ -56,102 +63,312 @@
     import androidx.compose.ui.tooling.preview.Preview
     import androidx.compose.ui.unit.dp
     import androidx.compose.ui.unit.sp
+    import androidx.navigation.NavController
+    import androidx.navigation.compose.rememberNavController
     import com.example.ikanku.R
     import com.example.ikanku.ui.components.CartItem
     import com.example.ikanku.ui.components.CustomTopAppBar
     import com.example.ikanku.ui.components.TombolMerahBiru
+    import kotlinx.coroutines.launch
 
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
     @Composable
-    fun HalamanBayar() {
-        var showDialog by remember { mutableStateOf(false) }
+    fun HalamanBayar(navController: NavController) {
+        val coroutineScope = rememberCoroutineScope()
+        val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+        var bottomSheetContent by remember { mutableStateOf<@Composable () -> Unit>({}) }
 
-        if (showDialog) {
-            PaymentMethodDialog(onDismiss = {showDialog = false })
-        }
-        
-        Scaffold(
-            topBar = {
-                CustomTopAppBar(title = "Ringkasan Pemesanan", onBackClick = {})
+        // State untuk menyimpan pilihan metode pembayaran, pengiriman, dan catatan
+        var selectedPaymentMethod by remember { mutableStateOf("Pilih Metode Pembayaran") }
+        var selectedShippingMethod by remember { mutableStateOf("Pilih Metode Pengiriman") }
+        var noteToSeller by remember { mutableStateOf("") } // State untuk catatan penjual
+
+        ModalBottomSheetLayout(
+            sheetState = bottomSheetState,
+            sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            sheetContent = {
+                bottomSheetContent()
             }
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Card(
+        ) {
+            Scaffold(
+                topBar = {
+                    CustomTopAppBar(
+                        title = "Ringkasan Pemesanan",
+                        onBackClick = { navController.popBackStack() }
+                    )
+                }
+            ) { paddingValues ->
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                        .padding(horizontal = 16.dp)
-                    ,
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                        .fillMaxSize()
+                        .padding(paddingValues)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        AddressRow()
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .padding(bottom = 64.dp)
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            shape = RoundedCornerShape(20.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                AddressRow()
 
-                        // Pembatas garis
-                        Divider(color = Color(0xFF9095A0), thickness = 1.dp)
+                                // Pembatas garis
+                                Divider(color = Color(0xFF9095A0), thickness = 1.dp)
 
-                        //Informasi Produk
-                        InfoProduk(
-                            name = "Bibit nila (Tanpa tulang)",
-                            weight = "500g",
-                            price = "Rp 50.000",
-                            imageRes = android.R.drawable.ic_menu_gallery, // atau resource drawable lain sesuai kebutuhan
-                            quantity = 1,
-                            onIncrease = { /* Do nothing for preview */ },
-                            onDecrease = { /* Do nothing for preview */ }
-                        )
+                                // Informasi Produk
+                                InfoProduk(
+                                    name = "Ikan Nila",
+                                    weight = "500g",
+                                    price = "Rp 50.000",
+                                    imageRes = android.R.drawable.ic_menu_gallery,
+                                    quantity = 1,
+                                    onIncrease = { /* Tambahkan aksi penambahan */ },
+                                    onDecrease = { /* Tambahkan aksi pengurangan */ }
+                                )
 
-                        GabunganTitleKotak(
-                            judul = "Catatan untuk Penjual",
-                            kotak = {
-                                KotakTanpaPanah(
-                                    judul = "Opsinal"
+                                // Catatan untuk Penjual
+                                GabunganTitleKotak(
+                                    judul = "Catatan untuk Penjual",
+                                    kotak = {
+                                        TextField(
+                                            value = noteToSeller,
+                                            onValueChange = { noteToSeller = it },
+                                            placeholder = { Text("Opsional") },
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(56.dp)
+                                                .border(1.dp, Color.Gray, shape = RoundedCornerShape(16.dp)),
+                                            colors = TextFieldDefaults.textFieldColors(
+                                                backgroundColor = Color(0xFFE8E8E8),
+                                                focusedIndicatorColor = Color.Transparent,
+                                                unfocusedIndicatorColor = Color.Transparent
+                                            )
+                                        )
+                                    }
+                                )
+
+                                // Metode Pembayaran
+                                GabunganTitleKotak(
+                                    judul = "Metode Pembayaran",
+                                    kotak = {
+                                        Kotak(
+                                            judul = selectedPaymentMethod,
+                                            onClick = {
+                                                coroutineScope.launch {
+                                                    bottomSheetContent = {
+                                                        PaymentMethodBottomSheet(
+                                                            selectedMethod = selectedPaymentMethod,
+                                                            onSelectMethod = {
+                                                                selectedPaymentMethod = it
+                                                                coroutineScope.launch { bottomSheetState.hide() }
+                                                            }
+                                                        )
+                                                    }
+                                                    bottomSheetState.show()
+                                                }
+                                            }
+                                        )
+                                    }
+                                )
+
+                                // Metode Pengiriman
+                                GabunganTitleKotak(
+                                    judul = "Metode Pengiriman",
+                                    kotak = {
+                                        Kotak(
+                                            judul = selectedShippingMethod,
+                                            onClick = {
+                                                coroutineScope.launch {
+                                                    bottomSheetContent = {
+                                                        ShippingMethodBottomSheet(
+                                                            selectedMethod = selectedShippingMethod,
+                                                            onSelectMethod = {
+                                                                selectedShippingMethod = it
+                                                                coroutineScope.launch { bottomSheetState.hide() }
+                                                            }
+                                                        )
+                                                    }
+                                                    bottomSheetState.show()
+                                                }
+                                            }
+                                        )
+                                    }
                                 )
                             }
-                        )
+                        }
+                    }
 
-                        GabunganTitleKotak(
-                            judul = "Metode pembayaran",
-                            kotak = {
-                                Kotak(
-                                    judul = "Pilih Metode Pembayaran"
-                                )
-                            }
-                        )
-
-                        GabunganTitleKotak(
-                            judul = "Metode Pengiriman",
-                            kotak = {
-                                Kotak(
-                                    judul = "Pilih Metode Pengiriman"
-                                )
+                    // Tombol di bagian bawah layar
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .background(Color.White)
+                    ) {
+                        TombolMerahBiru(
+                            judulBiru = "Buat Pesanan",
+                            judulMerah = "Batal",
+                            onBiruClick = {
+                                navController.navigate("transfer_screen")
+                            },
+                            onMerahClick = {
+                                // Aksi untuk Batal
+                                navController.popBackStack()
                             }
                         )
                     }
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    TotalSection(
-
-                        total = "Rp45.000",
-                        shippingCost = "Rp5.000"
-                    )
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
-                TombolMerahBiru(
-                    judulBiru = "Buat Pesanan" ,
-                    judulMerah ="Batal"
-                )
-
             }
         }
     }
 
+
+    @Composable
+    fun TombolMerahBiru(
+        judulBiru: String,
+        judulMerah: String,
+        onBiruClick: () -> Unit,
+        onMerahClick: () -> Unit
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Tombol Merah
+            Button(
+                onClick = onMerahClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238)),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.weight(1f).padding(end = 4.dp)
+            ) {
+                Text(text = judulMerah, color = Color.White, fontWeight = FontWeight.Bold)
+            }
+
+            // Tombol Biru
+            Button(
+                onClick = onBiruClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.weight(1f).padding(start = 4.dp)
+            ) {
+                Text(text = judulBiru, color = Color.White, fontWeight = FontWeight.Bold)
+            }
+        }
+    }
+
+    @Composable
+    fun PaymentMethodBottomSheet(
+        selectedMethod: String,
+        onSelectMethod: (String) -> Unit
+    ) {
+        var selectedOption by remember { mutableStateOf(selectedMethod) }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Pilih Metode Pembayaran",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            PaymentMethodItem(
+                title = "Transfer Bank",
+                selected = selectedOption == "Transfer Bank",
+                onSelect = { onSelectMethod("Transfer Bank") }
+            )
+
+            PaymentMethodItem(
+                title = "Bayar di Tempat",
+                selected = selectedOption == "Bayar di Tempat",
+                onSelect = { onSelectMethod("Bayar di Tempat") }
+            )
+        }
+    }
+
+    @Composable
+    fun ShippingMethodBottomSheet(
+        selectedMethod: String,
+        onSelectMethod: (String) -> Unit
+    ) {
+        var selectedOption by remember { mutableStateOf(selectedMethod) }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Pilih Metode Pengiriman",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            ShippingMethodItem(
+                title = "Jemput di Tempat",
+                selected = selectedOption == "Jemput di Tempat",
+                onSelect = { onSelectMethod("Jemput di Tempat") }
+            )
+            ShippingMethodItem(
+                title = "Kirim ke Rumah",
+                selected = selectedOption == "Kirim ke Rumah",
+                onSelect = { onSelectMethod("Kirim ke Rumah") }
+            )
+        }
+    }
+
+    @Composable
+    fun PaymentMethodItem(title: String, selected: Boolean, onSelect: () -> Unit) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .clickable(onClick = onSelect),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                fontSize = 16.sp,
+                modifier = Modifier.weight(1f)
+            )
+            RadioButton(
+                selected = selected,
+                onClick = onSelect
+            )
+        }
+    }
+
+    @Composable
+    fun ShippingMethodItem(title: String, selected: Boolean, onSelect: () -> Unit) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .clickable(onClick = onSelect),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                fontSize = 16.sp,
+                modifier = Modifier.weight(1f)
+            )
+            RadioButton(
+                selected = selected,
+                onClick = onSelect
+            )
+        }
+    }
 
     @Composable
     fun InfoProduk(
@@ -167,13 +384,10 @@
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
-
-
         ) {
-
-            // Product Image
+            // Gambar Produk
             Image(
-                painter = painterResource(id = imageRes),
+                painter = painterResource(id = R.drawable.ikan_nila),
                 contentDescription = null,
                 modifier = Modifier
                     .size(90.dp)
@@ -182,15 +396,33 @@
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            // Product Details
+            // Detail Produk
             Column(modifier = Modifier.weight(1f)) {
                 Text(name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Text(weight, color = Color.Gray, fontSize = 14.sp)
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(price, color = Color.Black, fontSize = 16.sp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(price, color = Color.Black, fontSize = 16.sp)
 
+                    // Menampilkan jumlah pesanan
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
+                        Text(
+                            text = "x$quantity",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+
+                    }
+                }
             }
         }
     }
@@ -211,39 +443,37 @@
         }
     }
 
-        @Composable
-        fun Kotak(
-            judul: String
-
+    @Composable
+    fun Kotak(
+        judul: String,
+        onClick: () -> Unit
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .clickable(onClick = onClick),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(Color(0xFFE8E8E8))
         ) {
-            Card(
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-
-                    .height(60.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(Color(0xFFE8E8E8))
-
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 24.dp)
-                        ,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                        Text(
-                            text = judul,
-                            fontSize = 15.sp
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.panah_kanan),
-                            contentDescription = null
-                        )
-                }
+                Text(
+                    text = judul,
+                    fontSize = 15.sp
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.panah_kanan), // Ikon panah kanan
+                    contentDescription = null
+                )
             }
         }
+    }
 
 
     @Composable
@@ -321,12 +551,11 @@
             }
 
             Icon(
-                painter = painterResource(id = R.drawable.panah), // Ganti dengan ikon panah yang sesuai
+                painter = painterResource(id = R.drawable.lihat_detail), // Ganti dengan ikon panah yang sesuai
                 contentDescription = "Arrow Icon",
                 tint = Color.Black,
                 modifier = Modifier
                     .size(20.dp)
-                    .rotate(180f) // Putar 180 derajat untuk menghadap ke kanan
             )
         }
     }
@@ -575,7 +804,8 @@
     @Preview(showBackground = true)
     @Composable
     fun PreviewHalmanBayar() {
-        HalamanBayar()
+        val navController = rememberNavController()
+        HalamanBayar(navController = navController)
 
     }
 

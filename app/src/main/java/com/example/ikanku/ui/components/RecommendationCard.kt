@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.model.Recommendation
 import com.example.ikanku.viewmodel.BerandaViewModel
 
@@ -26,12 +28,16 @@ import com.yourpackage.ikanku.model.Fish
 
 
 @Composable
-fun RecommendationCard(recommendation: Recommendation) {
+fun RecommendationCard(recommendation: Recommendation, navController: NavController) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier.size(width = 160.dp, height = 200.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+        elevation = CardDefaults.cardElevation(8.dp),
+        onClick = {
+            // Navigasi ke halaman Kategori setelah kategori diklik
+            navController.navigate("detail_produk")
+        }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,8 +102,9 @@ fun RecommendationCard(recommendation: Recommendation) {
 fun PreviewRecommendationCard() {
     val viewModel = BerandaViewModel()
     val sampleRecommendation = viewModel.recommendations[0]
+    val navController = rememberNavController()
 
-    RecommendationCard(recommendation = sampleRecommendation)
+    RecommendationCard(recommendation = sampleRecommendation, navController = navController)
 }
 
 

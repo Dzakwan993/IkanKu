@@ -12,13 +12,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun OrderStatusTabs(
     selectedTab: Int,
-    onTabSelected: (Int) -> Unit
+    onTabSelected: (Int) -> Unit,
+    navController: NavController
 ) {
-    val tabs = listOf("Belum Bayar", "Dikemas", "Dikirim", "Selesai", "Ditolak")
+    val tabs = listOf(
+        "pesanan" to "pesanan_screen",
+        "Dikemas" to "dikemas_screen",
+        "Dikirim" to "dikirim_screen",
+        "Selesai" to "selesai_screen",
+        "Ditolak" to "ditolak_screen"
+    )
 
     Row(
         modifier = Modifier
@@ -27,12 +36,15 @@ fun OrderStatusTabs(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        tabs.forEachIndexed { index, title ->
+        tabs.forEachIndexed { index, (title, route) ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .padding(horizontal = 4.dp)
-                    .clickable { onTabSelected(index) }
+                    .clickable {
+                        onTabSelected(index)
+                        navController.navigate(route) // Navigasi ke halaman sesuai rute
+                    }
             ) {
                 Text(
                     text = title,
@@ -56,13 +68,19 @@ fun OrderStatusTabs(
     }
 }
 
+
 @Composable
-@Preview(showBackground = true, )
+@Preview(showBackground = true)
 fun OrderStatusTabsPreview() {
+    // Simulasi NavHostController
+    val navController = rememberNavController()
+
     OrderStatusTabs(
-        selectedTab = 1,
-        onTabSelected = {}
+        selectedTab = 0,
+        onTabSelected = { /* Handle tab selection */ },
+        navController = navController
     )
 }
+
 
 

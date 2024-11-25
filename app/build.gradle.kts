@@ -44,7 +44,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2" // atau versi yang cocok dengan versi Compose Anda
+        kotlinCompilerExtensionVersion = "1.5.2" // Sesuaikan dengan versi Compose Anda
     }
 
     packaging {
@@ -55,39 +55,34 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
+    // Compose BOM untuk sinkronisasi versi
+    implementation(platform(libs.androidx.compose.bom))
 
-
-
-            implementation(libs.androidx.core.ktx)
-
+    // Core dependencies
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation ("androidx.compose.material3:material3:1.1.0")
-    implementation ("androidx.compose.material:material:1.4.3")
 
+    // Compose Material 3
+    implementation("androidx.compose.material3:material3:1.1.0") // Versi stabil
 
-    // Dependensi tambahan untuk gambar dan ViewModel
-    implementation("io.coil-kt:coil-compose:2.4.0") // Untuk memuat gambar dengan Coil
+    // Gambar dan ViewModel
+    implementation("io.coil-kt:coil-compose:2.4.0") // Coil untuk memuat gambar
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1") // ViewModel untuk Compose
 
-    implementation("com.google.accompanist:accompanist-pager:0.28.0") // Accompanist Pager
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Accompanist Pager Indicator
+    // Accompanist untuk Pager dan Indicator
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
-    // Testing
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.0")
+
+    // Debugging dan Testing
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom)) // BOM untuk testing
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    // Accompanist Pager dan Pager Indicator
-    implementation("com.google.accompanist:accompanist-pager:0.28.0") // Accompanist Pager
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Accompanist Pager Indicator
-
-    implementation ("androidx.navigation:navigation-compose:2.7.0")
-
 }

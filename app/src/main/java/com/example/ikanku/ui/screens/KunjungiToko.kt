@@ -18,21 +18,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StoreVisitScreen() {
+fun StoreVisitScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
                 title = "Kunjungi Toko",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = { navController.popBackStack()}
             )
         },
-        bottomBar = { BottomNavBar() }
+        bottomBar = { BottomNavBar(navController = navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -151,5 +153,6 @@ fun InfoRow(iconRes: Int, text: String) {
 @Preview(showBackground = true)
 @Composable
 fun StoreVisitScreenPreview() {
-    StoreVisitScreen()
+    val navController = rememberNavController()
+    StoreVisitScreen(navController = navController)
 }

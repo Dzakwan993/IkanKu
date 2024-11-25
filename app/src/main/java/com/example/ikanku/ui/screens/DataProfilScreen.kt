@@ -16,11 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
@@ -28,7 +31,7 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DataProfileScreen() {
+fun DataProfileScreen(navController: NavController) {
     var showGenderBottomSheet by remember { mutableStateOf(false) }
     var showNameBottomSheet by remember { mutableStateOf(false) }
     var showDateOfBirthBottomSheet by remember { mutableStateOf(false) }
@@ -37,8 +40,8 @@ fun DataProfileScreen() {
     var dateOfBirth by remember { mutableStateOf("Atur Sekarang") }
 
     Scaffold(
-        topBar = { CustomTopAppBar(title = "Profil", onBackClick = { /* Handle back navigation */ }) },
-        bottomBar = { BottomNavBar() }
+        topBar = { CustomTopAppBar(title = "Profil", onBackClick = { navController.popBackStack() }) },
+        bottomBar = { BottomNavBar(navController = navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -56,7 +59,8 @@ fun DataProfileScreen() {
                 dateOfBirth = dateOfBirth,
                 onNameClick = { showNameBottomSheet = true },
                 onGenderClick = { showGenderBottomSheet = true },
-                onDateOfBirthClick = { showDateOfBirthBottomSheet = true }
+                onDateOfBirthClick = { showDateOfBirthBottomSheet = true },
+                navController = navController
             )
         }
     }
@@ -106,13 +110,16 @@ fun ProfileInfoItems(
     dateOfBirth: String,
     onNameClick: () -> Unit,
     onGenderClick: () -> Unit,
-    onDateOfBirthClick: () -> Unit
+    onDateOfBirthClick: () -> Unit,
+    navController: NavController // Menambahkan parameter navController
 ) {
     ProfileInfoItem(title = "Nama Lengkap", value = fullName, showDropdown = true, onClick = onNameClick)
     ProfileInfoItem(title = "Jenis Kelamin", value = selectedGender, showDropdown = true, onClick = onGenderClick)
     ProfileInfoItem(title = "Tanggal Lahir", value = dateOfBirth, showDropdown = true, onClick = onDateOfBirthClick)
+
+    // Menambahkan ProfileInfoItem untuk nomor ponsel dengan navigasi
     ProfileInfoItem(
-        title = "Nomor Ponsel", value = "6282387436427", showDropdown = false,
+        title = "Nomor Ponsel", value = "6282387436427", showDropdown = true,
         iconContent = {
             Icon(
                 painter = painterResource(id = R.drawable.lihat_detail),
@@ -120,9 +127,12 @@ fun ProfileInfoItems(
                 tint = Color.Gray,
                 modifier = Modifier.size(20.dp)
             )
-        }
+        },
+        onClick = { navController.navigate("ubah_nomor_ponsel") } // Navigasi ke UbahNomorPonselScreen
     )
 }
+
+
 
 @Composable
 fun ProfileInfoItem(
@@ -184,7 +194,9 @@ fun DateOfBirthBottomSheet(currentDate: String, onDateSelected: (String) -> Unit
 
 @Composable
 fun GenderSelectionBottomSheetContent(selectedGender: String, onGenderSelected: (String) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)) {
         HeaderRow("Jenis Kelamin") { onGenderSelected(selectedGender) }
         Spacer(modifier = Modifier.height(16.dp))
         GenderOptionItem("Laki-Laki", selected = selectedGender == "Laki-Laki", onSelect = onGenderSelected)
@@ -228,7 +240,9 @@ fun GenderOptionItem(label: String, selected: Boolean, onSelect: (String) -> Uni
 @Composable
 fun NameEditBottomSheetContent(currentName: String, onNameChanged: (String) -> Unit) {
     var name by remember { mutableStateOf(currentName) }
-    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)) {
         HeaderRow(title = "Ganti Nama Lengkap") { onNameChanged(currentName) }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -255,35 +269,67 @@ fun NameEditBottomSheetContent(currentName: String, onNameChanged: (String) -> U
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateOfBirthBottomSheetContent(
     currentDate: String,
     onDateSelected: (String) -> Unit,
     onCancel: () -> Unit
 ) {
-    val years = (1900..Calendar.getInstance().get(Calendar.YEAR)).toList().reversed()
-    val months = (1..12).map { it.toString().padStart(2, '0') }
-    val days = (1..31).map { it.toString().padStart(2, '0') }
+    val context = LocalContext.current
+    var selectedDate by remember { mutableStateOf(currentDate) }
 
-    var selectedYear by remember { mutableStateOf(years.first().toString()) }
-    var selectedMonth by remember { mutableStateOf(months.first()) }
-    var selectedDay by remember { mutableStateOf(days.first()) }
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)) {
 
-    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
         HeaderRow(title = "Tanggal Lahir") { onCancel() }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        DropdownMenu(label = "Tahun", items = years.map { it.toString() }, selectedItem = selectedYear) { selectedYear = it }
-        Spacer(modifier = Modifier.height(8.dp))
-        DropdownMenu(label = "Bulan", items = months, selectedItem = selectedMonth) { selectedMonth = it }
-        Spacer(modifier = Modifier.height(8.dp))
-        DropdownMenu(label = "Hari", items = days, selectedItem = selectedDay) { selectedDay = it }
+        // Tombol untuk membuka DatePickerDialog
+        Button(
+            onClick = {
+                val calendar = Calendar.getInstance()
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH)
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+                // Membuka DatePickerDialog
+                android.app.DatePickerDialog(
+                    context,
+                    { _, selectedYear, selectedMonth, selectedDay ->
+                        // Format tanggal menjadi "YYYY-MM-DD"
+                        selectedDate = "$selectedYear-${
+                            (selectedMonth + 1).toString().padStart(2, '0')
+                        }-${selectedDay.toString().padStart(2, '0')}"
+                        onDateSelected(selectedDate) // Update tanggal yang dipilih
+                    },
+                    year,
+                    month,
+                    day
+                ).show()
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text("Pilih Tanggal", color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Menampilkan tanggal yang dipilih
+        Text(
+            text = "Tanggal yang dipilih: $selectedDate",
+            fontSize = 16.sp,
+            color = Color.Black
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { onDateSelected("$selectedYear-$selectedMonth-$selectedDay") },
+            onClick = { onDateSelected(selectedDate) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
@@ -294,6 +340,7 @@ fun DateOfBirthBottomSheetContent(
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -344,5 +391,6 @@ fun DropdownMenu(
 @Preview(showBackground = true)
 @Composable
 fun DataProfileScreenPreview() {
-    DataProfileScreen()
+    val navController = rememberNavController()
+    DataProfileScreen(navController = navController)
 }

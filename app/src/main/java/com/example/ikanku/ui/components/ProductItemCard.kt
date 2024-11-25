@@ -16,18 +16,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.model.Product
 import com.example.ikanku.R
 
 @Composable
-fun ProductItemCard(product: Product) {
+fun ProductItemCard(product: Product, navController: NavController) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+        elevation = CardDefaults.cardElevation(8.dp),
+        onClick = {
+            // Navigasi ke halaman Kategori setelah kategori diklik
+            navController.navigate("detail_produk")
+        }
+
     ) {
         Row(
             modifier = Modifier

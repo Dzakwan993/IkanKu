@@ -9,10 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.model.Recommendation
 
 @Composable
-fun RecommendationSection(recommendations: List<Recommendation>) { // Tambahkan parameter di sini
+fun RecommendationSection(recommendations: List<Recommendation>, navController: NavController) { // Tambahkan parameter di sini
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -24,7 +25,7 @@ fun RecommendationSection(recommendations: List<Recommendation>) { // Tambahkan 
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp, start = 4.dp)
             )
-            TextButton(onClick = { /* Lihat Semua Action */ }) {
+            TextButton(onClick = { navController.navigate("daftar_rekomendasi")}) {
                 Text("Lihat semua", color = Color.Blue)
             }
         }
@@ -34,7 +35,7 @@ fun RecommendationSection(recommendations: List<Recommendation>) { // Tambahkan 
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             items(recommendations.size) { index ->
-                RecommendationCard(recommendation = recommendations[index])
+                RecommendationCard(recommendation = recommendations[index], navController = navController)
             }
         }
     }

@@ -167,13 +167,15 @@ fun OrderConfirmationPayScreen() {
         }
 
         if (showRejectDialog) {
-            RejectOrderBottomSheet(
+            RejectOrderPayBottomSheet(
                 onDismiss = { showRejectDialog = false },
                 onSave = { /* Handle save reason */ showRejectDialog = false }
             )
         }
     }
 }
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

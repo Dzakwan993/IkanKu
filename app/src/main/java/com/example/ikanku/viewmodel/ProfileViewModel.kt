@@ -12,7 +12,7 @@ class ProfileViewModel : ViewModel() {
     )
 
     val orderStatusItems = listOf(
-        OrderStatusItem(label = "Belum Bayar", iconRes = R.drawable.belum_bayar),
+        OrderStatusItem(label = "Pesanan", iconRes = R.drawable.belum_bayar),
         OrderStatusItem(label = "Dikemas", iconRes = R.drawable.dikemas),
         OrderStatusItem(label = "Dikirim", iconRes = R.drawable.dikirim),
         OrderStatusItem(label = "Selesai", iconRes = R.drawable.pesanan_selesai),

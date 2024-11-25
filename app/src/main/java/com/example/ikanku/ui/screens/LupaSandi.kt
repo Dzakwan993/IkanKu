@@ -82,7 +82,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                     placeholder = { Text("Masukkan alamat email anda", color = Color.Gray) },
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.alamat), // Replace with email icon in drawable
+                            painter = painterResource(id = R.drawable.icon_mail), // Replace with email icon in drawable
                             contentDescription = "Email Icon",
                             tint = Color.Gray
                         )

@@ -13,11 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChangePasswordScreen() {
+fun ChangePasswordScreen(navController: NavController) {
     val oldPassword = remember { mutableStateOf("") }
     val newPassword = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
@@ -26,7 +28,7 @@ fun ChangePasswordScreen() {
         topBar = {
             CustomTopAppBar(
                 title = "Ganti Password",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = { navController.popBackStack() }
             )
         }
     ) { paddingValues ->
@@ -124,19 +126,22 @@ fun PasswordField(label: String, placeholder: String, value: String, onValueChan
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfil() {
-    DataProfileScreen()
+    val navController = rememberNavController()
+    DataProfileScreen(navController = navController)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ChangePasswordScreenPreview() {
-    ChangePasswordScreen()
+    val navController = rememberNavController()
+    ChangePasswordScreen(navController = navController)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewUbahEmail() {
-    ChangeEmailScreen()
+    val navController = rememberNavController()
+    ChangeEmailScreen(navController = navController)
 }
 
 @Preview(showBackground = true)
@@ -148,30 +153,23 @@ fun PreviewUbahEmailOTP() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewPusatBantuan() {
-    HelpCenterScreen()
+    val navController = rememberNavController()
+    HelpCenterScreen(navController = navController)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewAlamat() {
-    AddressScreen()
+    val navController = rememberNavController()
+    AddressScreen(navController = navController)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewTambahAlamat() {
-    AddAddressScreen()
+    val navController = rememberNavController()
+    AddAddressScreen(navController = navController)
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewUbahNomor() {
-    UbahNomorPonselScreen()
-}
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewUbahNomorOTP() {
-    VerificationScreen()
-}
 

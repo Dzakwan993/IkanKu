@@ -17,13 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.Dikirim
 
 @Composable
 fun DikirimCard(
     dikirim: Dikirim,
-    onDeliveryClick: () -> Unit
+    onDeliveryClick: () -> Unit,
+    navController: NavController
 ) {
     Card(
         modifier = Modifier
@@ -31,7 +34,7 @@ fun DikirimCard(
             .padding(8.dp),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Tambahkan elevasi untuk shadow
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
@@ -39,7 +42,6 @@ fun DikirimCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.Top
         ) {
-            // Product image on the left
             Image(
                 painter = painterResource(id = dikirim.imageResId),
                 contentDescription = null,
@@ -50,7 +52,6 @@ fun DikirimCard(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Text content in a Column
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -93,18 +94,18 @@ fun DikirimCard(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(
-                        onClick = onDeliveryClick,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.White), // White background
+                        onClick = {navController.navigate("detail_pengiriman")},
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                         modifier = Modifier
-                            .border(1.dp, Color.Black, RoundedCornerShape(32.dp)) // Border outline
-                            .height(40.dp) // Manual height (adjust as needed)
-                            .width(190.dp) // Manual width (adjust as needed)
-                            .clip(RoundedCornerShape(32.dp)) // Clip to the same shape as the border
+                            .border(1.dp, Color(0xFF177BCD), RoundedCornerShape(32.dp))
+                            .height(40.dp)
+                            .width(190.dp)
+                            .clip(RoundedCornerShape(32.dp))
                     ) {
                         Text(
                             fontSize = 16.sp,
-                            text = "Proses Pengiriman",
-                            color = Color.Black, // Text color black to contrast with white button
+                            text = "Detail Pengiriman",
+                            color = Color.White,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -113,6 +114,9 @@ fun DikirimCard(
         }
     }
 }
+
+
+
 
 @Preview(showBackground = true)
 @Composable
@@ -126,9 +130,12 @@ fun DikirimCardPreview() {
         status = "Pesanan Anda sedang dikirim"
     )
 
+    val navController = rememberNavController()
+
     DikirimCard(dikirim = sampleDikirim, onDeliveryClick = {
         // Preview click action
-    })
+    },
+        navController = navController)
 }
 
 

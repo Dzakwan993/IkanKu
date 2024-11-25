@@ -20,12 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.CustomTopAppBar // Import CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpCenterScreen() {
+fun HelpCenterScreen(navController: NavController) {
     var whatsappNumber by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
 
@@ -33,7 +35,7 @@ fun HelpCenterScreen() {
         topBar = {
             CustomTopAppBar(
                 title = "Pusat Bantuan",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = { navController.popBackStack() }
             )
         }
     ) { paddingValues ->
@@ -41,13 +43,12 @@ fun HelpCenterScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Apakah anda butuh bantuan atau pertanyaan? Kirimkan pesan kepada kami melalui formulir ini!",
+                text = "Apakah anda butuh bantuan atau pertanyaan? Kirimkan pesan kepada kami melalui Whatsapp!",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color.Black,
@@ -57,57 +58,54 @@ fun HelpCenterScreen() {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // WhatsApp Number Input
-            OutlinedTextField(
-                value = whatsappNumber,
-                onValueChange = { whatsappNumber = it },
-                placeholder = { Text("NO Whatsapp", color = Color.Gray) },
+            // Image in the center
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color(0xFFE0E0E0),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                ),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
-            )
+                    .fillMaxSize()
+                    .weight(1f), // Membuat gambar fleksibel
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.pusatbantuanimage), // Ganti dengan resource gambar Anda
+                    contentDescription = "Help Center Illustration",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                )
+            }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Message Input
-            OutlinedTextField(
-                value = message,
-                onValueChange = { message = it },
-                placeholder = { Text("Pesan", color = Color.Gray) },
+            // Button Section
+            Button(
+                onClick = {
+                    // Logika untuk melanjutkan ke WhatsApp
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp),
+                    .padding(vertical = 16.dp), // Padding di sekitar tombol
                 shape = RoundedCornerShape(16.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color(0xFFE0E0E0),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                ),
-                keyboardOptions = KeyboardOptions.Default
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Image at the Bottom
-            Image(
-                painter = painterResource(id = R.drawable.pusatbantuanimage), // Replace with the actual image resource
-                contentDescription = "Help Center Illustration",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-            )
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF177BCD), // Warna biru
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "Lanjutkan WhatsApp", // Teks tombol
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun HelpCenterScreenPreview() {
-    HelpCenterScreen()
+    val navController = rememberNavController()
+    HelpCenterScreen(navController = navController)
 }
+
+
+
+
