@@ -16,14 +16,20 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewModel()) {
+fun ShoppingCartScreenWithCustomAppBar(
+    viewModel: ShoppingCartViewModel = viewModel(),
+    navController: NavController
+) {
     Scaffold(
         topBar = {
-            CustomTopAppBar(title = "Keranjang ", onBackClick = {}) // Using CustomTopAppBar
+            CustomTopAppBar(title = "Keranjang ", onBackClick = {
+                navController.navigateUp()
+            }) // Using CustomTopAppBar
         }
     ) { paddingValues ->
         Column(
@@ -72,5 +78,5 @@ fun PreviewShoppingCartScreenWithCustomAppBar() {
             CartItemModel("Ikan Salmon", "300g", "Rp 75.000", R.drawable.ikan_patin, 2)
         )
     }
-    ShoppingCartScreenWithCustomAppBar(viewModel = viewModel)
+
 }

@@ -116,14 +116,6 @@ fun StartupScreenPreview() {
     StartupScreen()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun BerandaPreview() {
-    val previewViewModel = BerandaViewModel()
-    Row {
-        BerandaScreen(viewModel = previewViewModel)
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -138,11 +130,7 @@ fun RekomendasiPreview() {
     Rekomendasi()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun KategoriPreviewDua() {
-    Kategori()
-}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -177,7 +165,7 @@ fun PreviewKeranjang() {
             CartItemModel("Ikan Salmon", "300g", "Rp 75.000", R.drawable.ikan_patin, 2)
         )
     }
-    ShoppingCartScreenWithCustomAppBar(viewModel = viewModel)
+//    ShoppingCartScreenWithCustomAppBar(viewModel = viewModel)
 }
 
 @Preview(showBackground = true)

@@ -41,7 +41,9 @@ fun NavGraph(navController: NavHostController) {
             BerandaScreen(navController = navController)
         }
         composable("keranjang_screen") {
-            ShoppingCartScreenWithCustomAppBar() // Show the shopping cart screen
+            ShoppingCartScreenWithCustomAppBar(
+                navController = navController
+            ) // Show the shopping cart screen
         }
         composable("kategori_screen") {
             Kategori(navController = navController) // Navigasi ke Kategori Screen

@@ -27,7 +27,8 @@ fun BerandaScreen(navController: NavController, viewModel: BerandaViewModel = vi
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding(),
+            .navigationBarsPadding()
+            ,
         topBar = { TopBar(navController = navController) },
         bottomBar = { BottomNavBar() }
     ) { innerPadding ->
