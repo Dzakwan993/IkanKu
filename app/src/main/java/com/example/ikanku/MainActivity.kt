@@ -14,7 +14,9 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
+
+import com.example.ikanku.ui.screens.TopBar
+
 import com.example.ikanku.ui.theme.IkanKuTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,21 +28,30 @@ class MainActivity : ComponentActivity() {
         )
         enableEdgeToEdge()
         setContent {
-            IkanKu()
+            IkanKuTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Greeting(
+                        name = "Android",
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-fun IkanKu() {
-    val navController = rememberNavController()
-    NavGraph(navController = navController)
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun IkanKuPreview() {
+fun GreetingPreview() {
     IkanKuTheme {
-        IkanKu()
+        Greeting("Android")
     }
 }
