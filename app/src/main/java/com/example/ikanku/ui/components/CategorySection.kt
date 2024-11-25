@@ -1,6 +1,7 @@
 // CategorySection.kt
 package com.example.ikanku.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
@@ -43,7 +44,8 @@ fun CategoryClickSection(categories: List<Category>, navController: NavControlle
             Icon(
                 painter = painterResource(id = R.drawable.back),
                 contentDescription = "Back Icon",
-                tint = Color.Black
+                tint = Color.Black,
+                modifier = Modifier.clickable{navController.popBackStack()}
             )
             Text(
                 text = "Ikan Tawar",

@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.model.Promotion
 import com.example.ikanku.ui.components.PromotionCard
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -27,7 +28,7 @@ import com.google.accompanist.pager.rememberPagerState
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
 @Composable
-fun PromotionSection(promotions: List<Promotion>) {
+fun PromotionSection(promotions: List<Promotion>, navController: NavController) {
     // Use accompanist pager's rememberPagerState
     val pagerState = rememberPagerState(initialPage = 0)
 
@@ -61,7 +62,8 @@ fun PromotionSection(promotions: List<Promotion>) {
             PromotionCard(
                 imageRes = promotion.imageRes,
                 title = promotion.title,
-                discount = promotion.discount
+                discount = promotion.discount,
+                navController = navController
             )
         }
 

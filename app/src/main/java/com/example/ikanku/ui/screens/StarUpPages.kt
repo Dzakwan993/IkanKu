@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.CartItemModel
 import com.example.ikanku.viewmodel.BerandaViewModel
@@ -117,65 +118,5 @@ fun StartupScreenPreview() {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewBayar() {
-    HalamanBayar()
-}
 
 
-@Preview(showBackground = true)
-@Composable
-fun RekomendasiPreview() {
-    Rekomendasi()
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewPencarian() {
-    Pencarian()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHasilPencarian() {
-    SearchResultScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewDetail() {
-    DetailProduk(onAddToCartClick = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewProfile() {
-    MetodePembayaran()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewKeranjang() {
-    val viewModel = ShoppingCartViewModel().apply {
-        cartItems = mutableStateListOf(
-            CartItemModel("Ikan Tuna", "500g", "Rp 50.000", R.drawable.ikan_nila, 1),
-            CartItemModel("Ikan Salmon", "300g", "Rp 75.000", R.drawable.ikan_patin, 2)
-        )
-    }
-//    ShoppingCartScreenWithCustomAppBar(viewModel = viewModel)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewPesananSukses() {
-    OrderSummaryScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewNoInternet() {
-    NoInternetScreen()
-}

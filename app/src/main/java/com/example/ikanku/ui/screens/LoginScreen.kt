@@ -1,6 +1,7 @@
 package com.example.ikanku.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -47,7 +48,7 @@ fun LoginScreen(navController: NavController) {
             OutlinedTextField(
                 value = phoneNumber,
                 onValueChange = { phoneNumber = it },
-                placeholder = { Text("Nomor Ponsel Ex 6282387436427", color = Color.Gray) },
+                placeholder = { Text("Nomor Ponsel Ex 081234567891", color = Color.Gray) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp),
@@ -86,6 +87,9 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(end = 32.dp)
+                    .clickable{
+                        navController.navigate("lupa_sandi_pembeli")
+                    }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -93,7 +97,13 @@ fun LoginScreen(navController: NavController) {
             // Login Button
             Button(
                 onClick = {
-                    navController.navigate("startup_screen")
+                    if (phoneNumber == "081234567891" && password == "admin") {
+                        // Navigate to TokoSayaScreen if credentials are valid
+                        navController.navigate("toko_saya_screen")
+                    } else {
+                        // Navigate to StartupScreen if credentials are invalid
+                        navController.navigate("startup_screen")
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                 modifier = Modifier
@@ -135,5 +145,6 @@ fun LoginScreen(navController: NavController) {
         }
     }
 }
+
 
 

@@ -4,21 +4,23 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.* // Impor semua komponen yang diperlukan
 import com.example.ikanku.model.PesananSelesai
 import com.example.ikanku.R
 
 @Composable
-fun SelesaiScreen() {
+fun SelesaiScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         // Menampilkan CustomTopAppBar di bagian atas
         CustomTopAppBar(
             title = "Pesanan Selesai",
-            onBackClick = { /* Tambahkan aksi kembali, jika diperlukan */ }
+            onBackClick = { navController.popBackStack() }
         )
 
         // Menampilkan OrderStatusTabs di bawah CustomTopAppBar
-        OrderStatusTabs(selectedTab = 3, onTabSelected = { /* Aksi untuk memilih tab */ })
+        OrderStatusTabs(selectedTab = 3, onTabSelected = { /* Aksi untuk memilih tab */ }, navController = navController)
 
         // Contoh item selesai untuk ditampilkan di LihatUlasanCard dan BeriUlasanCard
         val sampleSelesai = PesananSelesai(
@@ -33,24 +35,27 @@ fun SelesaiScreen() {
         // Menampilkan LihatUlasanCard
         LihatUlasanCard(
             selesai = sampleSelesai,
-            onReorderClick = { /* Aksi untuk Lihat Ulasan */ }
+            onClick = { navController.navigate("ulasan_saya")},
+            navController = navController
         )
 
         // Menampilkan BeriUlasanCard
         BeriUlasanCard(
             selesai = sampleSelesai,
-            onReorderClick = { /* Aksi untuk Beri Ulasan */ }
+            onClick = { /* Aksi untuk Beri Ulasan */ },
+            navController = navController
         )
 
         Spacer(modifier = Modifier.weight(1f)) // Spasi fleksibel untuk menekan BottomNavBar ke bawah
 
         // Menampilkan BottomNavBar di bagian bawah
-        BottomNavBar()
+        BottomNavBar(navController = navController)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewSelesaiScreen() {
-    SelesaiScreen()
+    val navController = rememberNavController()
+    SelesaiScreen(navController = navController)
 }

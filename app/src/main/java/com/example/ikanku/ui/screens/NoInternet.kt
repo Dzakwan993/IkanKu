@@ -2,7 +2,7 @@ package com.example.ikanku.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,13 +12,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoInternetScreen() {
+fun NoInternetScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
@@ -26,7 +28,7 @@ fun NoInternetScreen() {
                 onBackClick = { /* Handle back navigation if necessary */ }
             )
         },
-        bottomBar = { BottomNavBar() }
+        bottomBar = { BottomNavBar(navController = navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -60,5 +62,6 @@ fun NoInternetScreen() {
 @Preview(showBackground = true)
 @Composable
 fun NoInternetScreenPreview() {
-    NoInternetScreen()
+    val navController = rememberNavController()
+    NoInternetScreen(navController = navController)
 }

@@ -14,11 +14,8 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.ikanku.ui.screens.RejectedOrdersScreen
 import com.example.ikanku.ui.theme.IkanKuTheme
-import com.example.ikanku.viewmodel.OrderRejectedViewModelDua
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +26,7 @@ class MainActivity : ComponentActivity() {
         )
         enableEdgeToEdge()
         setContent {
-            val rejectedOrdersViewModel: OrderRejectedViewModelDua = viewModel()
-            RejectedOrdersScreen(viewModel = rejectedOrdersViewModel)
+            IkanKu()
         }
     }
 }

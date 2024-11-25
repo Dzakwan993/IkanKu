@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.Dikirim
 import com.example.ikanku.ui.components.*
@@ -16,35 +18,35 @@ import com.example.ikanku.ui.components.*
 fun DikirimScreen(
     onBackClick: () -> Unit,
     onDeliveryClick: () -> Unit,
-    onReorderClick: () -> Unit
+    navController: NavController
 ) {
-    // Menggunakan Scaffold untuk tata letak yang fleksibel
     Scaffold(
         topBar = {
             CustomTopAppBar(
                 title = "Dikirim",
-                onBackClick = onBackClick
+                onBackClick = { navController.popBackStack() }
             )
         },
         bottomBar = {
-            BottomNavBar()
+            BottomNavBar(navController = navController)
         }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp) // Jarak pada konten utama
+                .padding(horizontal = 16.dp)
         ) {
-            // Komponen tab untuk status pesanan
+            // Komponen tab status pesanan
             OrderStatusTabs(
-                selectedTab = 2, // Mengatur tab yang dipilih (misalnya 'Dikirim')
+                selectedTab = 2, // Tab 'Dikirim' dipilih
                 onTabSelected = { index ->
-                    // Handle tab selection
-                }
+                    // Handle tab selection jika diperlukan
+                },
+                navController = navController
             )
 
-            // Komponen kartu pesanan dikirim
+            // Daftar item dengan tombol "Detail Pengiriman"
             DikirimCard(
                 dikirim = Dikirim(
                     name = "Ikan Nila",
@@ -52,33 +54,39 @@ fun DikirimScreen(
                     price = "40.000",
                     quantity = 1,
                     imageResId = R.drawable.ikan_nila,
-                    status = "Pesanan Anda sedang dikirim"
+                    status = "" // Status tidak digunakan
                 ),
-                onDeliveryClick = onDeliveryClick
+                onDeliveryClick = onDeliveryClick,
+                navController = navController
             )
 
-            // Komponen kartu pesanan diterima
-            PesananDiterimaCard(
+            DikirimCard(
                 dikirim = Dikirim(
-                    name = "Ikan Nila",
-                    weightVariation = "1 Kg",
-                    price = "40.000",
+                    name = "Ikan Gurame",
+                    weightVariation = "2 Kg",
+                    price = "80.000",
                     quantity = 1,
                     imageResId = R.drawable.ikan_nila,
-                    status = "Pesanan Diterima"
+                    status = "" // Status tidak digunakan
                 ),
-                onReorderClick = onReorderClick
+                onDeliveryClick = onDeliveryClick,
+                navController = navController
             )
         }
     }
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
 fun DikirimScreenPreview() {
+    val navController = rememberNavController()
     DikirimScreen(
-        onBackClick = { /* Preview action for back click */ },
-        onDeliveryClick = { /* Preview action for delivery click */ },
-        onReorderClick = { /* Preview action for reorder click */ }
+        onBackClick = { /* Preview action */ },
+        onDeliveryClick = { /* Preview action */ },
+        navController = navController
     )
 }
+
+

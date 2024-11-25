@@ -14,18 +14,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.PesananSelesai
 
 @Composable
 fun  LihatUlasanCard(
     selesai: PesananSelesai,
-    onReorderClick: () -> Unit // Function to handle reorder action
+    onClick: () -> Unit,
+    navController: NavController
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(16.dp),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -89,7 +92,7 @@ fun  LihatUlasanCard(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(
-                        onClick = onReorderClick,
+                        onClick = {navController.navigate("ulasan_saya")},
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                         modifier = Modifier
                             .width(190.dp)
@@ -121,7 +124,10 @@ fun LihatUlasanCardPreview() {
         status = "Pesanan Selesai"
     )
 
-    LihatUlasanCard(selesai = sampleSelesai, onReorderClick = {
+    val navController = rememberNavController()
+
+    LihatUlasanCard(selesai = sampleSelesai, onClick = {
         // Preview click action
-    })
+    },
+        navController = navController)
 }

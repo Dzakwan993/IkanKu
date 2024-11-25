@@ -32,6 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.CartItem
 import com.example.ikanku.ui.components.CustomTopAppBar
@@ -39,7 +41,7 @@ import com.example.ikanku.ui.components.StarRating
 import com.example.ikanku.ui.components.TombolMerahBiru
 
 @Composable
-fun OrderSummaryScreen() {
+fun OrderSummaryScreen(navController: NavController) {
     var rating by remember { mutableStateOf(0) }
 
     var showDialog by remember { mutableStateOf(false) }
@@ -104,23 +106,6 @@ fun OrderSummaryScreen() {
                     )
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Column(
-
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) { Text(text = "Bagaimana pengalaman Anda?",
-                        fontSize = 17.sp,
-                        color = Color.Black,
-                        modifier = Modifier.padding(vertical = 8.dp))
-
-//                        Spacer(modifier = Modifier.height(4.dp))
-
-                        StarRating(
-//                        iconSize =12.dp,
-                            rating = rating,
-                            onRatingChanged = { newRating -> rating = newRating }
-                        ) }
-
-                    Spacer(modifier = Modifier.height(16.dp))
 
 
 
@@ -132,7 +117,7 @@ fun OrderSummaryScreen() {
 
             Spacer(modifier = Modifier.height(8.dp))
             TombolMasukkanKeranjang(
-                onClick = {},
+                onClick = {navController.navigate("beranda_screen")},
                 text = "Kembali ke Beranda"
             )
         }
@@ -199,12 +184,18 @@ fun BoxWithoutArrow(
             .fillMaxWidth()
             .height(60.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(Color(0xFF177BCD))
+        colors = CardDefaults.cardColors(Color.White)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 24.dp)
+                .border(
+                    2.dp,
+                    Color(0xFF177BCD),
+                    RoundedCornerShape(16.dp)
+                ) // Tambahkan border biru dengan ketebalan 2.dp
+                .background(Color.White), // Tambahkan latar putih
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -212,9 +203,10 @@ fun BoxWithoutArrow(
                 text = title,
                 fontSize = 15.sp,
                 textAlign = TextAlign.Center,
-                color = Color.White
-                )
+                color = Color.Black // Ubah teks menjadi hitam agar terlihat di latar putih
+            )
         }
+
 
 
     }
@@ -263,7 +255,9 @@ fun NewAddressRow(
             painter = painterResource(id = R.drawable.panah),
             contentDescription = "Arrow Icon",
             tint = Color.Black,
-            modifier = Modifier.size(20.dp).rotate(180f)
+            modifier = Modifier
+                .size(20.dp)
+                .rotate(180f)
         )
     }
 }
@@ -335,5 +329,6 @@ fun NewPaymentMethodDialog(onDismiss: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewOrderSummaryScreen() {
-    OrderSummaryScreen()
+    val navController = rememberNavController()
+    OrderSummaryScreen(navController = navController)
 }

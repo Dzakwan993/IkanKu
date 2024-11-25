@@ -22,7 +22,7 @@ import com.example.ikanku.ui.components.TopBarLogin
 @Composable
 fun RegisterScreen(navController: NavController) {
     var phoneNumber by remember { mutableStateOf("") } // State untuk menyimpan input nomor ponsel
-    val isPhoneNumberValid = phoneNumber.length == 13 // Simple validation for phone number length
+    val isPhoneNumberValid = phoneNumber.length == 12 // Simple validation for phone number length
 
     Scaffold(
         topBar = {
@@ -106,7 +106,7 @@ fun RegisterScreen(navController: NavController) {
                     onClick = {
                         if (phoneNumber.isNotEmpty() && isPhoneNumberValid) {
                             // Navigate to the next screen if phone number is valid
-                            navController.navigate("next_screen")
+                            navController.navigate("daftar_otp")
                         } else {
                             // Show error message
                         }

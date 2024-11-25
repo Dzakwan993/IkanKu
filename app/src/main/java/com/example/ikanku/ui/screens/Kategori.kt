@@ -3,7 +3,6 @@ package com.example.ikanku.ui.screens
 
 
 
-import PromotionSection
 import TopBar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,8 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.CategoryClickSection
-import com.example.ikanku.ui.components.CategorySection
-import com.example.ikanku.ui.components.PromotionSectionRowCarousel
 
 
 @Composable
@@ -37,7 +34,7 @@ fun Kategori(viewModel: BerandaViewModel = viewModel(), navController: NavContro
             .fillMaxSize()
             .navigationBarsPadding(),
         topBar = { TopBar(navController = navController) }, // Menjadikan TopBar sticky di bagian atas
-        bottomBar = { BottomNavBar() }
+        bottomBar = { BottomNavBar(navController = navController) }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -48,8 +45,8 @@ fun Kategori(viewModel: BerandaViewModel = viewModel(), navController: NavContro
             contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding())
         ) {
             item { CategoryClickSection(categories = viewModel.categories, navController = navController) }
-            item { RecommendationSection(recommendations = viewModel.recommendations) }
-            item { ProductListSection(products = viewModel.products) }
+            item { RecommendationSection(recommendations = viewModel.recommendations, navController = navController) }
+            item { ProductListSection(products = viewModel.products, navController = navController) }
         }
     }
 }

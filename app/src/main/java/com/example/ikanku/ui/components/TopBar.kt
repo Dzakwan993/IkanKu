@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import com.example.ikanku.R
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavController) {
@@ -24,10 +25,9 @@ fun TopBar(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF177BCD)) // Pastikan background mencakup seluruh area
-            .statusBarsPadding() // Tambahkan padding untuk status bar
             .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
-            .padding(16.dp) // Padding untuk konten di dalam Column
+            .background(Color(0xFF177BCD))
+            .padding(16.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -131,6 +131,6 @@ fun TopBarWithBackIcon() {
 @Preview(showBackground = true)
 @Composable
 fun TopBarWithBackIconPreview() {
-//    TopBar()
+    TopBarWithBackIcon()
 }
 

@@ -15,16 +15,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VerificationScreen() {
+fun VerificationScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
                 title = "Ganti Nomor Ponsel",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = { navController.popBackStack()}
             )
         }
     ) { paddingValues ->
@@ -146,5 +148,6 @@ fun OTPTextField(
 @Preview(showBackground = true)
 @Composable
 fun VerificationScreenPreview() {
-    VerificationScreen()
+    val navController = rememberNavController()
+    VerificationScreen(navController = navController)
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
+import androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.TopBarLogin
+import androidx.compose.material3.ModalBottomSheet as ModalBottomSheet1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +32,10 @@ fun CompleteDataScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
-    var showCityPicker by remember { mutableStateOf(false) } // Control to show ModalBottomSheet
+    var selectedDistrict by remember { mutableStateOf("") }
+    var postalCode by remember { mutableStateOf("") }
+    var showDistrictPicker by remember { mutableStateOf(false) }
+    var showPostalCodePicker by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -84,7 +89,7 @@ fun CompleteDataScreen(navController: NavController) {
                     placeholder = { Text("Nama lengkap", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
@@ -99,7 +104,7 @@ fun CompleteDataScreen(navController: NavController) {
                     placeholder = { Text("Email", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
@@ -109,16 +114,16 @@ fun CompleteDataScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // City Selection Field
+                // District Selection Field
                 OutlinedTextField(
-                    value = city,
+                    value = selectedDistrict,
                     onValueChange = { },
-                    placeholder = { Text("Kota, Kecamatan, Kode Pos", color = Color.Gray) },
+                    placeholder = { Text("Pilih Kecamatan", color = Color.Gray) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { showCityPicker = true }, // Open bottom sheet on click
+                        .clickable { showDistrictPicker = true },
                     shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
@@ -128,10 +133,39 @@ fun CompleteDataScreen(navController: NavController) {
                             painter = painterResource(id = R.drawable.down),
                             contentDescription = "Dropdown Icon",
                             tint = Color.Gray,
-                            modifier = Modifier.clickable { showCityPicker = true } // Ensure the icon also opens the bottom sheet
+                            modifier = Modifier.clickable { showDistrictPicker = true }
                         )
                     },
-                    readOnly = true // Prevent manual input
+                    readOnly = true
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Postal Code Selection Field
+                OutlinedTextField(
+                    value = postalCode,
+                    onValueChange = { },
+                    placeholder = { Text("Pilih Kode Pos", color = Color.Gray) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { if (selectedDistrict.isNotEmpty()) showPostalCodePicker = true },
+                    shape = RoundedCornerShape(16.dp),
+                    colors = outlinedTextFieldColors(
+                        containerColor = Color(0xFFE0E0E0),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent
+                    ),
+                    trailingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.down),
+                            contentDescription = "Dropdown Icon",
+                            tint = Color.Gray,
+                            modifier = Modifier.clickable {
+                                if (selectedDistrict.isNotEmpty()) showPostalCodePicker = true
+                            }
+                        )
+                    },
+                    readOnly = true
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -142,7 +176,7 @@ fun CompleteDataScreen(navController: NavController) {
                     placeholder = { Text("Nama Jalan, Gedung, No. Rumah", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
@@ -152,7 +186,7 @@ fun CompleteDataScreen(navController: NavController) {
 
             // Button at the bottom
             Button(
-                onClick = { /* Handle location adjustment */ },
+                onClick = {navController.navigate("beranda_screen")},
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,27 +194,42 @@ fun CompleteDataScreen(navController: NavController) {
                     .padding(bottom = 16.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.alamat),
-                    contentDescription = "Location Icon",
-                    tint = Color.White,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Sesuaikan lokasi", color = Color.White, fontSize = 16.sp)
+                Text("Daftar", color = Color.White, fontSize = 16.sp)
             }
         }
     }
 
-    // ModalBottomSheet for City Selection
-    if (showCityPicker) {
-        ModalBottomSheet(
-            onDismissRequest = { showCityPicker = false }
+    // ModalBottomSheet for District Selection
+    if (showDistrictPicker) {
+        ModalBottomSheet1(
+            onDismissRequest = { showDistrictPicker = false }
         ) {
             CitySelectionBottomSheet(
-                onCitySelected = { selectedCity ->
-                    city = selectedCity
-                    showCityPicker = false
+                items = listOf("Batu Aji", "Batam Kota", "Sekupang"),
+                onItemSelected = { district ->
+                    selectedDistrict = district
+                    showDistrictPicker = false
+                    showPostalCodePicker = true
+                }
+            )
+        }
+    }
+
+    // ModalBottomSheet for Postal Code Selection
+    if (showPostalCodePicker) {
+        ModalBottomSheet1(
+            onDismissRequest = { showPostalCodePicker = false }
+        ) {
+            CitySelectionBottomSheet(
+                items = when (selectedDistrict) {
+                    "Batu Aji" -> listOf("29422", "29423")
+                    "Batam Kota" -> listOf("29444", "29445")
+                    "Sekupang" -> listOf("29445", "29446")
+                    else -> emptyList()
+                },
+                onItemSelected = { code ->
+                    postalCode = code
+                    showPostalCodePicker = false
                 }
             )
         }
@@ -189,44 +238,23 @@ fun CompleteDataScreen(navController: NavController) {
 
 @Composable
 fun CitySelectionBottomSheet(
-    onCitySelected: (String) -> Unit
+    items: List<String>,
+    onItemSelected: (String) -> Unit
 ) {
-    val cities = listOf(
-        "Batam - Kec. Batu Aji - 29422",
-        "Batam - Kec. Batam Kota - 29444",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445",
-        "Batam - Kec. Sekupang - 29445"
-    )
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text(
-            text = "Pilih Kota dan Kecamatan",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        cities.forEach { city ->
+        items.forEach { item ->
             TextButton(
-                onClick = { onCitySelected(city) },
+                onClick = { onItemSelected(item) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
             ) {
                 Text(
-                    text = city,
+                    text = item,
                     color = Color.Black,
                     fontSize = 16.sp
                 )
@@ -234,6 +262,7 @@ fun CitySelectionBottomSheet(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

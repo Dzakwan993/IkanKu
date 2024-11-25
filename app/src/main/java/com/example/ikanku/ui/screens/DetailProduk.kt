@@ -2,8 +2,12 @@ package com.example.ikanku.ui.screens
 
 
 import TombolMasukkanKeranjang
+
 import android.widget.Space
 import androidx.compose.foundation.BorderStroke
+
+import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,12 +25,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Divider
@@ -46,6 +55,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,70 +68,337 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.theme.IkanKuTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.pager.HorizontalPagerIndicator
+import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DetailProduk(
     modifier: Modifier = Modifier,
-    onAddToCartClick: () -> Unit // Menambahkan parameter untuk aksi tombol
+    navController: NavController // Tambahkan NavController untuk navigasi
 ) {
-//    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val coroutineScope = rememberCoroutineScope()
+
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetContent = {
+            VariasiBottomSheetContent(navController = navController) // Konten Bottom Sheet
+        }
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 64.dp) // Memberikan ruang untuk tombol
+            ) {
+                // TopBar dengan navigasi kembali
+                TopBar(
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    navController = navController // Pastikan ini diteruskan
+                )
+
+                // Carousel Gambar
+                val fishImages = listOf(
+                    R.drawable.ikan, // Gambar di drawable
+                    R.drawable.ikan,
+                    R.drawable.ikan
+                )
+                Carousel(images = fishImages)
+
+                // Bagian Harga
+                Harga()
+
+                // Deskripsi Produk
+                ExpandableDescription()
+
+                // Bagian Toko
+                TokoSection(navController = navController)
+
+                // Bagian Review
+                ReviewSection(navController =navController)
+            }
+
+            // Tombol Masukkan Keranjang
+            TombolMasukkanKeranjang(
+                onClick = {
+                    coroutineScope.launch {
+                        bottomSheetState.show() // Menampilkan Bottom Sheet
+                    }
+                },
+                text = "Masukkan Keranjang",
+                modifier = Modifier.align(Alignment.BottomCenter) // Posisi tombol di bawah
+            )
+        }
+    }
+}
 
 
+@Composable
+fun TombolMasukkanKeranjang(onClick: () -> Unit, text: String, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .background(Color.Blue, shape = RoundedCornerShape(16.dp))
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(vertical = 12.dp)
+        )
+    }
+}
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun VariasiBottomSheetContent(navController: NavController) {
+    val beratOptions = listOf("500 gr", "1 kg", "2 kg", "5 kg")
+    val isiOptions = listOf("2 Ekor", "3 Ekor", "4 Ekor", "5 Ekor", "6 Ekor")
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+    ) {
+        Text(
+            text = "Pilih Variasi",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Pilihan Berat
+        Text(text = "Berat", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 100.dp),
+            contentPadding = PaddingValues(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(beratOptions) { option ->
+                PilihanVariasi(text = option)
+            }
+        }
+
+        // Pilihan Isi
+        Text(text = "Isi", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 16.dp))
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 100.dp),
+            contentPadding = PaddingValues(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(isiOptions) { option ->
+                PilihanVariasi(text = option)
+            }
+        }
+
+        // Tombol Masukkan Keranjang
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+                .background(Color(0xFF177BCD), shape = RoundedCornerShape(16.dp))
+                .clickable {
+                   navController.navigate("keranjang_screen")
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Masukkan Keranjang",
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(vertical = 12.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun PilihanVariasi(text: String) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .height(40.dp)
+            .fillMaxWidth()
+            .background(Color(0xFFE8E8E8), shape = RoundedCornerShape(8.dp))
+            .clickable {
+                // Tambahkan aksi untuk memilih variasi
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = text, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Black)
+    }
+}
+
+@Composable
+fun ExpandableDescription() {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        // Judul Deskripsi
+        Text(
+            text = "Deskripsi",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
+
+        // Isi Deskripsi
+        Text(
+            text = if (isExpanded) {
+                "Nikmati kesegaran ikan nila terbaik yang langsung didapat dari peternakan berkualitas. "
+            } else {
+                "Nikmati kesegaran ikan nila terbaik yang langsung didapat dari peternakan berkualitas. Ikan nila segar kami memiliki rasa gurih alami dan daging yang lembut, cocok untuk berbagai olahan seperti ikan bakar, sup, atau pepes. Detail Produk: Berat: ±500 gram - 1 kg per ekor, Kondisi: Segar, belum dibekukan, Asal: Budidaya Tibelat Farm, Manfaat: Kaya akan protein, omega-3, dan rendah lemak, Saran Penyimpanan: Simpan di suhu 0-4°C agar tetap segar."
+            },
+            fontSize = 14.sp,
+            color = Color.Black,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+
+        // Tombol Selengkapnya/Sembunyikan
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .background(Color(0xFFE8E8E8), shape = RoundedCornerShape(16.dp))
+                .clickable { isExpanded = !isExpanded },
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+            ) {
+                Text(
+                    text = if (isExpanded) "Selengkapnya" else "Sembunyikan",
+                    fontSize = 14.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                )
+                Icon(
+                    painter = painterResource(
+                        id = if (isExpanded) R.drawable.icon_kebawah else R.drawable.icon_kebawah
+                    ), // Ganti dengan resource ikon panah Anda
+                    contentDescription = null,
+                    tint = Color.Black,
+                    modifier = Modifier.size(16.dp).padding(start = 4.dp)
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun TokoSection(navController: NavController) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8E8E8)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = 64.dp)
+                .padding(16.dp)
         ) {
-            TopBar(
-                modifier = Modifier.padding(bottom = 32.dp)
-            )
-            val fishImages = listOf(
-                R.drawable.ikan, // Pastikan nama ini sesuai dengan nama gambar di drawable
-                R.drawable.ikan,
-                R.drawable.ikan
-            )
-            Carousel(images = fishImages)
-            Harga()
-            DeskripsiProduk()
-            Tampilkan()
-            TextUlasan()
-            TibelatFarm()
-            ReviewSection()
+
+            // Baris Atas: Tombol "Kunjungi Toko"
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Spacer(modifier = Modifier.weight(1f)) // Spacer untuk mendorong tombol ke kanan
+                Text(
+                    text = "Kunjungi Toko",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Red,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("kunjungi_toko")
+
+                        }
+                        .border(
+                            width = 1.dp,
+                            color = Color.Red,
+                            shape = RoundedCornerShape(16.dp) // Opsional: Untuk border dengan sudut melengkung
+                        )
+                        .padding(4.dp) // Tambahkan padding agar teks tidak terlalu menempel pada border
+                )
+            }
+
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Baris Tengah: Gambar dan Informasi Toko
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                // Gambar Toko
+                Image(
+                    painter = painterResource(id = R.drawable.tibelat_farm), // Ganti dengan ID resource gambar Anda
+                    contentDescription = "Logo Toko",
+                    modifier = Modifier
+                        .size(70.dp) // Ukuran gambar toko lebih kecil
+                        .padding(end = 8.dp)
+                )
+
+                // Informasi Toko
+                Column {
+                    Text(
+                        text = "Tibelat Farm",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = "Budidaya Ikan Air Tawar, Restoran, Kolam Pemancingan",
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+                }
+            }
+
         }
-
-        TombolMasukkanKeranjang(
-            onClick = {
-//                coroutineScope.launch { sheetState.show() } // Menampilkan bottom sheet saat tombol diklik
-            },
-            text = "Masukkan Keranjang",
-            modifier = Modifier.align(Alignment.BottomCenter) // Menempatkan tombol di bagian bawah dalam Box
-        )
     }
-
-
-
 }
 
 
 
 
 
+
+
+
+
+
+
+
+
 @Composable
-fun ReviewSection() {
+fun ReviewSection(navController: NavController) {
 
     val rating = 4
     Column(modifier = Modifier.padding(16.dp)) {
@@ -149,7 +426,11 @@ fun ReviewSection() {
             Text(
                 text = "Lihat Semua",
                 fontSize = 14.sp,
-                color = Color(0xFF171A1F)
+                color = Color(0xFF171A1F),
+                modifier = Modifier.clickable {
+                    // Handle click action here
+                    navController.navigate("ulasan_produk")
+                }
             )
 
         }
@@ -437,38 +718,42 @@ fun Tampilkan() {
 
 
 @Composable
-fun Harga(
-) {
-    val rating = 4
+fun Harga() {
+    val rating = 4.5 // Rating sebagai nilai desimal
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Rp30.000",
-                fontWeight = FontWeight.Bold,
-                fontSize = 30.sp
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Harga Produk
+        Text(
+            text = "Rp30.000",
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp
+        )
+
+        // Rating dengan Bintang dan Angka
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = null,
+                tint = Color(0xFFFFD700), // Warna bintang kuning
+                modifier = Modifier.size(16.dp)
             )
-
-            Row( verticalAlignment = Alignment.CenterVertically ) {
-                repeat(5) { index ->
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        tint = if(index < rating) Color(0xFFFFD700) else Color(0xFFDEE1E6),
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-
+            Spacer(modifier = Modifier.width(4.dp)) // Spasi kecil antara bintang dan angka
+            Text(
+                text = "$rating",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
         }
-
-
+    }
 }
+
 
 
 @Composable
@@ -599,36 +884,42 @@ fun Carousel(
 
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun TopBar(modifier: Modifier = Modifier, navController: NavController) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .padding(top = 32.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.panah), // Ganti dengan nama ikon di drawable
-            contentDescription = null,
-            tint = Color.Black,// Pilih warna sesuai kebutuhan atau biarkan aslinya,
-            modifier = Modifier.padding(
-                end = 8.dp,
-                start = 16.dp
-            )
+            painter = painterResource(id = R.drawable.panah), // Ikon panah di drawable
+            contentDescription = "Back",
+            tint = Color.Black, // Warna ikon
+            modifier = Modifier
+                .padding(end = 8.dp, start = 16.dp)
+                .clickable {
+                    navController.popBackStack() // Navigasi kembali ke layar sebelumnya
+                }
         )
         Text(
             text = "Ikan Nila",
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
         )
-
-
     }
-
 }
+
+
 
 
 @Preview(showBackground = true)
 @Composable
 fun DetailProdukPreview() {
+    val navController = rememberNavController()
     IkanKuTheme {
-        DetailProduk(onAddToCartClick = {})
+        DetailProduk( navController = navController)
     }
 }
 

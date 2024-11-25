@@ -11,26 +11,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
+import com.example.ikanku.ui.components.OrderCardDitolak
 import com.example.ikanku.ui.components.PesananCard
 import com.example.ikanku.ui.components.OrderStatusTabs
 import com.example.ikanku.viewmodel.OrderRejectedViewModel
 import com.example.ikanku.viewmodel.OrderRejectedViewModelDua
 
 @Composable
-fun RejectedOrdersScreen(viewModel: OrderRejectedViewModelDua = viewModel()) {
-    val rejectedOrders by viewModel.rejectedOrders.collectAsState()
-    if (rejectedOrders.isEmpty()) {
-        Text(text = "Tidak ada Pesanan yang ")
-    } else {
-        // Display the orders
-        LazyColumn {
-            items(rejectedOrders) { order ->
-                Text(text = order.namaProduk) // Misalnya nama pesanan
-            }
-        }
-    }
+
+fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel(), navController: NavController) {
+
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -38,10 +33,12 @@ fun RejectedOrdersScreen(viewModel: OrderRejectedViewModelDua = viewModel()) {
         topBar = {
             Column {
                 CustomTopAppBar(
-                    title = "Pesanan Saya",
-                    onBackClick = { /* Handle back navigation */ }
+
+                    title = "Pesanan Ditolak",
+                    onBackClick = { navController.popBackStack() }
                 )
-                OrderStatusTabs(selectedTab = 4, onTabSelected = { /* Aksi untuk memilih tab */ })
+                OrderStatusTabs(selectedTab = 4, onTabSelected = { /* Aksi untuk memilih tab */ }, navController = navController)
+
             }
 
         },
@@ -49,37 +46,28 @@ fun RejectedOrdersScreen(viewModel: OrderRejectedViewModelDua = viewModel()) {
 
     )
      { innerPadding ->
-         LazyColumn(
-             modifier = Modifier
-                 .fillMaxSize()
-                 .padding(innerPadding)
-                 .padding(16.dp),
-             verticalArrangement = Arrangement.spacedBy(8.dp)
-         ) {
-             if (rejectedOrders.isEmpty()) {
-                 item {
-                     Text(
-                         text = "Tidak ada pesanan yang ditolak",
-                         modifier = Modifier.fillMaxWidth(),
-                         textAlign = TextAlign.Center
-                     )
-                 }
-             } else {
-                 items(rejectedOrders) { order ->
-                     PesananCard(
-                         order = order,
-                         buttonBiruText = "Lihat Alasan",
-                         onClickBiru = { /* Handle click */ }
-                     )
-                 }
-             }
-         }
-     }
+
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+
+            items(viewModel.rejectedOrders) { order ->
+                OrderCardDitolak(order, )
+            }
+        }
+    }
 }
 
-//@Composable
-//@Preview(showBackground = true, )
-//fun RejectedOrdersScreenPreview() {
-//    val previewViewModel = OrderRejectedViewModel() // ViewModel khusus pesanan ditolak
-//    RejectedOrdersScreen(viewModel = previewViewModel)
-//}
+@Composable
+@Preview(showBackground = true, )
+fun RejectedOrdersScreenPreview() {
+    val previewViewModel = OrderRejectedViewModel()
+    val navController = rememberNavController()// ViewModel khusus pesanan ditolak
+    RejectedOrdersScreen(viewModel = previewViewModel, navController = navController)
+}
+

@@ -12,17 +12,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddressScreen() {
+fun AddressScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
                 title = "Alamat",
-                onBackClick = { /* Handle back action */ }
+                onBackClick = { navController.popBackStack() }
             )
         }
     ) { paddingValues ->
@@ -91,7 +93,7 @@ fun AddressScreen() {
 
             // Add New Address Button
             Button(
-                onClick = { /* Handle add new address */ },
+                onClick = { navController.navigate("tambah_alamat")},
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -107,5 +109,6 @@ fun AddressScreen() {
 @Preview(showBackground = true)
 @Composable
 fun AddressScreenPreview() {
-    AddressScreen()
+    val navController = rememberNavController()
+    AddressScreen(navController = navController)
 }

@@ -3,6 +3,7 @@ package com.example.ikanku.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,21 +19,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.Order
 import com.example.ikanku.model.OrderStatus
 import com.example.ikanku.viewmodel.OrderViewModel
 
 @Composable
-fun OrderCard(order: Order) {
+fun OrderCard(order: Order, onCancelClick: () -> Unit, navController: NavController) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { // Navigasi ke halaman detail
+                navController.navigate("detail_pesanan")
+            },
         elevation = CardDefaults.cardElevation(8.dp)
-    )  {
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,7 +101,7 @@ fun OrderCard(order: Order) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Button(
-                                onClick = { /* Handle cancel action */ },
+                                onClick = onCancelClick,
                                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238)),
                                 modifier = Modifier
                                     .weight(1f)
@@ -134,16 +140,22 @@ fun OrderCard(order: Order) {
     }
 }
 
+
 @Composable
 @Preview(showBackground = true)
 fun OrderCardPreview() {
     // Membuat instance ViewModel untuk preview
     val previewViewModel = remember { OrderViewModel() }
     val orders = previewViewModel.orders
+    val navController = rememberNavController()
 
     Column(modifier = Modifier.padding(16.dp)) {
         orders.forEach { order ->
-            OrderCard(order = order)
+            OrderCard(
+                order = order,
+                navController = navController,
+                onCancelClick = { /* Tambahkan aksi pembatalan untuk preview */ }
+            )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }

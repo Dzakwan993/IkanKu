@@ -18,12 +18,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddAddressScreen() {
+fun AddAddressScreen(navController: NavController) {
     var fullName by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var streetAddress by remember { mutableStateOf("") }
@@ -35,7 +37,7 @@ fun AddAddressScreen() {
         topBar = {
             CustomTopAppBar(
                 title = "Tambah alamat",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = { navController.popBackStack() }
             )
         }
     ) { paddingValues ->
@@ -275,5 +277,6 @@ fun CitySelectionAddresBottomSheet(
 @Preview(showBackground = true)
 @Composable
 fun AddAddressScreenPreview() {
-    AddAddressScreen()
+    val navController = rememberNavController()
+    AddAddressScreen(navController = navController)
 }

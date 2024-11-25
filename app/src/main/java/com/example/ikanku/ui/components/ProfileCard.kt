@@ -19,12 +19,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.Profile
 import com.example.ikanku.viewmodel.ProfileViewModel
 
 @Composable
-fun ProfileCard(profile: Profile, modifier: Modifier = Modifier) {
+fun ProfileCard(profile: Profile, modifier: Modifier = Modifier, navController: NavController) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = modifier
@@ -52,7 +54,7 @@ fun ProfileCard(profile: Profile, modifier: Modifier = Modifier) {
                 Text(text = profile.name, fontSize = 18.sp, color = Color.Black)
             }
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = { /* Settings action */ }) {
+            IconButton(onClick = { navController.navigate("data_profile")}) {
                 Icon(
                     painter = painterResource(id = R.drawable.pensil),
                     contentDescription = "Settings Icon",
@@ -73,6 +75,8 @@ fun ProfileCardPreview() {
     // Access the profile from the ViewModel
     val profile = profileViewModel.profile
 
+    val navController = rememberNavController()
+
     // Display the ProfileCard with data from the ViewModel
-    ProfileCard(profile = profile)
+    ProfileCard(profile = profile, navController = navController)
 }

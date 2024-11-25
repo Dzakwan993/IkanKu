@@ -12,11 +12,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChangeEmailScreen() {
+fun ChangeEmailScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var isChecked by remember { mutableStateOf(false) }
 
@@ -24,7 +26,7 @@ fun ChangeEmailScreen() {
         topBar = {
             CustomTopAppBar(
                 title = "Ubah Email",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = { navController.popBackStack() }
             )
         }
     ) { paddingValues ->
@@ -106,7 +108,7 @@ fun ChangeEmailScreen() {
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Button(
-                    onClick = { /* Handle change action */ },
+                    onClick = { navController.navigate("ubah_emailOTP")},
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                     modifier = Modifier
                         .weight(1f)
@@ -123,5 +125,6 @@ fun ChangeEmailScreen() {
 @Preview(showBackground = true)
 @Composable
 fun ChangeEmailScreenPreview() {
-    ChangeEmailScreen()
+    val navController = rememberNavController()
+    ChangeEmailScreen(navController = navController)
 }

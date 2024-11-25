@@ -57,13 +57,7 @@ android {
 dependencies {
     implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
 
-    // Retrofit Library
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
-
-    // Gson Converter untuk parsing JSON
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
             implementation(libs.androidx.core.ktx)
 

@@ -124,7 +124,7 @@ fun ConfirmationScreen(navController: NavController) {
 
                 // Tombol Lanjut
                 Button(
-                    onClick = { /* Handle continue action */ },
+                    onClick = {navController.navigate("daftar_data")},
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                     modifier = Modifier
                         .fillMaxWidth()

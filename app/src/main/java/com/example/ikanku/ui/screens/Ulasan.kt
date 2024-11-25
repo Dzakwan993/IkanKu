@@ -19,13 +19,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.BottomBarButton
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Ulasan() {
+fun Ulasan(navController: NavController) {
     var rating by remember { mutableStateOf(0) }
     var comment by remember { mutableStateOf("") }
     var showNotification by remember { mutableStateOf(false) }
@@ -62,7 +64,7 @@ fun Ulasan() {
         topBar = {
             CustomTopAppBar(
                 title = "Ulasan",
-                onBackClick = { /* Aksi kembali dapat ditambahkan di sini */ }
+                onBackClick = {navController.popBackStack() }
             )
         },
         bottomBar = {
@@ -193,5 +195,6 @@ fun Ulasan() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewUlasan() {
-    Ulasan()
+    val navController = rememberNavController()
+    Ulasan(navController = navController)
 }

@@ -17,14 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Search,
-        BottomNavItem.Profile // Removed Category
+        BottomNavItem.Profile
     )
 
     val poppins = FontFamily(
@@ -36,7 +38,7 @@ fun BottomNavBar() {
         NavigationBar(
             containerColor = Color(0xFF177BCD),
             modifier = Modifier
-                .fillMaxWidth() // Fill the width of the screen
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
         ) {
             items.forEach { item ->
@@ -49,12 +51,19 @@ fun BottomNavBar() {
                     },
                     label = { Text(item.label, color = Color.White) },
                     selected = false,
-                    onClick = { /* Handle navigation here */ }
+                    onClick = {
+                        when (item) {
+                            is BottomNavItem.Home -> navController.navigate("beranda_screen")
+                            is BottomNavItem.Search -> navController.navigate("pencarian_screen")
+                            is BottomNavItem.Profile -> navController.navigate("profile_screen")
+                        }
+                    }
                 )
             }
         }
     }
 }
+
 
 sealed class BottomNavItem(val label: String, val iconRes: Int) {
     object Home : BottomNavItem("Beranda", R.drawable.beranda)
@@ -65,5 +74,6 @@ sealed class BottomNavItem(val label: String, val iconRes: Int) {
 @Preview(showBackground = true)
 @Composable
 fun BottomNavBarPreview() {
-    BottomNavBar()
+    val navController = rememberNavController()
+    BottomNavBar(navController = navController)
 }

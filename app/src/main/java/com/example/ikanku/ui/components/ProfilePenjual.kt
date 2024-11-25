@@ -15,10 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.R
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.model.ProfilPenjual
 
 @Composable
-fun ProfilPenjualCard(profilPenjual: ProfilPenjual, modifier: Modifier = Modifier) {
+fun ProfilPenjualCard(profilPenjual: ProfilPenjual, modifier: Modifier = Modifier, navController: NavController) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = modifier
@@ -44,7 +46,7 @@ fun ProfilPenjualCard(profilPenjual: ProfilPenjual, modifier: Modifier = Modifie
             Spacer(modifier = Modifier.width(16.dp))
             Text(text = profilPenjual.name, fontSize = 18.sp, color = Color.Black)
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = { /* Aksi pengaturan */ }) {
+            IconButton(onClick = { navController.navigate("edit_penjual_screen")}) {
                 Icon(
                     painter = painterResource(id = R.drawable.pensil),
                     contentDescription = "Ikon Pengaturan",
@@ -55,13 +57,16 @@ fun ProfilPenjualCard(profilPenjual: ProfilPenjual, modifier: Modifier = Modifie
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfilPenjualCard() {
     val sampleProfilPenjual = ProfilPenjual(
         name = "Tibelat Farm",
-        imageRes = R.drawable.tibelat_farm // Replace with actual drawable resource
+        imageRes = R.drawable.tibelat_farm
     )
-
-    ProfilPenjualCard(profilPenjual = sampleProfilPenjual)
+    ProfilPenjualCard(
+        profilPenjual = sampleProfilPenjual,
+        navController = rememberNavController()
+    )
 }

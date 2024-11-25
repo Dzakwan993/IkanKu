@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CardDuaPilihan
 import com.example.ikanku.ui.components.CustomTopAppBar
@@ -19,7 +21,7 @@ import com.example.ikanku.ui.components.PenjualStatusTabs
 import com.example.ikanku.viewmodel.OrderRejectedViewModel
 
 @Composable
-fun PesananBaru(viewModel: OrderRejectedViewModel = viewModel()) {
+fun PesananBaru(viewModel: OrderRejectedViewModel = viewModel(), navController: NavController) {
 
     Scaffold(
         modifier = Modifier
@@ -29,7 +31,7 @@ fun PesananBaru(viewModel: OrderRejectedViewModel = viewModel()) {
             Column {
                 CustomTopAppBar(
                     title = "Pesanan",
-                    onBackClick = { /* Handle back navigation */ }
+                    onBackClick = {navController.popBackStack() }
                 )
                 PenjualStatusTabs(selectedTab = 0, onTabSelected = { /* Aksi untuk memilih tab */ })
             }
@@ -64,5 +66,5 @@ fun PesananBaru(viewModel: OrderRejectedViewModel = viewModel()) {
 @Preview(showBackground = true, )
 fun PesananBaruPreview() {
     val previewViewModel = OrderRejectedViewModel() // ViewModel khusus pesanan ditolak
-    PesananBaru(viewModel = previewViewModel)
+    PesananBaru(viewModel = previewViewModel, navController = rememberNavController())
 }

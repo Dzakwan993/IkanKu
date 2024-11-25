@@ -3,6 +3,7 @@ package com.example.ikanku.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -13,23 +14,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.CustomTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderConfirmationScreen() {
+fun AlasanDitolak(navController: NavController) {
     var showRejectDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             CustomTopAppBar(
                 title = "Pesanan",
-                onBackClick = { /* Handle back navigation */ }
+                onBackClick = {navController.popBackStack() }
             )
         },
         bottomBar = {
@@ -59,17 +61,13 @@ fun OrderConfirmationScreen() {
             }
         }
     ) { innerPadding ->
-        Surface(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            color = Color(0xFFE8E8E8), // Warna latar belakang
-            shape = RoundedCornerShape(16.dp) // Sudut rounded 16 dp
+                .padding(16.dp)
+                .fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
+            item {
                 // Alamat
                 Text(text = "Alamat", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(bottom = 4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -94,7 +92,7 @@ fun OrderConfirmationScreen() {
                 // Informasi Pesanan
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(id = R.drawable.ikan_nila), // Ganti dengan gambar produk
+                        painter = painterResource(id = R.drawable.ikan_nila),
                         contentDescription = "Product Image",
                         modifier = Modifier.size(64.dp)
                     )
@@ -143,77 +141,42 @@ fun OrderConfirmationScreen() {
 
                 // Metode Pengiriman
                 Text("Pilih metode pengiriman : Dikirim", fontWeight = FontWeight.SemiBold)
-            }
-        }
+                Divider(modifier = Modifier.padding(vertical = 8.dp))
 
-        if (showRejectDialog) {
-            RejectOrderBottomSheet(
-                onDismiss = { showRejectDialog = false },
-                onSave = { /* Handle save reason */ showRejectDialog = false }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun RejectOrderBottomSheet(
-    onDismiss: () -> Unit,
-    onSave: (String) -> Unit // Mengirimkan alasan penolakan sebagai parameter
-) {
-    var rejectionReason by remember { mutableStateOf("") } // State untuk menyimpan alasan penolakan
-
-    ModalBottomSheet(
-        onDismissRequest = onDismiss
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Close icon
-                IconButton(onClick = onDismiss, modifier = Modifier.align(Alignment.End)) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Close"
-                    )
-                }
-
-                // Title
-                Text("Alasan ditolak", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-
-                // TextField for reason
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = rejectionReason,
-                    onValueChange = { rejectionReason = it },
+
+                // Bukti Pembayaran
+                Text("Foto Pendukung", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(bottom = 4.dp))
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(100.dp),
+                        .aspectRatio(1.5f) // Adjust aspect ratio as needed
+                        .background(Color.LightGray, shape = RoundedCornerShape(8.dp)),
                     shape = RoundedCornerShape(8.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = Color(0xFFD3D3D3)
-                    )
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Save button
-                Button(
-                    onClick = { onSave(rejectionReason) },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
+                    color = Color.LightGray
                 ) {
-                    Text("Simpan", color = Color.White, fontSize = 16.sp)
+                    Image(
+                        painter = painterResource(id = R.drawable.bukti_pembayaran),
+                        contentDescription = "Bukti Pembayaran",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(8.dp)
+                    )
                 }
+
+                Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+                // Alasan Ditolak
+                Text(
+                    text = "Alasan Ditolak",
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
+                )
+                Text(
+                    text = "Pesanan ini ditolak karena tidak memenuhi kriteria yang diinginkan oleh penjual atau ada masalah lain yang mempengaruhi kelancaran transaksi.",
+                    color = Color.Gray,
+                    fontSize = 12.sp
+                )
             }
         }
     }
@@ -221,6 +184,7 @@ fun RejectOrderBottomSheet(
 
 @Preview(showBackground = true)
 @Composable
-fun OrderConfirmationScreenPreview() {
-    OrderConfirmationScreen()
+fun AlasanDitolakPreview() {
+    val navController = rememberNavController()
+    AlasanDitolak(navController = navController)
 }

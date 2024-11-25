@@ -1,6 +1,7 @@
 package com.example.ikanku.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -15,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.OrderStatusItem
 
@@ -22,8 +25,9 @@ import com.example.ikanku.model.OrderStatusItem
 fun OrderStatusPenjual(
     orderStatusItems: List<OrderStatusItem>,
     counts: List<Int>,
-    cardWidth: Dp = 80.dp, // Default width, bisa diubah saat dipanggil
-    cardHeight: Dp = 100.dp // Default height, bisa diubah saat dipanggil
+    navController: NavController,  // Add NavController as a parameter
+    cardWidth: Dp = 80.dp,
+    cardHeight: Dp = 100.dp
 ) {
     Row(
         modifier = Modifier
@@ -32,10 +36,11 @@ fun OrderStatusPenjual(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         orderStatusItems.zip(counts).forEach { (item, count) ->
-            OrderStatusPenjualCard(item, count, cardWidth, cardHeight, modifier = Modifier.weight(1f))
+            OrderStatusPenjualCard(item, count, cardWidth, cardHeight, navController, modifier = Modifier.weight(1f))
         }
     }
 }
+
 
 @Composable
 fun OrderStatusPenjualCard(
@@ -43,17 +48,23 @@ fun OrderStatusPenjualCard(
     count: Int,
     cardWidth: Dp,
     cardHeight: Dp,
+    navController: NavController,  // Accept NavController
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .padding(horizontal = 2.dp)
+            .clickable {
+                if (orderStatusItem.label == "Pesanan") { // Check if "Pesanan" is clicked
+                    navController.navigate("pesanan_screen_penjual") // Navigate to PesananScreen
+                }
+            }
     ) {
         Card(
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
-                .width(cardWidth) // Sesuaikan dengan parameter cardWidth
-                .height(cardHeight), // Sesuaikan dengan parameter cardHeight
+                .width(cardWidth)
+                .height(cardHeight),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
@@ -103,6 +114,7 @@ fun OrderStatusPenjualCard(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun OrderStatusPenjualPreview() {
@@ -113,10 +125,12 @@ fun OrderStatusPenjualPreview() {
         OrderStatusItem("Selesai", R.drawable.pesanan_selesai)
     )
     val sampleCounts = listOf(3, 0, 5, 1)
+    val navController = rememberNavController()
     OrderStatusPenjual(
         orderStatusItems = sampleStatusItems,
         counts = sampleCounts,
         cardWidth = 100.dp, // Tentukan lebar manual
-        cardHeight = 120.dp // Tentukan tinggi manual
+        cardHeight = 120.dp,
+        navController = navController
     )
 }

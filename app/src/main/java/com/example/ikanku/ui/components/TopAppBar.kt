@@ -75,10 +75,39 @@ fun CustomTopAppBar(
 }
 
 @Composable
+fun TopBarHanyaJudul(
+    title: String,
+    onBackClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(159.dp),
+        shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp),
+        color = Color(0xFF177BCD)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+
+
+            Text(
+                text = title,
+                fontSize = 24.sp,
+                color = Color.White,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+}
+
+@Composable
 fun TopBarWithCart(
     title: String,
     onBackClick: () -> Unit,
-    onCartClick: () -> Unit
+    onCartClick: () -> Unit,
+    navController: NavController
 ) {
     Surface(
         modifier = Modifier
@@ -113,7 +142,7 @@ fun TopBarWithCart(
             )
 
             IconButton(
-                onClick = onCartClick,
+                onClick = { navController.navigate("keranjang_screen") },
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .padding(end = 16.dp)
@@ -247,9 +276,11 @@ fun PreviewCustomTopAppBar() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewTopBarWithCart() {
+    val navController = rememberNavController()
     TopBarWithCart(
         title = "Profile",
         onBackClick = { /* Handle back action */ },
-        onCartClick = { /* Handle cart action */ }
+        onCartClick = { /* Handle cart action */ },
+        navController = navController
     )
 }
