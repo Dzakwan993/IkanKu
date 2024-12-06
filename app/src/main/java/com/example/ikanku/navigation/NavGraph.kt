@@ -114,7 +114,9 @@ fun NavGraph(navController: NavHostController) {
             BerandaScreen(navController = navController)
         }
         composable("keranjang_screen") {
-            ShoppingCartScreenWithCustomAppBar(navController = navController) // Show the shopping cart screen
+
+//            ShoppingCartScreenWithCustomAppBar(navController = navController) // Show the shopping cart screen
+
         }
         composable("kategori_screen") {
             Kategori(navController = navController) // Navigasi ke Kategori Screen
@@ -162,7 +164,7 @@ fun NavGraph(navController: NavHostController) {
         SelesaiScreen(navController = navController)/* Layar Selesai */
         }
         composable("ditolak_screen") {
-        RejectedOrdersScreen(navController = navController)/* Layar Ditolak */
+//        RejectedOrdersScreen(navController = navController)/* Layar Ditolak */
         }
         composable("detail_pengiriman") {
             DeliveryDetailScreen(onBackClick = { /*TODO*/ }, navController = navController)

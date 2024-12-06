@@ -1,8 +1,6 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,10 +11,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 
 
@@ -82,7 +78,7 @@ fun TopBar(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarWithBackIcon(navController: NavController) {
+fun TopBarWithBackIcon() {
     var searchText by remember { mutableStateOf("") }
 
     Column(
@@ -97,7 +93,7 @@ fun TopBarWithBackIcon(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = { /* Back Action */ }) {
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "Back",
@@ -126,22 +122,15 @@ fun TopBarWithBackIcon(navController: NavController) {
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black
-                ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = {
-                    navController.navigate("search_result_screen?query=$searchText")
-                })
+                )
             )
         }
     }
 }
 
-
-
 @Preview(showBackground = true)
 @Composable
 fun TopBarWithBackIconPreview() {
-    val navController = rememberNavController()
-    TopBarWithBackIcon(navController = navController)
+    TopBarWithBackIcon()
 }
 

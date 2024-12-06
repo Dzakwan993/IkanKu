@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CardDuaPilihan
 import com.example.ikanku.ui.components.CustomTopAppBar
-import com.example.ikanku.ui.components.OrderCardDitolak
+
 import com.example.ikanku.ui.components.OrderStatusTabs
 import com.example.ikanku.ui.components.PenjualStatusTabs
 import com.example.ikanku.viewmodel.OrderRejectedViewModel

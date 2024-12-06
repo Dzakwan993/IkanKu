@@ -2,7 +2,12 @@ package com.example.ikanku.ui.screens
 
 
 import TombolMasukkanKeranjang
+
+import android.widget.Space
+import androidx.compose.foundation.BorderStroke
+
 import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,6 +44,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,8 +60,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -311,6 +322,7 @@ fun TokoSection(navController: NavController) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
+
             // Baris Atas: Tombol "Kunjungi Toko"
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -368,6 +380,7 @@ fun TokoSection(navController: NavController) {
                     )
                 }
             }
+
         }
     }
 }
@@ -389,6 +402,17 @@ fun ReviewSection(navController: NavController) {
 
     val rating = 4
     Column(modifier = Modifier.padding(16.dp)) {
+        Divider(
+            color = Color.Gray,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(
+                    vertical = 8.dp,
+
+                )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -412,6 +436,8 @@ fun ReviewSection(navController: NavController) {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+
 
 
         Card(
@@ -448,7 +474,6 @@ fun ReviewSection(navController: NavController) {
                         }
                     }
                 }
-
 //            Bar rating
                 Column(
                     modifier = Modifier.weight(1F),
@@ -570,6 +595,127 @@ fun UserReviewItem(name: String, review: String) {
     }
 }
 
+@Composable
+fun TibelatFarm() {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8E8E8)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 16.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            // Foto Profil
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.Gray, shape = RoundedCornerShape(50))
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Column untuk Nama dan Review
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                // Row untuk Nama dan Teks di bagian atas
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Tibelat Farm",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    // Teks Kunjungi Toko dengan Modifier.clickable
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp, // Ketebalan border merah
+                                color = Color(0xFFFF3848), // Warna merah
+                                shape = RoundedCornerShape(50) // Membuat border dengan sudut melingkar
+                            )
+                            .background(Color.White, shape = RoundedCornerShape(50))
+                            .padding(horizontal = 12.dp)
+                            .clickable { /* Aksi ketika diklik */ }
+
+                    ) {
+                        Text(
+                            text = "Kunjungi Toko",
+                            fontSize = 10.sp,
+                            color = Color(0xFFFF3848),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Teks Review, sejajar dengan Nama
+                Text(
+                    text = "Budidaya ikan air tawar dan Wisata Edukasi di Marina Batam",
+                    fontSize = 14.sp,
+                    color = Color.Black,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun Tampilkan() {
+    // State untuk menentukan apakah panah mengarah ke atas atau bawah
+    var isExpanded by remember { mutableStateOf(false) } // Default: false (panah ke bawah, teks "Tampilkan")
+
+    Card(
+        shape = RoundedCornerShape(13.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8E8E8)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .padding(bottom = 4.dp)
+            .clickable { // Aksi saat Card diklik
+                isExpanded = !isExpanded // Toggle state
+            }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // Teks berubah berdasarkan state
+                Text(
+                    text = if (isExpanded) "Sembunyikan" else "Tampilkan",
+                    fontSize = 15.sp,
+                    color = Color(0xFF171A1F),
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                // Panah berubah arah berdasarkan state
+                Image(
+                    painter = painterResource(R.drawable.panah_bawah),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color(0xFF171A1F)),
+                    modifier = Modifier.graphicsLayer(
+                        rotationZ = if (isExpanded) 0f else 180f // Rotasi 180 derajat jika state isExpanded = true
+                    )
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun Harga() {
@@ -662,6 +808,10 @@ fun DeskripsiProduk() {
             color = Color.Black,
             fontWeight = FontWeight.Bold
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+
     }
 }
 
@@ -773,10 +923,15 @@ fun DetailProdukPreview() {
     }
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
-fun ReviewSectionPreview() {
+fun TampilkanPreview() {
     IkanKuTheme {
+        Tampilkan(
+
+        )
 
     }
 }
