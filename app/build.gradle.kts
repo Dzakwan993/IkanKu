@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.ikanku"
-        minSdk = 21
+        minSdk = 23  // Tingkatkan minSdkVersion menjadi 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -44,7 +45,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2" // Sesuaikan dengan versi Compose Anda
+        kotlinCompilerExtensionVersion = "1.5.2" // atau versi yang cocok dengan versi Compose Anda
     }
 
     packaging {
@@ -55,34 +56,41 @@ android {
 }
 
 dependencies {
-    // Compose BOM untuk sinkronisasi versi
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
 
-    // Core dependencies
     implementation(libs.androidx.core.ktx)
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation("androidx.compose.material3:material3:1.1.0")
+    implementation("androidx.compose.material:material:1.4.3")
 
-    // Compose Material 3
-    implementation("androidx.compose.material3:material3:1.1.0") // Versi stabil
-
-    // Gambar dan ViewModel
-    implementation("io.coil-kt:coil-compose:2.4.0") // Coil untuk memuat gambar
+    // Dependensi tambahan untuk gambar dan ViewModel
+    implementation("io.coil-kt:coil-compose:2.4.0") // Untuk memuat gambar dengan Coil
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1") // ViewModel untuk Compose
 
-    // Accompanist untuk Pager dan Indicator
-    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager:0.28.0") // Accompanist Pager
     implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.0")
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth:23.1.0") // Pastikan versi ini digunakan
 
-    // Debugging dan Testing
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom)) // BOM untuk testing
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("androidx.navigation:navigation-compose:2.7.0")
+
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+
+
 }

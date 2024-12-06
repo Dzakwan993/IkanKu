@@ -10,6 +10,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+
+
+
 import com.example.ikanku.ui.screens.AddAddressScreen
 import com.example.ikanku.ui.screens.AddressScreen
 import com.example.ikanku.ui.screens.AlasanDitolak
@@ -65,6 +68,8 @@ import com.example.ikanku.ui.screens.Ulasan
 import com.example.ikanku.ui.screens.VariasiScreen
 import com.example.ikanku.ui.screens.VerificationScreen
 import com.example.ikanku.ui.screens.VerifyEmailScreen
+import com.example.ikanku.viewmodel.RegisterViewModel
+import com.example.ikanku.viewmodel.RegisterViewModelFactory
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -85,8 +90,16 @@ fun NavGraph(navController: NavHostController) {
             ConfirmationScreen(navController = navController)
         }
         composable("daftar_data") {
-            CompleteDataScreen(navController = navController)
+            val apiService = RetrofitInstance.apiService  // Menggunakan instance dari RetrofitInstance
+
+            val registerViewModel: RegisterViewModel = viewModel(
+                factory = RegisterViewModelFactory(apiService)
+            )
+
+            CompleteDataScreen(navController = navController, viewModel = registerViewModel)
         }
+
+
         composable("startup_screen") {
             StartupScreen(
                 onLoginClick = {
