@@ -26,28 +26,26 @@ fun  BeriUlasanCard(
     navController: NavController// Function to handle reorder action
 ) {
     Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            .padding(top = 8.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.Top
+
         ) {
-            // Product image on the left
+
             Image(
                 painter = painterResource(id = selesai.imageResId),
                 contentDescription = null,
                 modifier = Modifier
                     .size(64.dp)
-                    .clip(RoundedCornerShape(50.dp))
             )
-
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(

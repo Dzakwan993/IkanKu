@@ -3,6 +3,7 @@ package com.example.ikanku.ui.screens
 
 import TombolMasukkanKeranjang
 
+
 import android.widget.Space
 import androidx.compose.foundation.BorderStroke
 
@@ -18,12 +19,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -50,6 +55,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -62,6 +68,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -71,6 +78,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
+import com.example.ikanku.ui.components.BottomNavBar
+import com.example.ikanku.ui.components.CustomTopAppBar
 import com.example.ikanku.ui.theme.IkanKuTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -78,44 +87,42 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.launch
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DetailProduk(
-    modifier: Modifier = Modifier,
-    navController: NavController // Tambahkan NavController untuk navigasi
-) {
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    val coroutineScope = rememberCoroutineScope()
+fun DetailProduk(navController: NavController) {
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+        ,
+        topBar = {
+            CustomTopAppBar(
+                title = "Detail Produk",
+                onBackClick = {navController.popBackStack() }
+            )
 
-    ModalBottomSheetLayout(
-        sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetContent = {
-            VariasiBottomSheetContent(navController = navController) // Konten Bottom Sheet
-        }
-    ) {
+        },
+
+    ) { innerPadding ->
+        // Konten utama halaman DetailProduk
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding) // Menambahkan padding dari Scaffold
+
         ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = 64.dp) // Memberikan ruang untuk tombol
             ) {
-                // TopBar dengan navigasi kembali
-                TopBar(
-                    modifier = Modifier.padding(bottom = 16.dp),
-                    navController = navController // Pastikan ini diteruskan
-                )
+                NamaProduk(
 
-                // Carousel Gambar
+                )
+                // Konten lainnya
                 val fishImages = listOf(
-                    R.drawable.ikan, // Gambar di drawable
-                    R.drawable.ikan,
-                    R.drawable.ikan
+                    R.drawable.ikan, R.drawable.ikan, R.drawable.ikan
                 )
                 Carousel(images = fishImages)
 
@@ -129,16 +136,12 @@ fun DetailProduk(
                 TokoSection(navController = navController)
 
                 // Bagian Review
-                ReviewSection(navController =navController)
+                ReviewSection(navController = navController)
             }
 
             // Tombol Masukkan Keranjang
             TombolMasukkanKeranjang(
-                onClick = {
-                    coroutineScope.launch {
-                        bottomSheetState.show() // Menampilkan Bottom Sheet
-                    }
-                },
+                onClick = { /* Action untuk menambahkan ke keranjang */ },
                 text = "Masukkan Keranjang",
                 modifier = Modifier.align(Alignment.BottomCenter) // Posisi tombol di bawah
             )
@@ -147,25 +150,8 @@ fun DetailProduk(
 }
 
 
-@Composable
-fun TombolMasukkanKeranjang(onClick: () -> Unit, text: String, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .background(Color.Blue, shape = RoundedCornerShape(16.dp))
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = Color.White,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 12.dp)
-        )
-    }
-}
+
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -251,7 +237,7 @@ fun PilihanVariasi(text: String) {
 
 @Composable
 fun ExpandableDescription() {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(true) }
 
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         // Judul Deskripsi
@@ -286,7 +272,7 @@ fun ExpandableDescription() {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+                modifier = Modifier.padding(vertical = 15.dp, horizontal = 16.dp)
             ) {
                 Text(
                     text = if (isExpanded) "Selengkapnya" else "Sembunyikan",
@@ -300,7 +286,10 @@ fun ExpandableDescription() {
                     ), // Ganti dengan resource ikon panah Anda
                     contentDescription = null,
                     tint = Color.Black,
-                    modifier = Modifier.size(16.dp).padding(start = 4.dp)
+                    modifier = Modifier.size(16.dp).padding(start = 4.dp).graphicsLayer(
+                        // Rotasi tergantung status isExpanded
+                        rotationZ = if (isExpanded) 0f else 180f
+                    )
                 )
             }
         }
@@ -379,6 +368,8 @@ fun TokoSection(navController: NavController) {
                         color = Color.Gray
                     )
                 }
+
+//                tambah sini coba
             }
 
         }
@@ -403,7 +394,7 @@ fun ReviewSection(navController: NavController) {
     val rating = 4
     Column(modifier = Modifier.padding(16.dp)) {
         Divider(
-            color = Color.Gray,
+            color = Color(0xFFC1C1C1),
             thickness = 1.dp,
             modifier = Modifier
                 .padding(
@@ -511,7 +502,7 @@ fun ReviewSection(navController: NavController) {
         }
 
         Divider(
-            color = Color.Gray,
+            color = Color(0xFFC1C1C1),
             thickness = 1.dp,
             modifier = Modifier
                 .padding(
@@ -693,6 +684,7 @@ fun Tampilkan() {
             horizontalArrangement = Arrangement.Center,
         ) {
             Row(
+
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Teks berubah berdasarkan state
@@ -700,6 +692,7 @@ fun Tampilkan() {
                     text = if (isExpanded) "Sembunyikan" else "Tampilkan",
                     fontSize = 15.sp,
                     color = Color(0xFF171A1F),
+
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 // Panah berubah arah berdasarkan state
@@ -884,27 +877,19 @@ fun Carousel(
 
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier, navController: NavController) {
+fun NamaProduk(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
+
             .fillMaxWidth()
-            .padding(top = 32.dp),
+            .padding(top = 16.dp, start = 16.dp, bottom = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.panah), // Ikon panah di drawable
-            contentDescription = "Back",
-            tint = Color.Black, // Warna ikon
-            modifier = Modifier
-                .padding(end = 8.dp, start = 16.dp)
-                .clickable {
-                    navController.popBackStack() // Navigasi kembali ke layar sebelumnya
-                }
-        )
+
         Text(
             text = "Ikan Nila",
             modifier = Modifier.weight(1f),
-            fontSize = 18.sp,
+            fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
         )

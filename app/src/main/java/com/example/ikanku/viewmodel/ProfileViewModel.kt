@@ -16,7 +16,7 @@ class ProfileViewModel : ViewModel() {
         OrderStatusItem(label = "Dikemas", iconRes = R.drawable.dikemas),
         OrderStatusItem(label = "Dikirim", iconRes = R.drawable.dikirim),
         OrderStatusItem(label = "Selesai", iconRes = R.drawable.pesanan_selesai),
-        OrderStatusItem(label = "Ditolak", iconRes = R.drawable.pesanan_ditolak)
+
     )
 
     // Data counts untuk setiap status pesanan

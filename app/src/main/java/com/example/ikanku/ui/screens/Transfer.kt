@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -192,22 +193,20 @@ fun TransferScreen(navController: NavController) {
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
                     .background(Color.White)
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
+
             ) {
-                Button(
+                TombolMasukkanKeranjang(
+                    text = "Simpan",
                     onClick = {
                         navController.navigate("pesanan_sukses")
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD))
-                ) {
-                    Text(text = "Simpan", color = Color.White, fontWeight = FontWeight.Bold)
-                }
+                    }
+                )
             }
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

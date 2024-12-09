@@ -1,5 +1,6 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,15 +21,17 @@ import com.example.ikanku.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavController) {
+fun TopBar(navController: NavController, modifier: Modifier = Modifier,) {
     var searchText by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
             .background(Color(0xFF177BCD))
-            .padding(16.dp)
+            .padding(WindowInsets.statusBars.asPaddingValues())
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 24.dp, top = 16.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -50,29 +53,45 @@ fun TopBar(navController: NavController) {
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = searchText,
-            onValueChange = { searchText = it },
-            placeholder = { Text("Telusuri", color = Color.Gray) },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.cari),
-                    contentDescription = "Search Icon",
-                    tint = Color.Gray
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                placeholder = {
+
+                    Text(
+                        "Telusuri",
+                        color = Color.Gray,
+
+                    )
+
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.cari),
+                        contentDescription = "Search Icon",
+                        tint = Color.Gray,
+                        modifier = Modifier.size(20.dp)
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .height(50.dp)
+                    .clip(RoundedCornerShape(13.dp))
+                    .background(Color.White),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Black
                 )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(Color.White),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.Black
             )
-        )
+        }
+
+
+
     }
 }
 
@@ -83,16 +102,22 @@ fun TopBarWithBackIcon(navController: NavController) {
     var searchText by remember { mutableStateOf("") }
 
     Column(
+
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
             .background(Color(0xFF177BCD))
-            .padding(16.dp)
+
+            .padding(WindowInsets.statusBars.asPaddingValues())
+            .padding(bottom = 24.dp, top = 16.dp, end = 24.dp)
+
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+            ,
             verticalAlignment = Alignment.CenterVertically
+
         ) {
             IconButton(onClick = { /* Back Action */ }) {
                 Icon(
@@ -103,6 +128,7 @@ fun TopBarWithBackIcon(navController: NavController) {
             }
             Spacer(modifier = Modifier.width(2.dp))
             TextField(
+
                 value = searchText,
                 onValueChange = { searchText = it },
                 placeholder = { Text("Telusuri", color = Color.Gray) },
@@ -115,24 +141,99 @@ fun TopBarWithBackIcon(navController: NavController) {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
+
                     .clip(RoundedCornerShape(14.dp))
-                    .background(Color.White),
+                    .background(Color.White)
+                    ,
+
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     cursorColor = Color.Black
                 )
+
+
             )
+            
+        }
+    }
+}
+
+
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarSearch(navController: NavController) {
+    var searchText by remember { mutableStateOf("") }
+
+    Column(
+
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
+            .background(Color(0xFF177BCD))
+
+            .padding(WindowInsets.statusBars.asPaddingValues())
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 24.dp, top = 16.dp)
+
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth()
+            ,
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+
+            TextField(
+
+                value = searchText,
+                onValueChange = { searchText = it },
+                placeholder = { Text("Telusuri", color = Color.Gray) },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.cari),
+                        contentDescription = "Search Icon",
+                        tint = Color.Gray
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Color.White)
+                ,
+
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Black
+                )
+
+
+            )
+
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
+fun TopBarPreview() {
+    val navController = rememberNavController()
+    TopBar(navController)
+}
+
+
+@Preview(showBackground = true)
+@Composable
 fun TopBarWithBackIconPreview() {
     val navController = rememberNavController()
-    TopBarWithBackIcon(navController = navController)
+    TopBarSearch(navController)
 }
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,32 +36,30 @@ fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel(), navCon
                 CustomTopAppBar(
 
                     title = "Pesanan Ditolak",
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.navigate("profile_screen") }
                 )
                 OrderStatusTabs(selectedTab = 4, onTabSelected = { /* Aksi untuk memilih tab */ }, navController = navController)
 
             }
-
         },
-
-
+        bottomBar ={
+            BottomNavBar(navController = navController)
+        }
     )
      { innerPadding ->
-
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 16.dp),
         ) {
 
             items(viewModel.rejectedOrders) { order ->
-                OrderCardDitolak(order, )
+                OrderCardDitolak(order )
             }
         }
     }
+
 }
 
 @Composable

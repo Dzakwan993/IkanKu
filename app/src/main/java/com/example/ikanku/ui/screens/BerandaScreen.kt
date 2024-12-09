@@ -28,7 +28,7 @@ fun BerandaScreen(navController: NavController, viewModel: BerandaViewModel = vi
             .fillMaxSize()
             .navigationBarsPadding()
             ,
-        topBar = { TopBar(navController = navController) },
+            topBar = { TopBar(navController = navController) },
         bottomBar = { BottomNavBar(navController = navController) }
     ) { innerPadding ->
         LazyColumn(
@@ -39,7 +39,7 @@ fun BerandaScreen(navController: NavController, viewModel: BerandaViewModel = vi
             verticalArrangement = Arrangement.spacedBy(4.dp),
             contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding())
         ) {
-            item { CategorySection(categories = viewModel.categories, navController = navController) }
+            item { CategorySection(categories = viewModel.categories, navController = navController, modifier = Modifier.padding(16.dp)) }
             item { PromotionSection(promotions = viewModel.promotions, navController = navController) }
             item { RecommendationSection(recommendations = viewModel.recommendations, navController = navController) }
             item { ProductListSection(products = viewModel.products, navController = navController) }

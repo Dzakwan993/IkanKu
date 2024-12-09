@@ -25,7 +25,6 @@ import com.example.ikanku.R
 import com.example.ikanku.model.Order
 import com.example.ikanku.model.OrderStatus
 import com.example.ikanku.viewmodel.OrderViewModel
-
 @Composable
 fun OrderCard(order: Order, onCancelClick: () -> Unit, navController: NavController) {
     Card(
@@ -33,8 +32,8 @@ fun OrderCard(order: Order, onCancelClick: () -> Unit, navController: NavControl
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { // Navigasi ke halaman detail
+            .padding(top = 8.dp)
+            .clickable {
                 navController.navigate("detail_pesanan")
             },
         elevation = CardDefaults.cardElevation(8.dp)
@@ -42,121 +41,112 @@ fun OrderCard(order: Order, onCancelClick: () -> Unit, navController: NavControl
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp)
+                .padding(top = 4.dp)
         ) {
             Image(
                 painter = painterResource(id = order.imageRes),
                 contentDescription = order.productName,
                 modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(Color.Gray)
+                    .size(64.dp) // Konsisten dengan DikemasCard
             )
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column {
-                        Text(
-                            text = order.productName,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black
-                        )
-                        Text(
-                            text = order.variant,
-                            fontSize = 14.sp,
-                            color = Color.DarkGray
-                        )
-                    }
+                Text(
+                    text = order.productName,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Pilih Variasi Berat: ${order.variant}",
+                    fontSize = 14.sp,
+                    color = Color.DarkGray
+                )
+                Spacer(modifier = Modifier.height(16.dp))
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Text(
-                        text = "X${order.quantity}",
-                        fontSize = 14.sp,
-                        color = Color.DarkGray,
-                        modifier = Modifier.padding(start = 8.dp)
+                        text = "Total",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = order.price,
+                        fontSize = 16.sp,
+                        color = Color.Black
                     )
                 }
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+        }
 
-                Text(
-                    text = order.price,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = onCancelClick,
+                modifier = Modifier
+                    .width(170.dp)
+                    .height(40.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Red,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(30.dp)
+            ) {
+                Text(text = "Batal", fontSize = 15.sp)
+            }
 
-                Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
-                when (order.status) {
-                    OrderStatus.PAYMENT_REQUIRED, OrderStatus.REJECTED -> {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Button(
-                                onClick = onCancelClick,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238)),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(36.dp),
-                                shape = RoundedCornerShape(16.dp)
-                            ) {
-                                Text("Batal", color = Color.White, fontSize = 14.sp)
-                            }
-
-                            Spacer(modifier = Modifier.width(8.dp))
-
-                            OutlinedButton(
-                                onClick = { /* Tidak ada aksi, karena Button dinonaktifkan */ },
-                                enabled = false,
-                                colors = ButtonDefaults.outlinedButtonColors(
-                                    containerColor = Color.White,
-                                    disabledContainerColor = Color.White,
-                                    disabledContentColor = Color.Black
-                                ),
-                                border = BorderStroke(2.dp, Color.Black),
-                                shape = RoundedCornerShape(16.dp),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(36.dp)
-                            ) {
-                                Text("Menunggu Konfirmasi", fontSize = 12.sp)
-                            }
-                        }
-                    }
-                    else -> {
-                        // Handle other statuses if needed
-                    }
-                }
+            OutlinedButton(
+                onClick = { /* Aksi Dikemas */ },
+                modifier = Modifier
+                    .width(170.dp) // Tetap mempertahankan parameter asli
+                    .height(40.dp), // Tetap mempertahankan parameter asli
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.Transparent, // Latar belakang transparan
+                    contentColor = Color.Black // Warna teks
+                ),
+                shape = RoundedCornerShape(30.dp),
+                border = BorderStroke(1.dp, Color.Black) // Garis tepi hitam
+            ) {
+                Text(text = "Menunggu", fontSize = 15.sp, color = Color.Black)
             }
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
 fun OrderCardPreview() {
     // Membuat instance ViewModel untuk preview
     val previewViewModel = remember { OrderViewModel() }
-    val orders = previewViewModel.orders
+    val order = previewViewModel.orders.firstOrNull() // Ambil elemen pertama dari list
     val navController = rememberNavController()
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        orders.forEach { order ->
-            OrderCard(
-                order = order,
-                navController = navController,
-                onCancelClick = { /* Tambahkan aksi pembatalan untuk preview */ }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+    if (order != null) {
+        OrderCard(
+            order = order,
+            navController = navController,
+            onCancelClick = { /* Tambahkan aksi pembatalan untuk preview */ }
+        )
+    } else {
+        Text("Tidak ada pesanan untuk ditampilkan", modifier = Modifier.padding(16.dp))
     }
 }

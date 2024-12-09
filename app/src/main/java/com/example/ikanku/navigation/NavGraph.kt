@@ -151,17 +151,17 @@ fun NavGraph(navController: NavHostController) {
             OrderScreen(navController = navController)
         }
         composable("dikemas_screen") {
-        DikemasScreen(navController = navController)
+            DikemasScreen(navController = navController)
         }
         composable("dikirim_screen") {
-        DikirimScreen(
-            onBackClick = { /*TODO*/ },
-            onDeliveryClick = { /*TODO*/ },
-            navController = navController
-        )/* Layar Dikirim */
+            DikirimScreen(
+                onBackClick = { /*TODO*/ },
+                onDeliveryClick = { /*TODO*/ },
+                navController = navController
+            )/* Layar Dikirim */
         }
         composable("selesai_screen") {
-        SelesaiScreen(navController = navController)/* Layar Selesai */
+            SelesaiScreen(navController = navController)/* Layar Selesai */
         }
         composable("ditolak_screen") {
 //        RejectedOrdersScreen(navController = navController)/* Layar Ditolak */

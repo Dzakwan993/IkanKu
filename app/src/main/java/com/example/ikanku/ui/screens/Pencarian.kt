@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TopBarSearch
 import TopBarWithBackIcon
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,7 +26,7 @@ import com.example.ikanku.viewmodel.BerandaViewModel
 fun Pencarian(viewModel: BerandaViewModel = viewModel(), navController: NavHostController) {
     Scaffold(
         topBar = {
-            TopBarWithBackIcon(navController = navController)
+            TopBarSearch(navController = navController)
         },
         bottomBar = { BottomNavBar(navController = navController) } // Tambahkan NavController di sini
     ) { paddingValues ->

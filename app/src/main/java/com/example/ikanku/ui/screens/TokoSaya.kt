@@ -52,9 +52,7 @@ fun TokoSayaScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         // Custom AppBar with back and cart icons
-        TopBarHanyaJudul(title = "Toko Saya") {
-
-        }
+        TopBarHanyaJudul(title = "Toko Saya", )
 
         // Profil Penjual Card
         ProfilPenjualCard(

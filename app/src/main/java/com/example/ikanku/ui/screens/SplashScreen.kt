@@ -9,8 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.utils.SharedPreferencesHelper
 import kotlinx.coroutines.delay
@@ -69,3 +71,12 @@ fun SplashScreen(navController: NavController) {
         }
     }
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun SplashPreview() {
+    val navController = rememberNavController()
+    SplashScreen(navController)
+}
+

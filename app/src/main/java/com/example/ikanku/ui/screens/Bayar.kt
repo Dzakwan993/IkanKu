@@ -1,5 +1,6 @@
     package com.example.ikanku.ui.screens
 
+    import TombolMasukkanKeranjang
     import android.icu.text.CaseMap.Title
     import android.icu.text.IDNA.Info
     import androidx.compose.foundation.Image
@@ -38,6 +39,7 @@
     import androidx.compose.material3.ButtonDefaults
     import androidx.compose.material3.Card
     import androidx.compose.material3.CardDefaults
+    import androidx.compose.material3.CardElevation
     import androidx.compose.material3.ExperimentalMaterial3Api
     import androidx.compose.material3.Icon
     import androidx.compose.material3.IconButton
@@ -56,6 +58,7 @@
     import androidx.compose.ui.Alignment
     import androidx.compose.ui.Modifier
     import androidx.compose.ui.draw.rotate
+    import androidx.compose.ui.draw.shadow
     import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.res.painterResource
     import androidx.compose.ui.text.font.FontWeight
@@ -66,6 +69,7 @@
     import androidx.navigation.NavController
     import androidx.navigation.compose.rememberNavController
     import com.example.ikanku.R
+    import com.example.ikanku.ui.components.AlertBottomSheet
     import com.example.ikanku.ui.components.CartItem
     import com.example.ikanku.ui.components.CustomTopAppBar
     import com.example.ikanku.ui.components.TombolMerahBiru
@@ -74,6 +78,7 @@
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
     @Composable
     fun HalamanBayar(navController: NavController) {
+        var isBottomSheetVisible by remember { mutableStateOf(false) }
         val coroutineScope = rememberCoroutineScope()
         val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
         var bottomSheetContent by remember { mutableStateOf<@Composable () -> Unit>({}) }
@@ -81,7 +86,7 @@
         // State untuk menyimpan pilihan metode pembayaran, pengiriman, dan catatan
         var selectedPaymentMethod by remember { mutableStateOf("Pilih Metode Pembayaran") }
         var selectedShippingMethod by remember { mutableStateOf("Pilih Metode Pengiriman") }
-        var noteToSeller by remember { mutableStateOf("") } // State untuk catatan penjual
+        var noteToSeller by remember { mutableStateOf("Opsional") } // State untuk catatan penjual
 
         ModalBottomSheetLayout(
             sheetState = bottomSheetState,
@@ -110,14 +115,20 @@
                             .padding(bottom = 64.dp)
                     ) {
                         Card(
+                            elevation = CardDefaults.cardElevation(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
+                                .padding( 16.dp),
                             shape = RoundedCornerShape(20.dp),
                             colors = CardDefaults.cardColors(containerColor = Color.White)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                AddressRow()
+                                AddressRow(
+                                    onClick = {
+                                        // Ganti dengan navigasi yang sesuai
+                                        navController.navigate("alamat")
+                                    }
+                                )
 
                                 // Pembatas garis
                                 Divider(color = Color(0xFF9095A0), thickness = 1.dp)
@@ -134,28 +145,34 @@
                                 )
 
                                 // Catatan untuk Penjual
-                                GabunganTitleKotak(
+                                GabunganTitleKotakTidakWajib(
                                     judul = "Catatan untuk Penjual",
                                     kotak = {
-                                        TextField(
-                                            value = noteToSeller,
-                                            onValueChange = { noteToSeller = it },
-                                            placeholder = { Text("Opsional") },
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .height(56.dp)
-                                                .border(1.dp, Color.Gray, shape = RoundedCornerShape(16.dp)),
-                                            colors = TextFieldDefaults.textFieldColors(
-                                                backgroundColor = Color(0xFFE8E8E8),
-                                                focusedIndicatorColor = Color.Transparent,
-                                                unfocusedIndicatorColor = Color.Transparent
-                                            )
+                                        KotakTanpaPanah(
+                                            judul = noteToSeller, // Gunakan nilai terbaru dari noteToSeller
+                                            onClick = {
+                                                coroutineScope.launch {
+                                                    bottomSheetContent = {
+                                                        CatatanPenjualBottomSheet(
+                                                            selectedMethod = noteToSeller, // Kirim nilai saat ini
+                                                            onSelectMethod = { updatedNote ->
+                                                                noteToSeller = updatedNote // Perbarui nilai catatan
+                                                            },
+                                                            onDismiss = {
+                                                                coroutineScope.launch { bottomSheetState.hide() }
+                                                            }
+                                                        )
+                                                    }
+                                                    bottomSheetState.show()
+                                                }
+                                            }
                                         )
                                     }
                                 )
 
+
                                 // Metode Pembayaran
-                                GabunganTitleKotak(
+                                GabunganTitleKotakWajib(
                                     judul = "Metode Pembayaran",
                                     kotak = {
                                         Kotak(
@@ -179,7 +196,7 @@
                                 )
 
                                 // Metode Pengiriman
-                                GabunganTitleKotak(
+                                GabunganTitleKotakWajib (
                                     judul = "Metode Pengiriman",
                                     kotak = {
                                         Kotak(
@@ -203,27 +220,42 @@
                                 )
                             }
                         }
-                    }
-
-                    // Tombol di bagian bawah layar
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .fillMaxWidth()
-                            .background(Color.White)
-                    ) {
+//                        Coba tambah sini
                         TombolMerahBiru(
-                            judulBiru = "Buat Pesanan",
+                            judulBiru = "Buat Pesaan",
                             judulMerah = "Batal",
                             onBiruClick = {
-                                navController.navigate("transfer_screen")
+                                isBottomSheetVisible = true
+//
                             },
                             onMerahClick = {
-                                // Aksi untuk Batal
                                 navController.popBackStack()
                             }
                         )
                     }
+
+
+                    if (isBottomSheetVisible) {
+                        AlertBottomSheet(
+                            isVisible = isBottomSheetVisible,
+                            onDismiss = { isBottomSheetVisible = false },
+                            imageResId = R.drawable.peringatan_alamat, // Gambar yang digunakan
+                            alertText = "Apakah Alamat Sudah Benar?", // Teks dinamis
+                            confirmButtonText = "Ya", // Teks tombol "Ya"
+                            cancelButtonText = "Tidak", // Teks tombol "Tidak"
+                            onConfirm = {
+                                // Logika konfirmasi
+                                isBottomSheetVisible = false
+                                navController.navigate("transfer_screen")
+
+                            },
+                            onCancel = {
+                                // Logika batal
+                                isBottomSheetVisible = false
+                            }
+                        )
+                    }
+
                 }
             }
         }
@@ -264,6 +296,61 @@
             }
         }
     }
+    @Composable
+    fun CatatanPenjualBottomSheet(
+        selectedMethod: String, // Awalnya gunakan nilai `noteToSeller`
+        onSelectMethod: (String) -> Unit, // Callback untuk mengirim teks
+        onDismiss: () -> Unit // Callback untuk menutup BottomSheet
+    ) {
+        val note = remember { mutableStateOf("") } // Gunakan `selectedMethod` sebagai nilai awal
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = "Catatan untuk Penjual",
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .padding(start = 8.dp)
+            )
+
+            Card(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .shadow(4.dp, shape = RoundedCornerShape(8.dp)),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                TextField(
+                    value = note.value,
+                    onValueChange = { note.value = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    placeholder = { Text(
+                        "Masukkan Catatan Untuk Penjual",
+                        color = Color(0xFFB2B2B2)
+                    ) },
+                    colors = TextFieldDefaults.textFieldColors(
+                        cursorColor = Color.Black,
+                        backgroundColor = Color.White,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent
+                    )
+                )
+            }
+
+            TombolMasukkanKeranjang(
+                text = "Kirim",
+                onClick = {
+                    onSelectMethod(note.value) // Kirim teks ke UI utama
+                    onDismiss() // Tutup BottomSheet
+                }
+            )
+        }
+    }
+
 
     @Composable
     fun PaymentMethodBottomSheet(
@@ -428,16 +515,41 @@
     }
 
     @Composable
-    fun GabunganTitleKotak(
+    fun GabunganTitleKotakWajib(
         judul: String,
         kotak: @Composable () -> Unit
     ) {
         Column(
             modifier = Modifier.padding(vertical = 8.dp),
         ) {
-            Text(
+            Row {
+                Text(
                 text = judul
             )
+                Text(
+                    color = Color(0xFFFF4238),
+                    text = "*"
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            kotak()
+        }
+    }
+
+@Composable
+    fun GabunganTitleKotakTidakWajib(
+        judul: String,
+        kotak: @Composable () -> Unit
+    ) {
+        Column(
+            modifier = Modifier.padding(vertical = 8.dp),
+        ) {
+
+                Text(
+                    text = judul
+                )
+
+
             Spacer(modifier = Modifier.height(8.dp))
             kotak()
         }
@@ -464,6 +576,7 @@
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
+                    color = Color(0xFFB2B2B2),
                     text = judul,
                     fontSize = 15.sp
                 )
@@ -478,12 +591,13 @@
 
     @Composable
     fun KotakTanpaPanah(
-        judul: String
+        judul: String,
+        onClick: () -> Unit
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-
+                .clickable(onClick = onClick)
                 .height(60.dp),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(Color(0xFFE8E8E8))
@@ -498,6 +612,7 @@
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
+                    color = Color(0xFFB2B2B2),
                     text = judul,
                     fontSize = 15.sp
                 )
@@ -509,13 +624,15 @@
 
     @Composable
     fun AddressRow(
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        onClick: () -> Unit  // Menambahkan parameter onClick
     ) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 8.dp)
+                .clickable(onClick = onClick),
 
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -812,7 +929,11 @@
     @Preview(showBackground = true)
     @Composable
     fun PreviewAddress() {
-
+        CatatanPenjualBottomSheet(
+            selectedMethod = "Makan",
+            onSelectMethod = {},
+            onDismiss = {}
+        )
     }
 
 

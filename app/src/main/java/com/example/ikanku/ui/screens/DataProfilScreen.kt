@@ -120,14 +120,7 @@ fun ProfileInfoItems(
     // Menambahkan ProfileInfoItem untuk nomor ponsel dengan navigasi
     ProfileInfoItem(
         title = "Nomor Ponsel", value = "6282387436427", showDropdown = true,
-        iconContent = {
-            Icon(
-                painter = painterResource(id = R.drawable.lihat_detail),
-                contentDescription = "Lihat Detail",
-                tint = Color.Gray,
-                modifier = Modifier.size(20.dp)
-            )
-        },
+
         onClick = { navController.navigate("ubah_nomor_ponsel") } // Navigasi ke UbahNomorPonselScreen
     )
 }
@@ -154,7 +147,8 @@ fun ProfileInfoItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(vertical = 24.dp)
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -171,7 +165,7 @@ fun ProfileInfoItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenderSelectionBottomSheet(selectedGender: String, onGenderSelected: (String) -> Unit) {
-    ModalBottomSheet(onDismissRequest = { onGenderSelected(selectedGender) }, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) {
+    ModalBottomSheet(onDismissRequest = { onGenderSelected(selectedGender) }, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp), containerColor = Color.White) {
         GenderSelectionBottomSheetContent(selectedGender, onGenderSelected)
     }
 }
@@ -179,7 +173,7 @@ fun GenderSelectionBottomSheet(selectedGender: String, onGenderSelected: (String
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NameEditBottomSheet(currentName: String, onNameChanged: (String) -> Unit) {
-    ModalBottomSheet(onDismissRequest = { onNameChanged(currentName) }, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) {
+    ModalBottomSheet(onDismissRequest = { onNameChanged(currentName) }, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp), containerColor = Color.White) {
         NameEditBottomSheetContent(currentName, onNameChanged)
     }
 }
@@ -187,7 +181,7 @@ fun NameEditBottomSheet(currentName: String, onNameChanged: (String) -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateOfBirthBottomSheet(currentDate: String, onDateSelected: (String) -> Unit) {
-    ModalBottomSheet(onDismissRequest = { onDateSelected(currentDate) }, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) {
+    ModalBottomSheet(onDismissRequest = { onDateSelected(currentDate) }, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),  containerColor = Color.White) {
         DateOfBirthBottomSheetContent(currentDate, onDateSelected, onCancel = { onDateSelected(currentDate) })
     }
 }
@@ -217,6 +211,7 @@ fun HeaderRow(title: String, onClose: () -> Unit) {
 @Composable
 fun GenderOptionItem(label: String, selected: Boolean, onSelect: (String) -> Unit) {
     Card(
+        elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -262,7 +257,7 @@ fun NameEditBottomSheetContent(currentName: String, onNameChanged: (String) -> U
                 .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(30.dp)
         ) {
             Text("Simpan", color = Color.White)
         }
@@ -287,7 +282,7 @@ fun DateOfBirthBottomSheetContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Tombol untuk membuka DatePickerDialog
+            // Tombol untuk membuka DatePickerDialog
         Button(
             onClick = {
                 val calendar = Calendar.getInstance()
@@ -298,6 +293,7 @@ fun DateOfBirthBottomSheetContent(
                 // Membuka DatePickerDialog
                 android.app.DatePickerDialog(
                     context,
+
                     { _, selectedYear, selectedMonth, selectedDay ->
                         // Format tanggal menjadi "YYYY-MM-DD"
                         selectedDate = "$selectedYear-${
@@ -310,9 +306,9 @@ fun DateOfBirthBottomSheetContent(
                     day
                 ).show()
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()                .height(48.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(30.dp)
         ) {
             Text("Pilih Tanggal", color = Color.White)
         }
@@ -334,7 +330,7 @@ fun DateOfBirthBottomSheetContent(
                 .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(30.dp)
         ) {
             Text("Simpan", color = Color.White)
         }

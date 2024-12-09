@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,12 +35,12 @@ fun UbahNomorPonselScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .padding( vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth() .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -47,7 +48,7 @@ fun UbahNomorPonselScreen(navController: NavController) {
                     text = "Nomor Ponsel Baru",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 8.dp),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
@@ -57,8 +58,8 @@ fun UbahNomorPonselScreen(navController: NavController) {
                 OutlinedTextField(
                     value = phoneNumber,
                     onValueChange = { phoneNumber = it },
-                    label = { Text("Nomor Ponsel Baru") },
-                    placeholder = { Text("Nomor Ponsel Ex 6282387436427") },
+
+                    placeholder = { Text("Contoh: 6282387436427") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(16.dp)),
@@ -74,7 +75,7 @@ fun UbahNomorPonselScreen(navController: NavController) {
 
                 // Informasi teks di tengah
                 Text(
-                    text = "* Anda akan menerima SMS berisi kode daftar.",
+                    text = "*Anda akan menerima SMS berisi kode daftar.",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Red,
@@ -83,20 +84,17 @@ fun UbahNomorPonselScreen(navController: NavController) {
             }
 
             // Tombol di bagian bawah
-            Button(
-                onClick = { navController.navigate("ubah_nomor_otp")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text("Selanjutnya", color = Color.White, fontSize = 16.sp)
-            }
+            TombolMasukkanKeranjang(
+                text = "Selanjutnya",
+                onClick = {
+                    navController.navigate("ubah_nomor_otp")
+                }
+            )
         }
 
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.Pembeli
 import com.example.ikanku.model.Toko
@@ -44,7 +45,7 @@ fun LoginScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBarLogin(
-                selectedTab = "login",
+                selectedTab = "Login",
                 onTabSelected = { /* Handle tab selection */ },
                 navController = navController
             )
@@ -56,19 +57,17 @@ fun LoginScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .padding(horizontal = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Input fields
             OutlinedTextField(
                 value = phoneNumber,
                 onValueChange = { phoneNumber = it },
-                placeholder = { Text("No Ponsel Cth +6281234567891", color = Color.Gray) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                placeholder = { Text("No Ponsel (e.g. +6281234567891)", color = Color.Gray) },
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color(0xFFE0E0E0),
@@ -82,10 +81,8 @@ fun LoginScreen(navController: NavController) {
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                placeholder = { Text("Kata sandi", color = Color.Gray) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                placeholder = { Text("Kata Sandi", color = Color.Gray) },
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color(0xFFE0E0E0),
@@ -96,22 +93,17 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Forgot password
             Text(
-                text = "Lupa kata sandi",
-                color = Color(0xFF177BCD),
-                fontWeight = FontWeight.Bold,
+                text = "Lupa kata sandi?",
+                color = Color.Black,
                 modifier = Modifier
                     .align(Alignment.End)
-                    .padding(end = 32.dp)
-                    .clickable {
-                        navController.navigate("lupa_sandi_pembeli")
-                    }
+                    .clickable { navController.navigate("lupa_sandi_pembeli") }
+                    .padding(vertical = 8.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Login Button
             Button(
                 onClick = {
                     if (phoneNumber.isNotEmpty() && password.isNotEmpty()) {
@@ -119,32 +111,31 @@ fun LoginScreen(navController: NavController) {
                             phoneNumber = phoneNumber,
                             password = password,
                             onSuccess = { user ->
-                                if (user is Toko) {
-                                    SharedPreferencesHelper.saveUser(context, "toko", user)
-                                    navController.navigate("toko_saya_screen") {
-                                        popUpTo("login_screen") { inclusive = true } // Hapus login_screen dari stack
+                                when (user) {
+                                    is Toko -> {
+                                        SharedPreferencesHelper.saveUser(context, "toko", user)
+                                        navController.navigate("toko_saya_screen") {
+                                            popUpTo("login_screen") { inclusive = true }
+                                        }
                                     }
-                                } else if (user is Pembeli) {
-                                    SharedPreferencesHelper.saveUser(context, "pembeli", user)
-                                    navController.navigate("beranda_screen") {
-                                        popUpTo("login_screen") { inclusive = true } // Hapus login_screen dari stack
+                                    is Pembeli -> {
+                                        SharedPreferencesHelper.saveUser(context, "pembeli", user)
+                                        navController.navigate("beranda_screen") {
+                                            popUpTo("login_screen") { inclusive = true }
+                                        }
                                     }
                                 }
                             },
                             onError = { errorMessage ->
-                                loginViewModel.setErrorMessage(errorMessage) // Atur error message di ViewModel
+                                loginViewModel.setErrorMessage(errorMessage)
                             }
                         )
                     } else {
                         loginViewModel.setErrorMessage("Harap isi nomor ponsel dan kata sandi!")
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF177BCD) // Ganti warna tombol di sini
-                ),
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Text("Login")
@@ -161,17 +152,14 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Google Login Button
             OutlinedButton(
                 onClick = { /* Handle Google login */ },
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.google_logo), // Ikon Google dari drawable
+                    painter = painterResource(id = R.drawable.google_logo),
                     contentDescription = "Google Icon",
                     tint = Color.Unspecified
                 )
@@ -181,7 +169,6 @@ fun LoginScreen(navController: NavController) {
         }
     }
 
-    // Menangani status login
     LaunchedEffect(loginStatus) {
         when (loginStatus) {
             is LoginViewModel.LoginStatus.Error -> {
@@ -196,3 +183,9 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun LoginPreview() {
+    val navController = rememberNavController()
+    LoginScreen(navController)
+}

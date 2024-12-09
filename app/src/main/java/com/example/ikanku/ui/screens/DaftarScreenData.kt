@@ -1,6 +1,9 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import android.widget.Toast
+
+import androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,7 +27,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.example.ikanku.R
 import com.example.ikanku.ui.components.TopBarLogin
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,14 +77,16 @@ fun CompleteDataScreen(navController: NavController, viewModel: RegisterViewMode
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 16.dp),
+
                 horizontalAlignment = Alignment.Start
             ) {
                 // Full Name Field
@@ -88,22 +95,27 @@ fun CompleteDataScreen(navController: NavController, viewModel: RegisterViewMode
                     onValueChange = { fullName = it },
                     label = { Text("Nama Lengkap") },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    shape = RoundedCornerShape(10.dp),
+                    colors = outlinedTextFieldColors(
+
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
                     )
                 )
 
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Email Field
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+
+                    placeholder = { Text("Email", color = Color.Gray) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = outlinedTextFieldColors(
+
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
@@ -111,14 +123,72 @@ fun CompleteDataScreen(navController: NavController, viewModel: RegisterViewMode
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                 )
 
-                // Address Field
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // District Selection Field
+                OutlinedTextField(
+                    value = selectedDistrict,
+                    onValueChange = { },
+                    placeholder = { Text("Pilih Kecamatan", color = Color.Gray) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showDistrictPicker = true },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = outlinedTextFieldColors(
+                        containerColor = Color(0xFFE0E0E0),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent
+                    ),
+                    trailingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.down),
+                            contentDescription = "Dropdown Icon",
+                            tint = Color.Gray,
+                            modifier = Modifier.clickable { showDistrictPicker = true }
+                        )
+                    },
+                    readOnly = true
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Postal Code Selection Field
+                OutlinedTextField(
+                    value = postalCode,
+                    onValueChange = { },
+                    placeholder = { Text("Pilih Kode Pos", color = Color.Gray) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { if (selectedDistrict.isNotEmpty()) showPostalCodePicker = true },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = outlinedTextFieldColors(
+                        containerColor = Color(0xFFE0E0E0),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent
+                    ),
+                    trailingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.down),
+                            contentDescription = "Dropdown Icon",
+                            tint = Color.Gray,
+                            modifier = Modifier.clickable {
+                                if (selectedDistrict.isNotEmpty()) showPostalCodePicker = true
+                            }
+                        )
+                    },
+                    readOnly = true
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 OutlinedTextField(
                     value = address,
                     onValueChange = { address = it },
-                    label = { Text("Alamat") },
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                    placeholder = { Text("Nama Jalan, Gedung, No. Rumah", color = Color.Gray) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = outlinedTextFieldColors(
+
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
@@ -184,38 +254,33 @@ fun CompleteDataScreen(navController: NavController, viewModel: RegisterViewMode
                 )
             }
 
-            // Register Button
-            Button(
-                onClick = {
-                    if (fullName.isEmpty() || email.isEmpty() || address.isEmpty() || selectedDistrict.isEmpty() || postalCode.isEmpty() || password.isEmpty()) {
-                        Toast.makeText(context, "Semua field wajib diisi", Toast.LENGTH_SHORT).show()
-                    } else {
-                        viewModel.registerUser(
-                            fullName = fullName,
-                            email = email,
-                            address = address,
-                            districtId = districtId,
-                            postalCodeId = postalCodeId,
-                            password = password,
-                            onSuccess = {
-                                Toast.makeText(context, "Pendaftaran berhasil", Toast.LENGTH_SHORT).show()
-                                navController.navigate("beranda_screen")
-                            },
-                            onError = {
-                                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                            }
-                        )
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+            // Button at the bottom
+            TombolMasukkanKeranjang(
+                onClick = { if (fullName.isEmpty() || email.isEmpty() || address.isEmpty() || selectedDistrict.isEmpty() || postalCode.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(context, "Semua field wajib diisi", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.registerUser(
+                        fullName = fullName,
+                        email = email,
+                        address = address,
+                        districtId = districtId,
+                        postalCodeId = postalCodeId,
+                        password = password,
+                        onSuccess = {
+                            Toast.makeText(context, "Pendaftaran berhasil", Toast.LENGTH_SHORT).show()
+                            navController.navigate("beranda_screen")
+                        },
+                        onError = {
+                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                } },
+                text = "Daftar",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(64.dp)
-                    .padding(bottom = 16.dp),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text("Daftar")
-            }
+
+            )
+
 
         }
     }

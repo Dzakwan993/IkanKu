@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,14 +44,15 @@ fun ForgotPasswordScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 Row(
@@ -88,7 +90,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
@@ -101,7 +103,7 @@ fun ForgotPasswordScreen(navController: NavController) {
 
                 // Informative text
                 Text(
-                    text = "* Kami akan mengirimkan pesan kepada anda untuk mengatur atau mereset kata sandi baru anda",
+                    text = "* Kami akan mengirimkan pesan kepada anda untuk mengatur\natau mereset kata sandi baru anda",
                     color = Color.Red,
                     fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.Start)
@@ -109,17 +111,14 @@ fun ForgotPasswordScreen(navController: NavController) {
             }
 
             // "Lanjut" button at the bottom
-            Button(
+            TombolMasukkanKeranjang(
                 onClick = { /* Handle continue action */ },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+                text = "Lanjut",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(64.dp)
-                    .padding(bottom = 16.dp),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text("Lanjut", color = Color.White, fontSize = 16.sp)
-            }
+
+            )
+
         }
     }
 }

@@ -57,6 +57,18 @@ android {
 
 dependencies {
     implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // Jika menggunakan converter Gson (opsional)
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("androidx.core:core-ktx:1.12.0")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.5.0")
+    // LiveData
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.5.0") // Ini penting untuk observeAsState
+    implementation ("androidx.compose.ui:ui:1.5.0")
+    implementation ("androidx.compose.ui:ui-text:1.5.0")
+    implementation ("androidx.compose.material:material:1.5.0")
 
     implementation(libs.androidx.core.ktx)
 
@@ -87,6 +99,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Accompanist Pager dan Pager Indicator
+    implementation("com.google.accompanist:accompanist-pager:0.28.0") // Accompanist Pager
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Accompanist Pager Indicator
+    implementation ("androidx.compose.foundation:foundation:1.5.0")
+
 
     implementation("androidx.navigation:navigation-compose:2.7.0")
 

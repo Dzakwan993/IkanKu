@@ -10,7 +10,7 @@ class OrderViewModel : ViewModel() {
         Order(
             imageRes = R.drawable.ikan_nila,
             productName = "Ikan Nila",
-            variant = "Pilih Variasi Berat 1 Kg",
+            variant = "Berat 1 Kg",
             price = "Rp40.000",
             quantity = 1,
             status = OrderStatus.PAYMENT_REQUIRED
@@ -18,7 +18,7 @@ class OrderViewModel : ViewModel() {
         Order(
             imageRes = R.drawable.ikan_nila,
             productName = "Ikan Gurame",
-            variant = "Pilih Variasi Berat 1.5 Kg",
+            variant = "Berat 1.5 Kg",
             price = "Rp60.000",
             quantity = 3,
             status = OrderStatus.REJECTED

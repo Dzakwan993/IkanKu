@@ -1,6 +1,9 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
+
 import android.widget.Toast
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,11 +19,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,14 +60,15 @@ fun ConfirmationScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
@@ -84,11 +94,13 @@ fun ConfirmationScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Silakan masukkan kode 6 digit yang dikirimkan melalui SMS ke 6285274086648",
-                    fontSize = 14.sp,
+                    text = "Silakan masukkan kode 6 digit yang dikirimkan\nmelalui SMS ke 6285274086648",
+                    fontSize = 15.sp,
                     color = Color.Gray,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -119,13 +131,27 @@ fun ConfirmationScreen(navController: NavController) {
                             singleLine = true,
                             modifier = Modifier
                                 .size(50.dp)
-                                .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp))
-                                .padding(4.dp)
                                 .focusRequester(focusRequesters[index])
+
+                                .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(10.dp)),
+
                         )
+                        {
+                            // Placeholder untuk setiap input kode
+                            Text(
+                                text = "",
+                                fontSize = 20.sp,
+                                color = Color.Black,
+
+
+
+                            )
+                        }
+
                     }
                 }
             }
+        }
 
             Column(
                 modifier = Modifier
@@ -134,18 +160,33 @@ fun ConfirmationScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Dengan mengklik tombol \"Lanjut\", Anda menyetujui Kebijakan Privasi dan Ketentuan Penggunaan.",
+                    text = buildAnnotatedString {
+                        append("Dengan mengklik tombol ")
+                        append("\"Lanjut\", Anda\nmenyetujui ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Kebijakan Privasi")
+                        }
+                        append(" dan ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Ketentuan Penggunaan.")
+                        }
+                    },
                     color = Color.Gray,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+
+
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Button(
-                    onClick = {
-                        val verificationId = navController.previousBackStackEntry?.savedStateHandle?.get<String>("verificationId")
+
+                // Tombol Lanjut
+                TombolMasukkanKeranjang(
+                    onClick = { val verificationId = navController.previousBackStackEntry?.savedStateHandle?.get<String>("verificationId")
                         if (verificationId != null) {
                             verifyOtp(
                                 otpCode.joinToString(""),
@@ -155,20 +196,17 @@ fun ConfirmationScreen(navController: NavController) {
                             )
                         } else {
                             Toast.makeText(navController.context, "Verification ID tidak ditemukan", Toast.LENGTH_SHORT).show()
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+                        } },
+                    text = "Lanjut",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text("Verifikasi", color = Color.White, fontSize = 16.sp)
-                }
+
+                )
+
             }
         }
     }
-}
+
 
 fun verifyOtp(otpCode: String, verificationId: String, auth: FirebaseAuth, navController: NavController) {
     if (otpCode.length == 6) {

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ikanku.model.PesananSelesai
 import com.example.ikanku.R
-
 class LihatUlasanViewModel : ViewModel() {
     private val _selesaiList = MutableLiveData<List<PesananSelesai>>()
     val selesaiList: LiveData<List<PesananSelesai>> = _selesaiList
@@ -28,7 +27,8 @@ class LihatUlasanViewModel : ViewModel() {
                 imageResId = R.drawable.ikan_patin,
                 status = "Pesanan Selesai"
             )
-            // Add more completed orders if needed
+            // Tambahkan pesanan selesai lainnya jika diperlukan
         )
     }
 }
+

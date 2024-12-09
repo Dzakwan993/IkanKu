@@ -48,7 +48,7 @@ fun ProductScreen(viewModel: ProductViewModel = viewModel(), navController: NavC
 
     Scaffold(
         topBar = {
-            TopBarHanyaJudul(title = "Produk") {}
+            TopBarHanyaJudul(title = "Produk")
         },
         bottomBar = { BottomNavBarPenjual(navController = navController) }
     ) { innerPadding ->
