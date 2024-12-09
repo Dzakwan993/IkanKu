@@ -26,11 +26,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
+import com.example.ikanku.ui.components.AlertBottomSheet
 import com.example.ikanku.ui.components.TopBarWithCart
 import com.example.ikanku.ui.components.ProfileCard
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.OrderStatusSection
 import com.example.ikanku.viewmodel.ProfileViewModel
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,11 +70,41 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
                     text = "Pesanan Saya",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable {
+                            // Melakukan navigasi ke screen lain
+                            navController.navigate("pesanan_screen") // Ganti dengan route tujuan yang sesuai
+                        }
+                    ) {
+                        Text(
+                            text = "Lainnya",
+                            fontSize = 14.sp,
+
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            painter = painterResource(id = R.drawable.panah_kanan), // Ikon panah kanan
+                            contentDescription = null
+                        )
+
+                    }
+                }
+
 
                 // OrderStatusSection with data from ViewModel
                 OrderStatusSection(
@@ -110,7 +142,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(30.dp),
                     border = BorderStroke(1.dp, Color.Red)
                 ) {
                     Text("Logout", color = Color.Red, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -120,50 +152,23 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
 
         // BottomSheet untuk konfirmasi logout
         if (isBottomSheetVisible) {
-            ModalBottomSheet(
-                onDismissRequest = { isBottomSheetVisible = false },
-                sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            AlertBottomSheet(
+                isVisible = isBottomSheetVisible,
+                onDismiss = { isBottomSheetVisible = false },
+                imageResId = R.drawable.peringatan_pembatalan, // Gambar yang digunakan
+                alertText = "Apakah Anda yakin untuk logout?", // Tampilkan nama item yang dipilih
+                confirmButtonText = "Ya", // Teks tombol "Ya"
+                cancelButtonText = "Tidak", // Teks tombol "Tidak"
+                onConfirm = {
+                    // Logika konfirmasi
+                    isBottomSheetVisible = false
 
-                    Icon(
-                        painter = painterResource(id = R.drawable.peringatan_pembatalan),
-                        contentDescription = null,
-                        modifier = Modifier.size(48.dp)
-                    )
-                    Text(
-                        text = "Apakah Anda yakin ingin logout?",
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Button(
-                            onClick = {
-                                // Tambahkan logika logout di sini
-                                isBottomSheetVisible = false
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238))
-                        ) {
-                            Text("Ya", color = Color.White)
-                        }
-                        OutlinedButton(
-                            onClick = { isBottomSheetVisible = false }
-                        ) {
-                            Text("Tidak")
-                        }
-                    }
+                },
+                onCancel = {
+                    // Logika batal
+                    isBottomSheetVisible = false
                 }
-            }
+            )
         }
     }
 }
@@ -173,21 +178,28 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
 fun ProfileOptionCard(text: String, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp)
+            .height(56.dp)
             .clickable(onClick = onClick) // Tambahkan klik navigasi
     ) {
-        Box(
-            contentAlignment = Alignment.CenterStart,
-            modifier = Modifier.padding(16.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = text,
                 fontSize = 14.sp,
                 color = Color.Black
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.panah_kanan), // Ikon panah kanan
+                contentDescription = null
             )
         }
     }

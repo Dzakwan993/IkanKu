@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +10,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,104 +24,120 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.R
 import com.example.ikanku.model.Dikemas
-
 @Composable
-fun DikemasCard(dikemas: Dikemas) {
+fun DikemasCard(
+    dikemas: Dikemas,
+    onCancelClick: () -> Unit,
+
+    ) {
     Card(
+        shape = RoundedCornerShape(16.dp), // Disamakan dengan OrderCardDitolak
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+            .padding(top = 8.dp), // Disamakan dengan OrderCardDitolak
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp)
+                .padding(top = 4.dp) // Konsisten dengan OrderCardDitolak
         ) {
-            Row(
-                verticalAlignment = Alignment.Top
-            ) {
-                Image(
-                    painter = painterResource(id = dikemas.imageResId),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(RoundedCornerShape(50.dp))
+            Image(
+                painter = painterResource(id = dikemas.imageResId),
+                contentDescription = dikemas.name,
+                modifier = Modifier
+                    .size(64.dp) // Disamakan dengan OrderCardDitolak
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = dikemas.name,
+                    fontSize = 18.sp, // Disamakan
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black // Disamakan
                 )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Pilih Variasi Berat: ${dikemas.weightVariation}",
+                    fontSize = 14.sp, // Disamakan
+                    color = Color.DarkGray // Disamakan
+                )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Column(
-                    modifier = Modifier.weight(1f)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        fontSize = 18.sp,
-                        text = dikemas.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        text = "Total",
+                        fontSize = 16.sp, // Disamakan
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black // Disamakan
                     )
                     Text(
-                        fontSize = 14.sp,
-                        text = "Pilih Variasi Berat ${dikemas.weightVariation}",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Rp${dikemas.price}",
+                        fontSize = 16.sp, // Disamakan
+                        color = Color.Black // Disamakan
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            fontSize = 16.sp,
-                            text = "Rp${dikemas.price}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        Text(
-                            fontSize = 14.sp,
-                            text = "X${dikemas.quantity}",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
                 }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+
             }
 
-            Spacer(modifier = Modifier.height(25.dp))
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .padding(horizontal = 16.dp),
+           horizontalArrangement = Arrangement.SpaceBetween
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = onCancelClick,
+                modifier = Modifier
+                    .width(170.dp) // Tetap mempertahankan parameter asli
+                    .height(40.dp), // Tetap mempertahankan parameter asli
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Red,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(30.dp) // Disamakan dengan OrderCardDitolak
             ) {
-                Button(
-                    onClick = { /* Aksi Batal */ },
-                    modifier = Modifier
-                        .width(150.dp)
-                        .height(40.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Red,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(32.dp)
-                ) {
-                    Text(text = "Batal", fontSize = 15.sp)
-                }
-                Button(
-                    onClick = { /* Aksi Dikemas */ },
-                    modifier = Modifier
-                        .width(150.dp)
-                        .height(40.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                    shape = RoundedCornerShape(32.dp)
-                ) {
-                    Text(text = "Dikemas", fontSize = 15.sp, color = Color.White)
-                }
+                Text(text = "Batal", fontSize = 15.sp)
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+            OutlinedButton(
+                onClick = { /* Aksi Dikemas */ },
+                modifier = Modifier
+                    .width(170.dp) // Tetap mempertahankan parameter asli
+                    .height(40.dp), // Tetap mempertahankan parameter asli
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.Transparent, // Latar belakang transparan
+                    contentColor = Color.Black // Warna teks
+                ),
+                shape = RoundedCornerShape(30.dp),
+                border = BorderStroke(1.dp, Color.Black) // Garis tepi hitam
+            ) {
+                Text(text = "Dikemas", fontSize = 15.sp, color = Color.Black)
             }
         }
+
+
+//         COBA TAMBAH SINI
     }
 }
+
 
 
 @Preview(showBackground = true)
@@ -135,5 +153,7 @@ fun DikemasCardPreview() {
         status = "Pesanan Anda sedang dikemas*"
     )
 
-    DikemasCard(dikemas = sampleDikemas)
+    DikemasCard(dikemas = sampleDikemas,
+        onCancelClick = {}
+        )
 }

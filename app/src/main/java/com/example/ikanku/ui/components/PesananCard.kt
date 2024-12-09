@@ -139,16 +139,23 @@ fun PesananCard(
     }
 }
 
-//@Composable
-//@Preview(showBackground = true, )
-//fun PreviewOrderCard() {
-//    val previewViewModel = OrderRejectedViewModel()
-//    val sampleOrder = previewViewModel.rejectedOrders.firstOrNull() ?: return
-//    PesananCard(order = sampleOrder,
-//        buttonBiruText = "Tampil",
-//        onClickBiru = { /* Handle biru button action */ },
-//        buttonMerahText = "Batal",
-//        onClickMerah = { /* Handle merah button action */ },
-//
-//    )
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewPesananCard() {
+    val order = OrderDua(
+        idPesanan = 1,
+        namaProduk = "Ikan Nila",
+        hargaProduk = 25000,
+        dekripsiProduk = "Ikan nila segar kualitas terbaik",
+        fotoProduk = "https://example.com/ikan_nila.jpg", // Gambar bisa disesuaikan
+        kuantitasPembelian = 1
+    )
+
+    PesananCard(
+        order = order,
+        buttonBiruText = "Tambah ke Keranjang",
+        onClickBiru = { /* Aksi ketika tombol biru diklik */ },
+
+        onClickMerah = { /* Aksi ketika tombol merah diklik */ }
+    )
+}

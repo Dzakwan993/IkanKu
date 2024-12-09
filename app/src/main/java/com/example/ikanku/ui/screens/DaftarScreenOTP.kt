@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,9 +13,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,14 +42,15 @@ fun ConfirmationScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween // Menyebarkan konten di antara kolom
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Bagian atas dengan ikon kembali dan judul
@@ -72,11 +77,13 @@ fun ConfirmationScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Silakan masukkan kode 6 digit yang dikirimkan melalui SMS ke 6285274086648",
-                    fontSize = 14.sp,
+                    text = "Silakan masukkan kode 6 digit yang dikirimkan\nmelalui SMS ke 6285274086648",
+                    fontSize = 15.sp,
                     color = Color.Gray,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -90,7 +97,7 @@ fun ConfirmationScreen(navController: NavController) {
                         Box(
                             modifier = Modifier
                                 .size(50.dp)
-                                .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
+                                .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(10.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             // Placeholder untuk setiap input kode
@@ -113,26 +120,38 @@ fun ConfirmationScreen(navController: NavController) {
             ) {
                 // Kebijakan Privasi
                 Text(
-                    text = "Dengan mengklik tombol \"Lanjut\", Anda menyetujui Kebijakan Privasi dan Ketentuan Penggunaan.",
+                    text = buildAnnotatedString {
+                        append("Dengan mengklik tombol ")
+                        append("\"Lanjut\", Anda\nmenyetujui ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Kebijakan Privasi")
+                        }
+                        append(" dan ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Ketentuan Penggunaan.")
+                        }
+                    },
                     color = Color.Gray,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+
+
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Tombol Lanjut
-                Button(
-                    onClick = {navController.navigate("daftar_data")},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+                TombolMasukkanKeranjang(
+                    onClick = { navController.navigate("daftar_data") },
+                    text = "Lanjut",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text("Lanjut", color = Color.White, fontSize = 16.sp)
-                }
+
+                )
+
             }
         }
     }

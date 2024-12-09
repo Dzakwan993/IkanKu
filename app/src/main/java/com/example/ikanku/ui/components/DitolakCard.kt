@@ -3,6 +3,7 @@ package com.example.ikanku.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,13 +26,15 @@ fun OrderCardDitolak(order: Order) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(top = 8.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp)
+                .padding(top = 4.dp)
         ) {
             Image(
                 painter = painterResource(id = order.imageRes),
@@ -48,35 +51,59 @@ fun OrderCardDitolak(order: Order) {
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = order.variant,
+                    text = "Piih Variasi Berat: ${order.variant}",
                     fontSize = 14.sp,
                     color = Color.DarkGray
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = order.price,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
+                Row(
 
-                Spacer(modifier = Modifier.height(8.dp))
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                        .padding(bottom = 8.dp)
+                        ,
+
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Total",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = order.price,
+                        fontSize = 16.sp,
+
+                        color = Color.Black
+                    )
+                }
+
+
+                Spacer(modifier = Modifier.height(4.dp))
 
                 // Display the "Ditolak, Lihat Alasan" button
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
+
                     Button(
                         onClick = { /* Handle see reason action */ },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier.height(36.dp)
+                        shape = RoundedCornerShape(30.dp),
+                        modifier = Modifier.width(180.dp)
+
                     ) {
-                        Text("Ditolak, Lihat Alasan", color = Color.White)
+                        Text(
+                            "Ditolak, Lihat Alasan", color = Color.White,
+
+                        )
                     }
                 }
             }

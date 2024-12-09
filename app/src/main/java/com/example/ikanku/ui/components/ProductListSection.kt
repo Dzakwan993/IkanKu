@@ -29,12 +29,12 @@ fun ProductListSection(products: List<Product>, navController: NavController) {
             Button(
                 onClick = { showAllProducts = true },
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9D9D9)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
             ) {
-                Text("Lihat Lebih", color = Color.Gray)
+                Text("Lihat Lebih", color = Color(0xFF171A1F))
             }
         }
     }

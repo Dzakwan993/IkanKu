@@ -83,7 +83,9 @@ fun CardDuaPilihan(
         TombolMerahBiru(
             
             judulBiru = pilihanBiru,
-            judulMerah =pilihanMerah
+            judulMerah =pilihanMerah,
+            onBiruClick = {},
+            onMerahClick = {}
         )
 
         Spacer(modifier = Modifier.height(8.dp))

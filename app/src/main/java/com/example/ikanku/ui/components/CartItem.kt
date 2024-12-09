@@ -10,8 +10,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ikanku.R
-
     @Composable
     fun CartItem(
         name: String,
@@ -33,6 +34,9 @@ import com.example.ikanku.R
         onDecrease: () -> Unit,
         onDelete: () -> Unit
     ) {
+        var isBottomSheetVisible by remember { mutableStateOf(false) }
+        var selectedOrder by remember { mutableStateOf<String?>(null) }
+
         // Remember the checkbox state
         val isChecked = remember { mutableStateOf(false) }
 
@@ -42,7 +46,8 @@ import com.example.ikanku.R
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 // Top Row with Checkbox and Trash Icon
@@ -63,10 +68,13 @@ import com.example.ikanku.R
                         )
                     )
 
-
-
                     // Trash Icon
-                    IconButton(onClick = onDelete) {
+                    IconButton(
+                        onClick = {
+                            selectedOrder = name // Set the selected item name
+                            isBottomSheetVisible = true
+                        }
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.hapus), // Replace with your trash icon resource
                             contentDescription = "Delete item",
@@ -125,7 +133,28 @@ import com.example.ikanku.R
                 }
             }
         }
+
+        if (isBottomSheetVisible) {
+            AlertBottomSheet(
+                isVisible = isBottomSheetVisible,
+                onDismiss = { isBottomSheetVisible = false },
+                imageResId = R.drawable.peringatan_alamat, // Gambar yang digunakan
+                alertText = "Apakah Anda yakin ingin menghapus pesanan \"$selectedOrder\"?", // Tampilkan nama item yang dipilih
+                confirmButtonText = "Ya", // Teks tombol "Ya"
+                cancelButtonText = "Tidak", // Teks tombol "Tidak"
+                onConfirm = {
+                    // Logika konfirmasi
+                    isBottomSheetVisible = false
+                    onDelete() // Panggil fungsi onDelete ketika konfirmasi
+                },
+                onCancel = {
+                    // Logika batal
+                    isBottomSheetVisible = false
+                }
+            )
+        }
     }
+
 
 
 

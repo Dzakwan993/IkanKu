@@ -14,9 +14,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.model.Product
 import com.example.ikanku.R
 
@@ -82,4 +84,19 @@ fun ProductItemCard(product: Product, navController: NavController) {
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProductItemCardPreview() {
+    // Data dummy untuk preview
+    val product = Product(
+        imageRes = R.drawable.ikan_fire, // Ganti dengan resource gambar yang sesuai
+        name = "Gula Pasir",
+        price = "Rp 25.000",
+        rating = 4.5
+    )
+
+    // Gantikan dengan NavController yang sesuai untuk preview
+    ProductItemCard(product = product, navController = rememberNavController())
 }

@@ -34,7 +34,9 @@ fun SearchResultScreen(
             Text(
                 text = "Hasil Pencarian untuk: \"$query\"",
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp)
             )
             ProductListWithoutLiatLebihSection(products = viewModel.products, navController = navController)
         }

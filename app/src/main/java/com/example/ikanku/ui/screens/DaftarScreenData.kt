@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -50,14 +51,16 @@ fun CompleteDataScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 16.dp),
+
                 horizontalAlignment = Alignment.Start
             ) {
                 Row(
@@ -88,7 +91,7 @@ fun CompleteDataScreen(navController: NavController) {
                     onValueChange = { fullName = it },
                     placeholder = { Text("Nama lengkap", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
@@ -103,7 +106,7 @@ fun CompleteDataScreen(navController: NavController) {
                     onValueChange = { email = it },
                     placeholder = { Text("Email", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
@@ -122,7 +125,7 @@ fun CompleteDataScreen(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { showDistrictPicker = true },
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
@@ -149,7 +152,7 @@ fun CompleteDataScreen(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { if (selectedDistrict.isNotEmpty()) showPostalCodePicker = true },
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
@@ -175,7 +178,7 @@ fun CompleteDataScreen(navController: NavController) {
                     onValueChange = { address = it },
                     placeholder = { Text("Nama Jalan, Gedung, No. Rumah", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
@@ -185,17 +188,14 @@ fun CompleteDataScreen(navController: NavController) {
             }
 
             // Button at the bottom
-            Button(
-                onClick = {navController.navigate("beranda_screen")},
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+            TombolMasukkanKeranjang(
+                onClick = { navController.navigate("beranda_screen") },
+                text = "Daftar",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(64.dp)
-                    .padding(bottom = 16.dp),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text("Daftar", color = Color.White, fontSize = 16.sp)
-            }
+
+            )
+
         }
     }
 

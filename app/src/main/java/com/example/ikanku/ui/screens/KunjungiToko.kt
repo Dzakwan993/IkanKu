@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -76,23 +77,12 @@ fun StoreVisitScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Rating
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "Rating",
-                    tint = Color.Yellow,
-                    modifier = Modifier.size(20.dp)
+
+                InfoRow(
+                    iconRes = R.drawable.profil,
+                    text = "Ray Shandy Stefandy"
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "4.5",
-                    fontSize = 16.sp,
-                    color = Color.Black
-                )
-            }
+
 
             Divider(modifier = Modifier.padding(vertical = 16.dp))
 

@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.model.Dikirim
-
 @Composable
 fun DikirimCard(
     dikirim: Dikirim,
@@ -31,82 +30,76 @@ fun DikirimCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        shape = RoundedCornerShape(10.dp),
+            .padding(top = 8.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.Top
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp)
+                .padding(top = 4.dp)
         ) {
             Image(
                 painter = painterResource(id = dikirim.imageResId),
-                contentDescription = null,
+                contentDescription = dikirim.name,
                 modifier = Modifier
                     .size(64.dp)
-                    .clip(RoundedCornerShape(50.dp))
             )
-
             Spacer(modifier = Modifier.width(16.dp))
 
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    fontSize = 18.sp,
                     text = dikirim.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    fontSize = 16.sp,
-                    text = "Pilih Variasi Berat ${dikirim.weightVariation}",
-                    style = MaterialTheme.typography.bodyMedium
+                    text = "Pilih Variasi Berat: ${dikirim.weightVariation}",
+                    fontSize = 14.sp,
+                    color = Color.DarkGray
                 )
-
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
+                        text = "Total",
                         fontSize = 16.sp,
-                        text = "Rp${dikirim.price}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
                     )
-                    Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        fontSize = 14.sp,
-                        text = "X${dikirim.quantity}",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Rp${dikirim.price}",
+                        fontSize = 16.sp,
+                        color = Color.Black
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(
-                        onClick = {navController.navigate("detail_pengiriman")},
+                        onClick = { navController.navigate("detail_pengiriman") },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                        modifier = Modifier
-                            .border(1.dp, Color(0xFF177BCD), RoundedCornerShape(32.dp))
-                            .height(40.dp)
-                            .width(190.dp)
-                            .clip(RoundedCornerShape(32.dp))
+                        shape = RoundedCornerShape(30.dp),
+                        modifier = Modifier.width(180.dp)
                     ) {
                         Text(
-                            fontSize = 16.sp,
                             text = "Detail Pengiriman",
-                            color = Color.White,
-                            style = MaterialTheme.typography.bodySmall
+                            color = Color.White
                         )
                     }
                 }
@@ -114,6 +107,7 @@ fun DikirimCard(
         }
     }
 }
+
 
 
 

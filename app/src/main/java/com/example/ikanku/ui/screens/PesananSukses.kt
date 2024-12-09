@@ -3,6 +3,7 @@ package com.example.ikanku.ui.screens
 import TombolMasukkanKeranjang
 import android.icu.text.CaseMap.Title
 import android.icu.text.IDNA.Info
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,9 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,7 +55,7 @@ fun OrderSummaryScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            CustomTopAppBar(title = "Ringkasan Pemesanan", onBackClick = {})
+            CustomTopAppBar(title = "Ringkasan Pemesanan", onBackClick = {navController.popBackStack()})
         }
     ) { paddingValues ->
         Column(
@@ -63,6 +66,7 @@ fun OrderSummaryScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Card(
+                elevation = CardDefaults.cardElevation(8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
 
@@ -84,7 +88,7 @@ fun OrderSummaryScreen(navController: NavController) {
 
                         painter = painterResource(R.drawable.check_sukses),
                         contentDescription = null,
-                        modifier = Modifier.size(64.dp)
+                        modifier = Modifier.size(72.dp)
 
                     )
 
@@ -97,12 +101,13 @@ fun OrderSummaryScreen(navController: NavController) {
                         modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
                     )
 
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                    BoxWithoutArrow(
-                        title = "Silahkan cek pesanan anda",
-                        modifier = Modifier
-                        .padding(vertical = 8.dp)
-
+                    CustomButton(
+                        text = "Silahkan Cek Pesanan Anda",
+                        onClick = {
+                            navController.navigate("detail_pesanan")
+                        }
                     )
                     Spacer(modifier = Modifier.weight(1f))
 
@@ -123,6 +128,33 @@ fun OrderSummaryScreen(navController: NavController) {
         }
     }
 }
+
+
+@Composable
+fun CustomButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    OutlinedButton(
+        onClick = onClick,
+        border = BorderStroke(1.dp, Color(0xFF177BCD)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp) // Sesuaikan tinggi tombol
+            .padding(horizontal = 16.dp),
+
+        shape = RoundedCornerShape(16.dp), // Sudut membulat
+
+    ) {
+        Text(
+            text = text,
+            color = Color(0xFF177BCD),
+
+        )
+    }
+}
+
+
 
 
 @Composable
@@ -332,3 +364,15 @@ fun PreviewOrderSummaryScreen() {
     val navController = rememberNavController()
     OrderSummaryScreen(navController = navController)
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun TombolPreview() {
+    CustomButton(
+        onClick = { /* Navigasi atau aksi yang diinginkan */ },
+        text = "Silahkan Cek Pesanan Anda"
+    )
+
+}
+

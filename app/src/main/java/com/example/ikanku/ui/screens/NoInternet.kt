@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,15 +18,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
+import com.example.ikanku.ui.components.TopBarHanyaJudul
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoInternetScreen(navController: NavController) {
     Scaffold(
         topBar = {
-            CustomTopAppBar(
-                title = "", // Judul bisa disesuaikan jika diperlukan
-                onBackClick = { /* Handle back navigation if necessary */ }
+            TopBarHanyaJudul(
+                title = "Eror 404", // Judul bisa disesuaikan jika diperlukan
+
             )
         },
         bottomBar = { BottomNavBar(navController = navController) }
@@ -57,6 +59,7 @@ fun NoInternetScreen(navController: NavController) {
             )
         }
     }
+
 }
 
 @Preview(showBackground = true)

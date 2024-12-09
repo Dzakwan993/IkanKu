@@ -43,7 +43,7 @@ fun PromotionSection(promotions: List<Promotion>, navController: NavController) 
         }
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(
             text = "Promosi Spesial",
             fontSize = 18.sp,

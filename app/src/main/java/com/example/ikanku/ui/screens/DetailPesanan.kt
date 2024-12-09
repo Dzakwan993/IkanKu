@@ -28,21 +28,22 @@ fun DetailPesanan(navController: NavController) {
         topBar = {
             CustomTopAppBar(
                 title = "Pesanan",
-                onBackClick = { navController.popBackStack()}
+                onBackClick = { navController.popBackStack() }
             )
         },
-
     ) { innerPadding ->
-        Surface(
+        // Card wrapper dengan elevation dan bentuk rounded
+        Card(
+            elevation = CardDefaults.cardElevation(8.dp),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),
-            color = Color.White, // Warna latar belakang
-            shape = RoundedCornerShape(16.dp) // Sudut rounded 16 dp
+            shape = RoundedCornerShape(20.dp), // Sudut rounded untuk card
+            colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             ) {
                 // Alamat
                 Text(text = "Alamat", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(bottom = 4.dp))
@@ -77,7 +78,6 @@ fun DetailPesanan(navController: NavController) {
                         Text("Ikan Nila", fontWeight = FontWeight.SemiBold)
                         Text("Pilih Variasi Berat 1 Kg", color = Color.Gray, fontSize = 12.sp)
                         Spacer(modifier = Modifier.height(8.dp))
-
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -129,13 +129,14 @@ fun DetailPesanan(navController: NavController) {
                             .size(200.dp) // Ukuran gambar
                     )
                 }
-
             }
         }
-
-
     }
 }
+
+
+
+
 
 
 @Preview(showBackground = true)

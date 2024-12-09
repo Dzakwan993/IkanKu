@@ -7,12 +7,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -33,6 +37,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
+import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+
 
 @Composable
 fun CustomTopAppBar(
@@ -77,7 +86,7 @@ fun CustomTopAppBar(
 @Composable
 fun TopBarHanyaJudul(
     title: String,
-    onBackClick: () -> Unit
+
 ) {
     Surface(
         modifier = Modifier
@@ -117,7 +126,9 @@ fun TopBarWithCart(
         color = Color(0xFF177BCD)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
+                .background(Color(0xFF177BCD))
+                .padding(WindowInsets.statusBars.asPaddingValues()),
             contentAlignment = Alignment.Center
         ) {
             IconButton(
@@ -158,17 +169,23 @@ fun TopBarWithCart(
     }
 }
 
-
 @Composable
 fun TopBarLogin(
-    selectedTab: String = "Login",
+    selectedTab: String ,
     onTabSelected: (String) -> Unit = {},
     navController: NavController
 ) {
+    // Menyimpan nilai selectedTab menggunakan remember dan mutableStateOf
+//    val selectedTabState = remember { mutableStateOf(selectedTab) }
+
+
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .height(200.dp)
+            .background(Color(0xFF177BCD))
+            .padding(WindowInsets.statusBars.asPaddingValues()),
         shape = RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp),
         color = Color(0xFF177BCD)
     ) {
@@ -180,7 +197,7 @@ fun TopBarLogin(
             Image(
                 painter = painterResource(id = R.drawable.logo_ikanku), // Ganti dengan ikon ikan Anda
                 contentDescription = "Logo IkanKu",
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.sizeIn(minWidth = 80.dp, maxWidth = 120.dp, minHeight = 80.dp, maxHeight = 120.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -192,11 +209,18 @@ fun TopBarLogin(
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
+                // Tombol Login
                 TextButton(
+
                     onClick = {
+//                        selectedTabState.value = "Login" // Update
+
                         onTabSelected("Login")
                         navController.navigate("login_screen")
-                              },
+
+                        Log.d("TabState", "Tab Selected: Login")
+
+                    },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = if (selectedTab == "Login") Color.White else Color.LightGray
                     )
@@ -204,16 +228,20 @@ fun TopBarLogin(
                     Text(
                         text = "Login",
                         fontSize = 16.sp,
-                        fontWeight = if (selectedTab == "Login") FontWeight.Bold else FontWeight.Normal
+                        fontWeight = FontWeight.Bold
                     )
                 }
 
+//                Spacer(modifier = Modifier.width(8.dp))
+
+                // Tombol Daftar
                 TextButton(
                     onClick = {
+//                        selectedTabState.value = "Daftar" // Update selectedTab
                         onTabSelected("Daftar")
                         navController.navigate("register_screen")
-
-                              },
+                        Log.d("TabState", "Tab Selected: Daftar")
+                    },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = if (selectedTab == "Daftar") Color.White else Color.LightGray
                     )
@@ -221,7 +249,7 @@ fun TopBarLogin(
                     Text(
                         text = "Daftar",
                         fontSize = 16.sp,
-                        fontWeight = if (selectedTab == "Daftar") FontWeight.Bold else FontWeight.Normal
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
@@ -247,6 +275,7 @@ fun TopBarLogin(
         }
     }
 }
+
 
 
 
@@ -276,11 +305,7 @@ fun PreviewCustomTopAppBar() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewTopBarWithCart() {
-    val navController = rememberNavController()
-    TopBarWithCart(
-        title = "Profile",
-        onBackClick = { /* Handle back action */ },
-        onCartClick = { /* Handle cart action */ },
-        navController = navController
+    TopBarHanyaJudul(
+        title = "biji"
     )
 }

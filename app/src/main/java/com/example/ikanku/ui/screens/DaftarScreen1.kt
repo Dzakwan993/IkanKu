@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +18,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.ui.components.TopBarLogin
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.withStyle
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,15 +42,18 @@ fun RegisterScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+
             ) {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(48.dp))
 
                 Text(
                     text = "Masukkan Nomor Ponsel",
@@ -56,7 +64,7 @@ fun RegisterScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
                 // Input nomor ponsel
                 OutlinedTextField(
@@ -64,7 +72,7 @@ fun RegisterScreen(navController: NavController) {
                     onValueChange = { phoneNumber = it },
                     placeholder = { Text("Nomor Ponsel Ex 6282387436427", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
@@ -73,7 +81,7 @@ fun RegisterScreen(navController: NavController) {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Keterangan
                 Text(
@@ -92,17 +100,31 @@ fun RegisterScreen(navController: NavController) {
             ) {
                 // Kebijakan Privasi
                 Text(
-                    text = "Dengan mengklik tombol \"Lanjut\", Anda menyetujui Kebijakan Privasi dan Ketentuan Penggunaan.",
+                    text = buildAnnotatedString {
+                        append("Dengan mengklik tombol ")
+                        append("\"Lanjut\", Anda\nmenyetujui ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Kebijakan Privasi")
+                        }
+                        append(" dan ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Ketentuan Penggunaan.")
+                        }
+                    },
                     color = Color.Gray,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+
                 )
+
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Tombol Lanjut
-                Button(
+                TombolMasukkanKeranjang(
                     onClick = {
                         if (phoneNumber.isNotEmpty() && isPhoneNumberValid) {
                             // Navigate to the next screen if phone number is valid
@@ -111,14 +133,12 @@ fun RegisterScreen(navController: NavController) {
                             // Show error message
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+                    text = "Lanjut",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text("Lanjut", color = Color.White, fontSize = 16.sp)
-                }
+
+                )
+
             }
         }
     }

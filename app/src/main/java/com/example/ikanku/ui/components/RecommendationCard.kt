@@ -32,7 +32,11 @@ fun RecommendationCard(recommendation: Recommendation, navController: NavControl
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier.size(width = 160.dp, height = 200.dp),
+        modifier = Modifier
+            .size(width = 160.dp, height = 200.dp)
+
+            .fillMaxWidth()
+           ,
         elevation = CardDefaults.cardElevation(8.dp),
         onClick = {
             // Navigasi ke halaman Kategori setelah kategori diklik
@@ -64,7 +68,7 @@ fun RecommendationCard(recommendation: Recommendation, navController: NavControl
                 fontSize = 12.sp,
                 color = Color.Gray
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

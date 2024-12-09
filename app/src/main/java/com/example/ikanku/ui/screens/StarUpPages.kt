@@ -4,6 +4,9 @@ import Rekomendasi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+
+
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -29,25 +32,21 @@ import com.example.ikanku.R
 import com.example.ikanku.model.CartItemModel
 import com.example.ikanku.viewmodel.BerandaViewModel
 import com.example.ikanku.viewmodel.ShoppingCartViewModel
-
 @Composable
 fun StartupScreen(
-    onWebsiteClick:  () -> Unit = {},
+    onWebsiteClick: () -> Unit = {},
     onLoginClick: () -> Unit = {}
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF177BCD))
-            .padding(horizontal = 32.dp), // General padding for screen edges
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween // Arrange items with space between them
+            .padding(horizontal = 16.dp) // Padding for screen edges
     ) {
-        Spacer(modifier = Modifier.height(48.dp)) // Optional top spacer
-
-        // Logo and App Name
+        // Logo Column in the center of the screen
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.align(Alignment.Center) // Center logo in the screen
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo_ikanku),
@@ -57,14 +56,6 @@ fun StartupScreen(
             )
 
 
-        }
-
-        // Buttons
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(bottom = 16.dp)
-        ) {
-
 
             Text(
                 text = "Hidup lebih sehat dengan ikan segar di setiap santapan",
@@ -72,13 +63,19 @@ fun StartupScreen(
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+        // Buttons Column at the bottom of the screen
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .align(Alignment.BottomCenter) // Align buttons to the bottom
+                .padding(bottom = 32.dp) // Padding from the bottom edge
+        ) {
             Button(
                 onClick = onWebsiteClick,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(30.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
@@ -93,12 +90,12 @@ fun StartupScreen(
                 Text(text = "Jelajahi Website kami", color = Color.Black)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = onLoginClick,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(30.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
@@ -106,10 +103,10 @@ fun StartupScreen(
                 Text(text = "Masuk", color = Color.Black)
             }
         }
-
-
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

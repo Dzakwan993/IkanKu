@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,20 +18,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.TopBarLogin
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
     var phoneNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var selectedTab by remember { mutableStateOf("Login") }
 
     Scaffold(
         topBar = {
             TopBarLogin(
-                selectedTab = "login",
+                selectedTab = "Login",
                 onTabSelected = { /* Handle tab selection */ },
                 navController = navController
             )
@@ -39,10 +39,10 @@ fun LoginScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues), // Gunakan padding langsung dari Scaffold
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(56.dp))
 
             // Input fields
             OutlinedTextField(
@@ -51,8 +51,8 @@ fun LoginScreen(navController: NavController) {
                 placeholder = { Text("Nomor Ponsel Ex 081234567891", color = Color.Gray) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                shape = RoundedCornerShape(16.dp),
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(10.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color(0xFFE0E0E0),
                     focusedBorderColor = Color.Transparent,
@@ -68,8 +68,8 @@ fun LoginScreen(navController: NavController) {
                 placeholder = { Text("Kata sandi", color = Color.Gray) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                shape = RoundedCornerShape(16.dp),
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(10.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color(0xFFE0E0E0),
                     focusedBorderColor = Color.Transparent,
@@ -82,39 +82,36 @@ fun LoginScreen(navController: NavController) {
             // Forgot password
             Text(
                 text = "Lupa kata sandi",
-                color = Color(0xFF177BCD),
-                fontWeight = FontWeight.Bold,
+
+                color = Color.Black,
+
                 modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 32.dp)
-                    .clickable{
+                    .align(Alignment.Start)
+                    .padding(start = 16.dp)
+                    .clickable {
                         navController.navigate("lupa_sandi_pembeli")
                     }
+                    .padding(start = 8.dp)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Login Button
-            Button(
+            TombolMasukkanKeranjang(
                 onClick = {
                     if (phoneNumber == "081234567891" && password == "admin") {
-                        // Navigate to TokoSayaScreen if credentials are valid
                         navController.navigate("toko_saya_screen")
                     } else {
-                        // Navigate to StartupScreen if credentials are invalid
                         navController.navigate("startup_screen")
                     }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+                text = "Login",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text("Login", color = Color.White, fontSize = 16.sp)
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            )
+
+
 
             Text(
                 text = "Atau",
@@ -123,19 +120,18 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            // Google Login Button
             OutlinedButton(
                 onClick = { /* Handle Google login */ },
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 16.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.google_logo), // Ikon Google dari drawable
+                    painter = painterResource(id = R.drawable.google_logo),
                     contentDescription = "Google Icon",
                     tint = Color.Unspecified
                 )
@@ -146,5 +142,11 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun LoginPreview() {
+    val navController = rememberNavController()
+    LoginScreen(navController)
+}
 
 

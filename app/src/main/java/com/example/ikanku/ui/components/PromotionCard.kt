@@ -14,9 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.ikanku.R
 import com.example.ikanku.model.Promotion
 
 @Composable
@@ -66,7 +69,8 @@ fun PromotionCard(imageRes: Int, title: String, discount: String,  navController
             // Tombol "Beli Sekarang"
             Button(
                 onClick = {navController.navigate("detail_produk") },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
@@ -75,4 +79,17 @@ fun PromotionCard(imageRes: Int, title: String, discount: String,  navController
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PromotionCardPreview() {
+    val navController = rememberNavController()
+
+    PromotionCard(
+        discount = "40%",
+        imageRes = R.drawable.ikan_angel,
+        navController =navController,
+        title = "Yei"
+    )
 }

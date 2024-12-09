@@ -31,7 +31,8 @@ fun OrderStatusSection(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(vertical = 8.dp)
+            ,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         orderStatusItems.zip(counts).forEach { (item, count) ->
@@ -72,7 +73,7 @@ fun OrderStatusCard(
                 .fillMaxWidth()
                 .height(80.dp)
                 .clickable { onClick() }, // Tambahkan klik
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(
@@ -105,6 +106,7 @@ fun OrderStatusCard(
                     .offset(x = 8.dp, y = (-8).dp)
             ) {
                 Card(
+
                     shape = RoundedCornerShape(50),
                     colors = CardDefaults.cardColors(containerColor = Color.Red),
                     modifier = Modifier
@@ -115,7 +117,7 @@ fun OrderStatusCard(
                         text = count.toString(),
                         color = Color.White,
                         fontSize = 12.sp,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        modifier = Modifier.padding(top = 5.dp, start = 8.dp),
                         maxLines = 1
                     )
                 }
@@ -135,7 +137,7 @@ fun OrderStatusRowPreview() {
         OrderStatusItem("Dikemas", R.drawable.dikemas),
         OrderStatusItem("Dikirim", R.drawable.dikirim),
         OrderStatusItem("Selesai", R.drawable.pesanan_selesai),
-        OrderStatusItem("Ditolak", R.drawable.pesanan_ditolak)
+
     )
     val sampleCounts = listOf(3, 0, 5, 1, 2) // Example counts
     OrderStatusSection(orderStatusItems = sampleStatusItems, counts = sampleCounts,navController = navController )

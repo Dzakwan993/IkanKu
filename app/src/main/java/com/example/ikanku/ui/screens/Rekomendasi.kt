@@ -24,7 +24,7 @@ fun Rekomendasi(viewModel: BerandaViewModel = viewModel(), navController: NavCon
         topBar = {
             TopBarWithCart(
                 title = "Rekomendasi",
-                onBackClick = { /* Handle back navigation here */ },
+                onBackClick = { navController.popBackStack() },
                 onCartClick = { /* Handle cart click */ },
                 navController = navController
             )
@@ -35,7 +35,9 @@ fun Rekomendasi(viewModel: BerandaViewModel = viewModel(), navController: NavCon
                 columns = GridCells.Fixed(2), // Two columns in the grid
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding(16.dp),
+                    .padding(vertical = 16.dp)
+                    .padding(horizontal = 24.dp),
+
                 horizontalArrangement = Arrangement.spacedBy(16.dp), // Space between columns
                 verticalArrangement = Arrangement.spacedBy(16.dp)// Adjust padding as needed
             ) {

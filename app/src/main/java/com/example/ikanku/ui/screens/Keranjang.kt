@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -16,14 +17,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.ikanku.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewModel()) {
+fun ShoppingCartScreenWithCustomAppBar(
+    navController: NavController,
+    viewModel: ShoppingCartViewModel = viewModel()) {
     Scaffold(
         topBar = {
-            CustomTopAppBar(title = "Keranjang ", onBackClick = {}) // Using CustomTopAppBar
+            CustomTopAppBar(title = "Keranjang ", onBackClick = { navController.popBackStack()}) // Using CustomTopAppBar
         }
     ) { paddingValues ->
         Column(
@@ -34,6 +38,7 @@ fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewMo
             LazyColumn(
                 modifier = Modifier
                     .weight(1F) // This allows the LazyColumn to take up available space
+
             ) {
                 itemsIndexed(viewModel.cartItems) { index, item ->
                     CartItem(
@@ -49,16 +54,10 @@ fun ShoppingCartScreenWithCustomAppBar(viewModel: ShoppingCartViewModel = viewMo
                 }
             }
 
-            Button(
-                onClick = { /* TODO: Add functionality for buying */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A73E8))
-            ) {
-                Text("Selanjutnya", color = Color.White, fontSize = 16.sp)
-            }
+            TombolMasukkanKeranjang(
+                text = "Beli Sekarang",
+                onClick = {}
+            )
         }
     }
 }
@@ -72,5 +71,5 @@ fun PreviewShoppingCartScreenWithCustomAppBar() {
             CartItemModel("Ikan Salmon", "300g", "Rp 75.000", R.drawable.ikan_patin, 2)
         )
     }
-    ShoppingCartScreenWithCustomAppBar(viewModel = viewModel)
+//    ShoppingCartScreenWithCustomAppBar(navController = navController, viewModel = viewModel, )
 }

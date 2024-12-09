@@ -19,7 +19,9 @@ import com.example.ikanku.ui.screens.TotalSection
 @Composable
 fun TombolMerahBiru(
     judulBiru: String,
-    judulMerah: String
+    judulMerah: String,
+    onBiruClick: () -> Unit,
+    onMerahClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -30,7 +32,7 @@ fun TombolMerahBiru(
     ) {
         Button(
             elevation = ButtonDefaults.buttonElevation(8.dp),
-            onClick = { /* Aksi batal */ },
+            onClick = onMerahClick,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF3848)),
             modifier = Modifier.weight(1f)
         ) {
@@ -45,7 +47,7 @@ fun TombolMerahBiru(
 
         Button(
             elevation = ButtonDefaults.buttonElevation(8.dp),
-            onClick = { /* Aksi buat pesanan */ },
+            onClick = onBiruClick,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
             modifier = Modifier.weight(1f)
         ) {
@@ -62,7 +64,9 @@ fun PreviewAddress() {
 
     TombolMerahBiru(
         judulBiru = "Terima" ,
-        judulMerah ="Tolak"
+        judulMerah ="Tolak",
+        onMerahClick = {},
+        onBiruClick = {}
     )
 
 }
