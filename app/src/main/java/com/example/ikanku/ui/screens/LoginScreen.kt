@@ -1,6 +1,7 @@
 package com.example.ikanku.ui.screens
 
 import RetrofitInstance.apiService
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -58,17 +59,18 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 16.dp), // Padding global untuk seluruh konten
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(56.dp))
 
+            // Input Nomor Telepon
             OutlinedTextField(
                 value = phoneNumber,
                 onValueChange = { phoneNumber = it },
                 placeholder = { Text("No Ponsel (e.g. +6281234567891)", color = Color.Gray) },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(10.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color(0xFFE0E0E0),
                     focusedBorderColor = Color.Transparent,
@@ -78,12 +80,13 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Input Kata Sandi
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 placeholder = { Text("Kata Sandi", color = Color.Gray) },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(10.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color(0xFFE0E0E0),
                     focusedBorderColor = Color.Transparent,
@@ -93,18 +96,20 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Lupa Kata Sandi
             Text(
                 text = "Lupa kata sandi?",
                 color = Color.Black,
                 modifier = Modifier
-                    .align(Alignment.End)
+                    .align(Alignment.Start)
                     .clickable { navController.navigate("lupa_sandi_pembeli") }
                     .padding(vertical = 8.dp)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
+            // Tombol Login
+            TombolMasukkanKeranjang(
                 onClick = {
                     if (phoneNumber.isNotEmpty() && password.isNotEmpty()) {
                         loginViewModel.login(
@@ -134,15 +139,13 @@ fun LoginScreen(navController: NavController) {
                         loginViewModel.setErrorMessage("Harap isi nomor ponsel dan kata sandi!")
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text("Login")
-            }
+                text = "Login",
+                modifier = Modifier.fillMaxWidth()
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Text Separator
             Text(
                 text = "Atau",
                 color = Color.Gray,
@@ -150,8 +153,9 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // Tombol Login Google
             OutlinedButton(
                 onClick = { /* Handle Google login */ },
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray),
@@ -164,21 +168,22 @@ fun LoginScreen(navController: NavController) {
                     tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Login dengan Google", color = Color.Gray)
+                Text("Login dengan Google")
             }
-        }
-    }
 
-    LaunchedEffect(loginStatus) {
-        when (loginStatus) {
-            is LoginViewModel.LoginStatus.Error -> {
-                val errorMessage = (loginStatus as LoginViewModel.LoginStatus.Error).message
-                snackbarHostState.showSnackbar("Login Gagal: $errorMessage")
+            // Menangani status login
+            LaunchedEffect(loginStatus) {
+                when (loginStatus) {
+                    is LoginViewModel.LoginStatus.Error -> {
+                        val errorMessage = (loginStatus as LoginViewModel.LoginStatus.Error).message
+                        snackbarHostState.showSnackbar("Login Gagal: $errorMessage")
+                    }
+                    is LoginViewModel.LoginStatus.Loading -> {
+                        snackbarHostState.showSnackbar("Sedang Memproses...")
+                    }
+                    else -> Unit
+                }
             }
-            is LoginViewModel.LoginStatus.Loading -> {
-                snackbarHostState.showSnackbar("Sedang Memproses...")
-            }
-            else -> {}
         }
     }
 }
