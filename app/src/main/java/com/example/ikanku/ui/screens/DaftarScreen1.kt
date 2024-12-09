@@ -1,4 +1,5 @@
-package com.example.ikanku.ui.screens
+    package com.example.ikanku.ui.screens
+
 
 import TombolMasukkanKeranjang
 import androidx.compose.foundation.layout.*
@@ -21,13 +22,23 @@ import com.example.ikanku.ui.components.TopBarLogin
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.withStyle
+import android.widget.Toast
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun RegisterScreen(navController: NavController) {
-    var phoneNumber by remember { mutableStateOf("") } // State untuk menyimpan input nomor ponsel
-    val isPhoneNumberValid = phoneNumber.length == 12 // Simple validation for phone number length
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun RegisterScreen(navController: NavController) {
+        var phoneNumber by remember { mutableStateOf("") }
+        val formattedPhoneNumber = formatPhoneNumber(phoneNumber) // Format nomor ponsel saat diinput
+        // Validasi nomor ponsel (dimulai dengan +62 atau 62 dan panjangnya lebih dari 9 karakter)
+        val isPhoneNumberValid = (formattedPhoneNumber.startsWith("+62") || formattedPhoneNumber.startsWith("62")) && formattedPhoneNumber.length >= 12
+        val auth = FirebaseAuth.getInstance()
+
 
     Scaffold(
         topBar = {
@@ -70,7 +81,7 @@ fun RegisterScreen(navController: NavController) {
                 OutlinedTextField(
                     value = phoneNumber,
                     onValueChange = { phoneNumber = it },
-                    placeholder = { Text("Nomor Ponsel Ex 6282387436427", color = Color.Gray) },
+                    placeholder = { Text("Nomor Ponsel Cth +6282387436427", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -89,15 +100,12 @@ fun RegisterScreen(navController: NavController) {
                     color = Color.Red,
                     fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.Start)
+
+
                 )
             }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
+
                 // Kebijakan Privasi
                 Text(
                     text = buildAnnotatedString {
@@ -126,11 +134,11 @@ fun RegisterScreen(navController: NavController) {
                 // Tombol Lanjut
                 TombolMasukkanKeranjang(
                     onClick = {
-                        if (phoneNumber.isNotEmpty() && isPhoneNumberValid) {
-                            // Navigate to the next screen if phone number is valid
-                            navController.navigate("daftar_otp")
+                        if (isPhoneNumberValid) {
+                            sendVerificationCode(formattedPhoneNumber, auth, navController)
                         } else {
-                            // Show error message
+                            // Show error message if phone number is invalid
+                            Toast.makeText(navController.context, "Nomor telepon tidak valid", Toast.LENGTH_SHORT).show()
                         }
                     },
                     text = "Lanjut",
@@ -142,12 +150,65 @@ fun RegisterScreen(navController: NavController) {
             }
         }
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun RegisterScreenPreview() {
-    val navController = rememberNavController() // Use rememberNavController for preview
-    RegisterScreen(navController = navController)
-}
+    fun formatPhoneNumber(phoneNumber: String): String {
+        // Menghapus angka 0 di depan dan menggantinya dengan +62
+        return when {
+            phoneNumber.startsWith("08") -> "+62" + phoneNumber.substring(1)
+            phoneNumber.startsWith("62") -> "+" + phoneNumber // Menangani nomor yang dimulai dengan 62
+            else -> phoneNumber // Jika nomor sudah dalam format yang benar, tidak perlu diubah
+        }
+    }
+
+
+
+    fun sendVerificationCode(phoneNumber: String, auth: FirebaseAuth, navController: NavController) {
+        val formattedPhoneNumber = formatPhoneNumber(phoneNumber)
+        val phoneAuthProvider = PhoneAuthProvider.getInstance(auth)
+
+        val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                // Autentikasi berhasil, lanjutkan ke halaman OTP
+                navController.navigate("daftar_otp")
+            }
+
+            override fun onVerificationFailed(exception: FirebaseException) {
+                Toast.makeText(navController.context, "Verifikasi Gagal: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onCodeSent(
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                // Simpan verificationId untuk digunakan saat verifikasi OTP
+                navController.currentBackStackEntry?.savedStateHandle?.set("verificationId", verificationId)
+                navController.navigate("daftar_otp")
+            }
+        }
+
+        phoneAuthProvider.verifyPhoneNumber(
+            formattedPhoneNumber, // Nomor telepon yang diformat
+            60, // Timeout dalam detik
+            java.util.concurrent.TimeUnit.SECONDS,
+            navController.context as android.app.Activity, // Aktivitas yang aktif
+            callbacks // Pass the callback instance here
+        )
+    }
+
+
+
+    @Preview(showBackground = true)
+    @Composable
+    fun RegisterScreenPreviewWithoutNav() {
+        MaterialTheme {
+            // Render RegisterScreen tanpa menggunakan navController
+            RegisterScreen(navController = rememberNavController())
+        }
+    }
+
+
+
+
+
+
 
