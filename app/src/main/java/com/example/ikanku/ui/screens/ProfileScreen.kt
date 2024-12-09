@@ -30,13 +30,17 @@ import com.example.ikanku.ui.components.TopBarWithCart
 import com.example.ikanku.ui.components.ProfileCard
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.OrderStatusSection
+import com.example.ikanku.utils.SharedPreferencesHelper
 import com.example.ikanku.viewmodel.ProfileViewModel
+import androidx.compose.ui.platform.LocalContext
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavController) {
     var isBottomSheetVisible by remember { mutableStateOf(false) } // State untuk BottomSheet
-
+    val context = LocalContext.current // Mendapatkan context dari LocalContext
     Scaffold(
         topBar = {
             TopBarWithCart(
@@ -105,7 +109,9 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
 
                 // Logout button
                 OutlinedButton(
-                    onClick = { isBottomSheetVisible = true }, // Tampilkan BottomSheet
+                    onClick = {
+                        isBottomSheetVisible = true // Tampilkan BottomSheet untuk konfirmasi logout
+                    },
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -119,6 +125,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
         }
 
         // BottomSheet untuk konfirmasi logout
+        // BottomSheet untuk konfirmasi logout
         if (isBottomSheetVisible) {
             ModalBottomSheet(
                 onDismissRequest = { isBottomSheetVisible = false },
@@ -130,12 +137,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.peringatan_pembatalan),
-                        contentDescription = null,
-                        modifier = Modifier.size(48.dp)
-                    )
+                    // Konfirmasi logout
                     Text(
                         text = "Apakah Anda yakin ingin logout?",
                         style = MaterialTheme.typography.bodyLarge,
@@ -143,28 +145,41 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
+
+                    // Tombol Logout
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
+                        // Tombol Ya (Logout)
                         Button(
                             onClick = {
-                                // Tambahkan logika logout di sini
+                                SharedPreferencesHelper.logout(context) // Hapus data login
+                                navController.navigate("login_screen") { popUpTo("login_screen") { inclusive = true } }
                                 isBottomSheetVisible = false
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238))
                         ) {
                             Text("Ya", color = Color.White)
                         }
+
+                        // Tombol Tidak (Tutup BottomSheet)
                         OutlinedButton(
-                            onClick = { isBottomSheetVisible = false }
+                            onClick = { isBottomSheetVisible = false },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            border = BorderStroke(1.dp, Color.Red)
                         ) {
-                            Text("Tidak")
+                            Text("Tidak", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
         }
+
     }
 }
 

@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 
 
@@ -78,7 +79,7 @@ fun TopBar(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarWithBackIcon() {
+fun TopBarWithBackIcon(navController: NavController) {
     var searchText by remember { mutableStateOf("") }
 
     Column(
@@ -131,6 +132,7 @@ fun TopBarWithBackIcon() {
 @Preview(showBackground = true)
 @Composable
 fun TopBarWithBackIconPreview() {
-    TopBarWithBackIcon()
+    val navController = rememberNavController()
+    TopBarWithBackIcon(navController = navController)
 }
 

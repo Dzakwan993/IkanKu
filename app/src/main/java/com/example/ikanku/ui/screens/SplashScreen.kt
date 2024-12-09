@@ -12,17 +12,45 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.ikanku.R
+import com.example.ikanku.utils.SharedPreferencesHelper
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(Unit) {
-        delay(1500) // Tunggu 3 detik
-        navController.navigate("login_screen") {
-            popUpTo("splash_screen") { inclusive = true }
+        delay(1500) // Tunggu 1.5 detik
+
+        // Periksa status login
+        val isUserLoggedIn = SharedPreferencesHelper.isUserLoggedIn(navController.context)
+        val userType = SharedPreferencesHelper.getUserType(navController.context)
+
+        // Navigasi sesuai status login
+        if (isUserLoggedIn) {
+            when (userType) {
+                "pembeli" -> {
+                    navController.navigate("beranda_screen") {
+                        popUpTo(0) { inclusive = true } // Hapus semua stack sebelumnya
+                    }
+                }
+                "toko" -> {
+                    navController.navigate("toko_saya_screen") {
+                        popUpTo(0) { inclusive = true } // Hapus semua stack sebelumnya
+                    }
+                }
+                else -> {
+                    navController.navigate("login_screen") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+        } else {
+            navController.navigate("login_screen") {
+                popUpTo(0) { inclusive = true }
+            }
         }
     }
 
+    // UI SplashScreen
     Box(
         modifier = Modifier
             .fillMaxSize()

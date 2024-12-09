@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import RetrofitInstance.apiService
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -18,7 +20,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.ikanku.R
+import com.example.ikanku.model.Pembeli
+import com.example.ikanku.model.Toko
 import com.example.ikanku.ui.components.TopBarLogin
+import com.example.ikanku.utils.SharedPreferencesHelper
+import com.example.ikanku.viewmodel.LoginViewModel
+import com.example.ikanku.viewmodel.LoginViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,14 +33,13 @@ fun LoginScreen(navController: NavController) {
     var phoneNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    // Snackbar state
     val snackbarHostState = remember { SnackbarHostState() }
+    val loginViewModel: LoginViewModel = viewModel(
+        factory = LoginViewModelFactory(apiService)
+    )
+    val loginStatus by loginViewModel.loginStatus.collectAsState()
 
-    // Mendapatkan instance LoginViewModel
-    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory())
-
-    // Mengambil status login dari ViewModel
-    val loginStatus = loginViewModel.loginStatus.value
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -108,15 +114,40 @@ fun LoginScreen(navController: NavController) {
             // Login Button
             Button(
                 onClick = {
-                    loginViewModel.login(phoneNumber, password)
+                    if (phoneNumber.isNotEmpty() && password.isNotEmpty()) {
+                        loginViewModel.login(
+                            phoneNumber = phoneNumber,
+                            password = password,
+                            onSuccess = { user ->
+                                if (user is Toko) {
+                                    SharedPreferencesHelper.saveUser(context, "toko", user)
+                                    navController.navigate("toko_saya_screen") {
+                                        popUpTo("login_screen") { inclusive = true } // Hapus login_screen dari stack
+                                    }
+                                } else if (user is Pembeli) {
+                                    SharedPreferencesHelper.saveUser(context, "pembeli", user)
+                                    navController.navigate("beranda_screen") {
+                                        popUpTo("login_screen") { inclusive = true } // Hapus login_screen dari stack
+                                    }
+                                }
+                            },
+                            onError = { errorMessage ->
+                                loginViewModel.setErrorMessage(errorMessage) // Atur error message di ViewModel
+                            }
+                        )
+                    } else {
+                        loginViewModel.setErrorMessage("Harap isi nomor ponsel dan kata sandi!")
+                    }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF177BCD) // Ganti warna tombol di sini
+                ),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text("Login", color = Color.White, fontSize = 16.sp)
+                Text("Login")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -147,26 +178,21 @@ fun LoginScreen(navController: NavController) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Login dengan Google", color = Color.Gray)
             }
+        }
+    }
 
-            // Tampilkan pesan status login
-            when (loginStatus) {
-                is LoginViewModel.LoginStatus.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                }
-                is LoginViewModel.LoginStatus.Success -> {
-                    // Berhasil login, pindah ke halaman berikutnya
-                    navController.navigate("beranda_screen")
-                    LaunchedEffect(key1 = Unit) {
-                        snackbarHostState.showSnackbar("Login Berhasil!")
-                    }
-                }
-                is LoginViewModel.LoginStatus.Error -> {
-                    LaunchedEffect(key1 = loginStatus.message) {
-                        snackbarHostState.showSnackbar("Login Gagal: ${loginStatus.message}")
-                    }
-                }
-                else -> {}
+    // Menangani status login
+    LaunchedEffect(loginStatus) {
+        when (loginStatus) {
+            is LoginViewModel.LoginStatus.Error -> {
+                val errorMessage = (loginStatus as LoginViewModel.LoginStatus.Error).message
+                snackbarHostState.showSnackbar("Login Gagal: $errorMessage")
             }
+            is LoginViewModel.LoginStatus.Loading -> {
+                snackbarHostState.showSnackbar("Sedang Memproses...")
+            }
+            else -> {}
         }
     }
 }
+

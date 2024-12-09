@@ -76,6 +76,8 @@ dependencies {
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth:23.1.0") // Pastikan versi ini digunakan
+    implementation("com.google.android.gms:play-services-auth:20.0.1") // Untuk Google Sign-In
+
 
     // Testing
     testImplementation(libs.junit)
@@ -94,3 +96,4 @@ dependencies {
 
 
 }
+

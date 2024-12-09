@@ -2,6 +2,7 @@ package com.example.ikanku.network
 
 import com.example.ikanku.model.Kecamatan
 import com.example.ikanku.model.KodePos
+import com.example.ikanku.model.LoginResponse
 import com.example.ikanku.model.Pembeli
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -15,8 +16,7 @@ interface ApiService {
     suspend fun registerUser(@Body userData: Map<String, String>): Response<ResponseBody>
 
     @POST("api/pembeli/login")
-    suspend fun loginUser(@Body credentials: Map<String, String>): Response<Pembeli>
-
+    suspend fun loginUser(@Body credentials: Map<String, String>): Response<LoginResponse>
 
     @GET("api/kecamatan")
     suspend fun getKecamatan(): Response<List<Kecamatan>>
