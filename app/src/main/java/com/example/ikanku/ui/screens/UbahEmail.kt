@@ -30,38 +30,55 @@ fun ChangeEmailScreen(navController: NavController) {
             )
         }
     ) { paddingValues ->
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                ,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
+            Card(
+                elevation = CardDefaults.cardElevation(8.dp), // Memberikan elevation
+                shape = RoundedCornerShape(16.dp), // Opsional, untuk sudut membulat
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .padding(horizontal = 16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                )
+            ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
-                    .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(16.dp))
-                    .padding(16.dp),
+                    .background(Color.White, shape = RoundedCornerShape(16.dp))
+                    .padding(horizontal = 8.dp)
+                    .padding(vertical = 8.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
                     text = "Email Baru",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier.padding(start = 8.dp)
+
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
                     placeholder = { Text("Masukkan email baru", color = Color.Gray) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = Color.White,
+                        containerColor = Color(0xFFE0E0E0),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
                     )
@@ -75,49 +92,35 @@ fun ChangeEmailScreen(navController: NavController) {
                     Checkbox(
                         checked = isChecked,
                         onCheckedChange = { isChecked = it },
-                        colors = CheckboxDefaults.colors(checkmarkColor = Color.Black)
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = Color(0xFF177BCD), // Warna kotak ketika checkbox dicentang
+                            uncheckedColor = Color.Gray, // Warna kotak ketika checkbox tidak dicentang
+                            checkmarkColor = Color.White // Warna tanda centang
+                        )
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+
 
                     Text(
-                        text = "*Kirimkan ke saya notifikasi mengenai update produk dan produk-produk dengan tawaran terbaik.",
+                        text = "Kirimkan ke saya notifikasi mengenai update produk dan produk-produk dengan tawaran terbaik.",
                         fontSize = 12.sp,
                         color = Color.Red
                     )
                 }
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(
-                    onClick = { /* Handle cancel action */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238)),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text("Batal", color = Color.White, fontSize = 16.sp)
-                }
 
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Button(
-                    onClick = { navController.navigate("ubah_emailOTP")},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text("Ubah", color = Color.White, fontSize = 16.sp)
+        }
+            TombolMerahBiru(
+                judulBiru = "Ubah",
+                judulMerah = "Batal",
+                onMerahClick = {
+                    navController.popBackStack()
+                },
+                onBiruClick = {
+                    navController.popBackStack()
                 }
-            }
+            )
         }
     }
 }

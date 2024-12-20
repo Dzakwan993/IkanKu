@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Tema utama aplikasi -->
     <style name="Theme.IkanKu" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Tema khusus untuk DatePickerDialog -->
+    <style name="CustomDatePickerTheme" parent="Theme.Material3.DayNight.Dialog">
+
+        <item name="colorPrimary">#FF177BCD</item> <!-- Warna header -->
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- Warna teks di header -->
+<!--        <item name="surfaceColor">#FF177BCD</item> &lt;!&ndash; Warna utama untuk dialog &ndash;&gt;-->
+        <item name="android:windowBackground">#FFFFFFFF</item> <!-- Background -->
+        <item name="android:textColor">#212121</item> <!-- Warna teks -->
+
+
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    
+    <style name="Theme.IkanKu.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/blue</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+
+
+    </style>
+
 
 </resources>

@@ -55,7 +55,7 @@ import com.google.firebase.auth.PhoneAuthProvider
                 .padding(paddingValues)
                 ,
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -96,7 +96,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 
                 // Keterangan
                 Text(
-                    text = "* Anda akan menerima SMS berisi kode daftar.",
+                    text = "*Anda akan menerima SMS berisi kode daftar.",
                     color = Color.Red,
                     fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.Start)
@@ -105,6 +105,7 @@ import com.google.firebase.auth.PhoneAuthProvider
                 )
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
 
                 // Kebijakan Privasi
                 Text(
@@ -129,17 +130,12 @@ import com.google.firebase.auth.PhoneAuthProvider
                 )
 
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.weight(1f))
 
                 // Tombol Lanjut
                 TombolMasukkanKeranjang(
                     onClick = {
-                        if (isPhoneNumberValid) {
-                            sendVerificationCode(formattedPhoneNumber, auth, navController)
-                        } else {
-                            // Show error message if phone number is invalid
-                            Toast.makeText(navController.context, "Nomor telepon tidak valid", Toast.LENGTH_SHORT).show()
-                        }
+                        navController.navigate(("beranda_screen"))
                     },
                     text = "Lanjut",
                     modifier = Modifier

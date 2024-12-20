@@ -34,32 +34,7 @@ fun AlasanDitolak(navController: NavController) {
                 onBackClick = {navController.popBackStack() }
             )
         },
-        bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(
-                    onClick = { showRejectDialog = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Tolak", color = Color.White, fontSize = 16.sp)
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Button(
-                    onClick = { /* Handle accept order */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Terima", color = Color.White, fontSize = 16.sp)
-                }
-            }
-        }
+
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier

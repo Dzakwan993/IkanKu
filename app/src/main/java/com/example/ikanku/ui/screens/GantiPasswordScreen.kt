@@ -9,7 +9,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,20 +37,58 @@ fun ChangePasswordScreen(navController: NavController) {
         }
     ) { paddingValues ->
         Column(
+
             modifier = Modifier
-                .fillMaxSize()
                 .padding(paddingValues)
+                .fillMaxSize()
+        )
+        {
+        Card(
+            elevation = CardDefaults.cardElevation(8.dp), // Memberikan elevation
+            shape = RoundedCornerShape(16.dp), // Opsional, untuk sudut membulat
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
                 .padding(horizontal = 16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
+        ) {
+        Column(
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                ,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Start
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 8.dp)
+
+                ,
+
+                horizontalAlignment = Alignment.Start,
+
             ) {
-                Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    text = "Ganti Password",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black,
+                    modifier = Modifier.padding(start = 8.dp).padding(top = 8.dp)
+
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 PasswordField(
-                    label = "Password Lama*",
+                    label = buildAnnotatedString {
+                        append("Password Lama")
+                        withStyle(style = SpanStyle(color = Color.Red)) {
+                            append("*") // Tanda bintang merah
+                        }
+                    },
                     placeholder = "Masukkan password lama",
                     value = oldPassword.value,
                     onValueChange = { oldPassword.value = it }
@@ -55,7 +97,12 @@ fun ChangePasswordScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 PasswordField(
-                    label = "Password Baru*",
+                    label = buildAnnotatedString {
+                        append("Password Baru")
+                        withStyle(style = SpanStyle(color = Color.Red)) {
+                            append("*") // Tanda bintang merah
+                        }
+                    },
                     placeholder = "Masukkan password baru",
                     value = newPassword.value,
                     onValueChange = { newPassword.value = it }
@@ -64,59 +111,49 @@ fun ChangePasswordScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 PasswordField(
-                    label = "Konfirmasi Password*",
+                    label = buildAnnotatedString {
+                        append("Konfirmasi Password")
+                        withStyle(style = SpanStyle(color = Color.Red)) {
+                            append("*") // Tanda bintang merah
+                        }
+                    },
                     placeholder = "Konfirmasi password",
                     value = confirmPassword.value,
                     onValueChange = { confirmPassword.value = it }
                 )
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(
-                    onClick = { /* Handle cancel action */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238)),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text("Batal", color = Color.White, fontSize = 16.sp)
-                }
 
-                Spacer(modifier = Modifier.width(16.dp))
+        }
 
-                Button(
-                    onClick = { /* Handle change action */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text("Ubah", color = Color.White, fontSize = 16.sp)
+    }
+            Spacer(modifier = Modifier.weight(1f))
+            TombolMerahBiru(
+                judulBiru = "Ubah",
+                judulMerah = "Batal",
+                onMerahClick = {
+                    navController.popBackStack()
+                },
+                onBiruClick = {
+                    navController.popBackStack()
                 }
-            }
+            )
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordField(label: String, placeholder: String, value: String, onValueChange: (String) -> Unit) {
+fun PasswordField(label: AnnotatedString, placeholder: String, value: String, onValueChange: (String) -> Unit) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, fontWeight = FontWeight.Normal, fontSize = 14.sp, color = Color.Black) },
+        label = { Text(label, fontWeight = FontWeight.Normal, fontSize = 14.sp, color = Color.Gray) },
         placeholder = { Text(placeholder, color = Color.Gray) },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = Color(0xFFF5F5F5),
+            containerColor = Color(0xFFE0E0E0),
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent
         )

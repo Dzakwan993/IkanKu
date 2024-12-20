@@ -94,7 +94,7 @@ fun ConfirmationScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Silakan masukkan kode 6 digit yang dikirimkan\nmelalui SMS ke 6285274086648",
+                    text = "Silahkan masukkan kode 6 digit yang dikirimkan\nmelalui SMS ke 6285274086648",
                     fontSize = 15.sp,
                     color = Color.Gray,
                     textAlign = TextAlign.Start,
@@ -186,17 +186,9 @@ fun ConfirmationScreen(navController: NavController) {
 
                 // Tombol Lanjut
                 TombolMasukkanKeranjang(
-                    onClick = { val verificationId = navController.previousBackStackEntry?.savedStateHandle?.get<String>("verificationId")
-                        if (verificationId != null) {
-                            verifyOtp(
-                                otpCode.joinToString(""),
-                                verificationId,
-                                auth,
-                                navController
-                            )
-                        } else {
-                            Toast.makeText(navController.context, "Verification ID tidak ditemukan", Toast.LENGTH_SHORT).show()
-                        } },
+                    onClick = {
+                        navController.navigate("daftar_data")
+                    },
                     text = "Lanjut",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -208,23 +200,23 @@ fun ConfirmationScreen(navController: NavController) {
     }
 
 
-fun verifyOtp(otpCode: String, verificationId: String, auth: FirebaseAuth, navController: NavController) {
-    if (otpCode.length == 6) {
-        val credential = PhoneAuthProvider.getCredential(verificationId, otpCode)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // User successfully authenticated
-                    navController.navigate("daftar_data")
-                } else {
-                    // Show error message
-                    Toast.makeText(navController.context, "Kode OTP salah", Toast.LENGTH_SHORT).show()
-                }
-            }
-    } else {
-        Toast.makeText(navController.context, "Kode OTP harus 6 digit", Toast.LENGTH_SHORT).show()
-    }
-}
+//fun verifyOtp(otpCode: String, verificationId: String, auth: FirebaseAuth, navController: NavController) {
+//    if (otpCode.length == 6) {
+//        val credential = PhoneAuthProvider.getCredential(verificationId, otpCode)
+//        auth.signInWithCredential(credential)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    // User successfully authenticated
+//                    navController.navigate("daftar_data")
+//                } else {
+//                    // Show error message
+//                    Toast.makeText(navController.context, "Kode OTP salah", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//    } else {
+//        Toast.makeText(navController.context, "Kode OTP harus 6 digit", Toast.LENGTH_SHORT).show()
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable

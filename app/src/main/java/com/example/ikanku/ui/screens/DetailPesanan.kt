@@ -83,7 +83,7 @@ fun DetailPesanan(navController: NavController) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("Rp45.000", fontWeight = FontWeight.Bold)
+                            Text("Rp50.000", fontWeight = FontWeight.Bold)
                             Text("x1", fontWeight = FontWeight.Bold)
                         }
                     }

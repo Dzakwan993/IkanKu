@@ -57,7 +57,7 @@ fun StoreVisitScreen(navController: NavController) {
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.profil_kucing), // Replace with actual image resource
+                        painter = painterResource(id = R.drawable.tibelat_farm), // Replace with actual image resource
                         contentDescription = "Profile Image",
                         modifier = Modifier
                             .size(64.dp)

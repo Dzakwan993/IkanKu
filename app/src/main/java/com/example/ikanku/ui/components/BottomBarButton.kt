@@ -23,3 +23,4 @@ fun BottomBarButton(onClick: () -> Unit) {
         Text("Simpan", color = Color.White, fontSize = 18.sp)
     }
 }
+

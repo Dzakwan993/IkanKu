@@ -100,7 +100,7 @@ fun AddressScreen(navController: NavController) {
                     .height(48.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(text = "+Tambah Alamat", color = Color.White)
+                Text(text = "+ Tambah Alamat", color = Color.White)
             }
         }
     }

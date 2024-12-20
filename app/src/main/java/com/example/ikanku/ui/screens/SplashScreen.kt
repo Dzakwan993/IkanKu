@@ -21,36 +21,12 @@ import kotlinx.coroutines.delay
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         delay(1500) // Tunggu 1.5 detik
-
-        // Periksa status login
-        val isUserLoggedIn = SharedPreferencesHelper.isUserLoggedIn(navController.context)
-        val userType = SharedPreferencesHelper.getUserType(navController.context)
-
-        // Navigasi sesuai status login
-        if (isUserLoggedIn) {
-            when (userType) {
-                "pembeli" -> {
-                    navController.navigate("beranda_screen") {
-                        popUpTo(0) { inclusive = true } // Hapus semua stack sebelumnya
-                    }
-                }
-                "toko" -> {
-                    navController.navigate("toko_saya_screen") {
-                        popUpTo(0) { inclusive = true } // Hapus semua stack sebelumnya
-                    }
-                }
-                else -> {
-                    navController.navigate("login_screen") {
-                        popUpTo(0) { inclusive = true }
-                    }
-                }
-            }
-        } else {
-            navController.navigate("login_screen") {
-                popUpTo(0) { inclusive = true }
-            }
+        navController.navigate("beranda_screen") { // Ganti "home_screen" dengan rute layar berikutnya
+            popUpTo("splash_screen") { inclusive = true } // Hapus splash_screen dari back stack
         }
-    }
+
+        }
+
 
     // UI SplashScreen
     Box(

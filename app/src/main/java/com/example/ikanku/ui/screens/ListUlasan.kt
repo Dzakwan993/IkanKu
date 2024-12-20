@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
+import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.BottomNavBarPenjual
 import com.example.ikanku.ui.components.TopBarWithCart
 import com.example.ikanku.ui.components.CardUlasanList // Import CardUlasanList
@@ -30,7 +31,7 @@ fun ReviewListScreen(
 
                 bottomBar = {
             // Bottom Navigation Bar (Penjual)
-            BottomNavBarPenjual(navController = navController)
+            BottomNavBar(navController = navController)
         },
         content = { paddingValues ->
             // Main content of the screen (will respect the padding)

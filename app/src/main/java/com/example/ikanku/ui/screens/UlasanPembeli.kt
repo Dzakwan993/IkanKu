@@ -78,7 +78,7 @@ fun ReviewScreen(onBackClick: () -> Unit, navController: NavController) {
                         // Review Content
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Miftahul Fazra",
+                                text = "Naufal Fadhilah",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
                             )

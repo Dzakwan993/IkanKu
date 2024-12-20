@@ -59,11 +59,14 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp), // Padding global untuk seluruh konten
+                ,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(56.dp))
 
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp), // Padding global untuk seluruh konten
+            ) {
             // Input Nomor Telepon
             OutlinedTextField(
                 value = phoneNumber,
@@ -105,45 +108,19 @@ fun LoginScreen(navController: NavController) {
                     .clickable { navController.navigate("lupa_sandi_pembeli") }
                     .padding(vertical = 8.dp)
             )
-
+            }
             Spacer(modifier = Modifier.height(16.dp))
 
             // Tombol Login
             TombolMasukkanKeranjang(
                 onClick = {
-                    if (phoneNumber.isNotEmpty() && password.isNotEmpty()) {
-                        loginViewModel.login(
-                            phoneNumber = phoneNumber,
-                            password = password,
-                            onSuccess = { user ->
-                                when (user) {
-                                    is Toko -> {
-                                        SharedPreferencesHelper.saveUser(context, "toko", user)
-                                        navController.navigate("toko_saya_screen") {
-                                            popUpTo("login_screen") { inclusive = true }
-                                        }
-                                    }
-                                    is Pembeli -> {
-                                        SharedPreferencesHelper.saveUser(context, "pembeli", user)
-                                        navController.navigate("beranda_screen") {
-                                            popUpTo("login_screen") { inclusive = true }
-                                        }
-                                    }
-                                }
-                            },
-                            onError = { errorMessage ->
-                                loginViewModel.setErrorMessage(errorMessage)
-                            }
-                        )
-                    } else {
-                        loginViewModel.setErrorMessage("Harap isi nomor ponsel dan kata sandi!")
-                    }
+                    navController.navigate("beranda_screen")
                 },
                 text = "Login",
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Text Separator
             Text(
@@ -153,13 +130,14 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Tombol Login Google
             OutlinedButton(
-                onClick = { /* Handle Google login */ },
+                onClick = { navController.navigate("beranda_screen") },
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Icon(

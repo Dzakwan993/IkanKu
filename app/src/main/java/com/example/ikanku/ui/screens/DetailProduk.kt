@@ -55,16 +55,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
@@ -89,6 +92,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DetailProduk(navController: NavController) {
+    var isBottomSheetVisible by remember { mutableStateOf(false) }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -141,83 +145,155 @@ fun DetailProduk(navController: NavController) {
 
             // Tombol Masukkan Keranjang
             TombolMasukkanKeranjang(
-                onClick = { /* Action untuk menambahkan ke keranjang */ },
+                onClick = { isBottomSheetVisible = true },
                 text = "Masukkan Keranjang",
                 modifier = Modifier.align(Alignment.BottomCenter) // Posisi tombol di bawah
             )
+            if (isBottomSheetVisible) {
+                VariasiBottomSheetContent(
+                    isVisible = isBottomSheetVisible,
+                    onDismiss = { isBottomSheetVisible = false },
+                    navController = navController,
+
+                )
+            }
         }
     }
 }
 
-
-
-
-
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun VariasiBottomSheetContent(navController: NavController) {
-    val beratOptions = listOf("500 gr", "1 kg", "2 kg", "5 kg")
-    val isiOptions = listOf("2 Ekor", "3 Ekor", "4 Ekor", "5 Ekor", "6 Ekor")
+fun VariasiBottomSheetContent(
+    isVisible: Boolean, // Menentukan apakah BottomSheet ditampilkan
+    onDismiss: () -> Unit, // Aksi ketika BottomSheet ditutup
+    navController: NavController // Untuk navigasi
+) {
+    if (isVisible) {
+        // State untuk menyimpan pilihan yang dipilih
+        val selectedBerat = remember { mutableStateOf<String?>(null) }
+        val selectedIsi = remember { mutableStateOf<String?>(null) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-    ) {
-        Text(
-            text = "Pilih Variasi",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // Pilihan Berat
-        Text(text = "Berat", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 100.dp),
-            contentPadding = PaddingValues(vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ModalBottomSheet(
+            onDismissRequest = onDismiss,
+            containerColor = Color.White
         ) {
-            items(beratOptions) { option ->
-                PilihanVariasi(text = option)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                // Header
+                Text(
+                    text = "Pilih Variasi",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Variasi pertama: Berat
+                Text(
+                    text = "Berat",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                )
+
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 100.dp),
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(listOf("500 gram", "1Kg")) { pilihan ->
+                        val isSelected = selectedBerat.value == pilihan
+
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .border(
+                                    width = 1.dp,
+                                    color = if (isSelected) Color(0xFF177BCD) else Color.Black,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .background(
+                                    color = if (isSelected) Color(0xFF177BCD).copy(alpha = 0.2f) else Color.LightGray.copy(alpha = 0.5f)
+                                )
+                                .clickable { selectedBerat.value = pilihan }
+                                .padding(12.dp)
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = pilihan,
+                                color = if (isSelected) Color(0xFF177BCD) else Color.Black,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            )
+                        }
+                    }
+                }
+
+                // Variasi kedua: Isi
+                Text(
+                    text = "Isi",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                )
+
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 100.dp),
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(listOf("5 Ekor", "10 Ekor", "20 Ekor")) { pilihan ->
+                        val isSelected = selectedIsi.value == pilihan
+
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .border(
+                                    width = 1.dp,
+                                    color = if (isSelected) Color(0xFF177BCD) else Color.Black,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .background(
+                                    color = if (isSelected) Color(0xFF177BCD).copy(alpha = 0.2f) else Color.LightGray.copy(alpha = 0.5f)
+                                )
+                                .clickable { selectedIsi.value = pilihan }
+                                .padding(12.dp)
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = pilihan,
+                                color = if (isSelected) Color(0xFF177BCD) else Color.Black,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Tombol Masukkan Keranjang
+
             }
-        }
-
-        // Pilihan Isi
-        Text(text = "Isi", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 16.dp))
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 100.dp),
-            contentPadding = PaddingValues(vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(isiOptions) { option ->
-                PilihanVariasi(text = option)
-            }
-        }
-
-        // Tombol Masukkan Keranjang
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-                .background(Color(0xFF177BCD), shape = RoundedCornerShape(16.dp))
-                .clickable {
-                   navController.navigate("keranjang_screen")
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
+            TombolMasukkanKeranjang(
                 text = "Masukkan Keranjang",
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 12.dp)
+                onClick = {
+                    // Navigasi ke keranjang_screen
+                    navController.navigate("keranjang_screen")
+                },
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
 }
+
+
 
 @Composable
 fun PilihanVariasi(text: String) {
@@ -537,10 +613,12 @@ fun UserReviewItem(name: String, review: String) {
             verticalAlignment = Alignment.Top
         ) {
             // Foto Profil
-            Box(
+            Image(
+                painter = painterResource(id = R.drawable.user), // Ganti dengan ID resource gambar Anda
+                contentDescription = "Logo Toko",
                 modifier = Modifier
-                    .size(40.dp)
-                    .background(Color.Gray, shape = RoundedCornerShape(50))
+                    .size(40.dp) // Ukuran gambar toko lebih kecil
+
             )
 
             Spacer(modifier = Modifier.width(8.dp))

@@ -59,7 +59,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { /* Handle back action */ }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back Icon",
@@ -112,8 +112,8 @@ fun ForgotPasswordScreen(navController: NavController) {
 
             // "Lanjut" button at the bottom
             TombolMasukkanKeranjang(
-                onClick = { /* Handle continue action */ },
-                text = "Lanjut",
+                onClick = { navController.navigate("beranda_screen") },
+                text = "Kirim",
                 modifier = Modifier
                     .fillMaxWidth()
 

@@ -1,4 +1,5 @@
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,7 @@ import com.example.ikanku.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavController, modifier: Modifier = Modifier,) {
+fun TopBar(navController: NavController, modifier: Modifier = Modifier) {
     var searchText by remember { mutableStateOf("") }
 
     Column(
@@ -34,11 +35,13 @@ fun TopBar(navController: NavController, modifier: Modifier = Modifier,) {
             .padding(bottom = 24.dp, top = 16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                ,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Hallo, fazra!",
+                text = "Hallo, Naufal!",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color.White
@@ -53,45 +56,29 @@ fun TopBar(navController: NavController, modifier: Modifier = Modifier,) {
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
+
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(13.dp))
+                .clickable { navController.navigate("pencarian_screen") }
+                .background(Color.White)
+                .padding(16.dp), // Menambahkan padding untuk klik area
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextField(
-                value = searchText,
-                onValueChange = { searchText = it },
-                placeholder = {
-
-                    Text(
-                        "Telusuri",
-                        color = Color.Gray,
-
-                    )
-
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.cari),
-                        contentDescription = "Search Icon",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(20.dp)
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-//                    .height(50.dp)
-                    .clip(RoundedCornerShape(13.dp))
-                    .background(Color.White),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.Black
-                )
+            Icon(
+                painter = painterResource(id = R.drawable.cari),
+                contentDescription = "Search Icon",
+                tint = Color.Gray,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Telusuri",
+                color = Color.Gray,
+                fontSize = 16.sp
             )
         }
-
-
-
     }
 }
 
@@ -119,7 +106,8 @@ fun TopBarWithBackIcon(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            IconButton(onClick = { /* Back Action */ }) {
+            IconButton(onClick = { navController.popBackStack()
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "Back",
@@ -198,7 +186,13 @@ fun TopBarSearch(navController: NavController) {
                     Icon(
                         painter = painterResource(id = R.drawable.cari),
                         contentDescription = "Search Icon",
-                        tint = Color.Gray
+                        tint = Color.Gray,
+                        modifier = Modifier.clickable(
+                            onClick = {
+                                navController.navigate("search_result_screen")
+                            }
+
+                        )
                     )
                 },
                 modifier = Modifier

@@ -55,7 +55,7 @@ fun RejectedOrdersScreen(viewModel: OrderRejectedViewModel = viewModel(), navCon
         ) {
 
             items(viewModel.rejectedOrders) { order ->
-                OrderCardDitolak(order )
+                OrderCardDitolak(order= order, navController = navController )
             }
         }
     }

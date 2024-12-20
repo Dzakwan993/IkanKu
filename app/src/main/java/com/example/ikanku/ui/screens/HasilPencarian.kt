@@ -17,7 +17,7 @@ import com.example.ikanku.viewmodel.BerandaViewModel
 @Composable
 fun SearchResultScreen(
     navController: NavController,
-    query: String,
+
     viewModel: BerandaViewModel = viewModel()
 ) {
     Scaffold(
@@ -32,7 +32,7 @@ fun SearchResultScreen(
                 .fillMaxSize()
         ) {
             Text(
-                text = "Hasil Pencarian untuk: \"$query\"",
+                text = "Hasil Pencarian untuk: ",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -48,5 +48,5 @@ fun SearchResultScreen(
 @Composable
 fun SearchResultScreenPreview() {
     val navController = rememberNavController()
-    SearchResultScreen(navController = navController, query = "Sample Query")
+    SearchResultScreen(navController = navController,)
 }

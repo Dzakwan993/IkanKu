@@ -15,12 +15,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.model.Order
 import com.example.ikanku.ui.screens.PesananBaru
 import com.example.ikanku.viewmodel.OrderRejectedViewModel
 
 @Composable
-fun OrderCardDitolak(order: Order) {
+fun OrderCardDitolak(
+    navController: NavController,
+    order: Order) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -94,7 +98,7 @@ fun OrderCardDitolak(order: Order) {
                 ) {
 
                     Button(
-                        onClick = { /* Handle see reason action */ },
+                        onClick = { navController.navigate("alasan_ditolak") },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
                         shape = RoundedCornerShape(30.dp),
                         modifier = Modifier.width(180.dp)
@@ -116,5 +120,6 @@ fun OrderCardDitolak(order: Order) {
 fun PreviewOrderCard() {
     val previewViewModel = OrderRejectedViewModel()
     val sampleOrder = previewViewModel.rejectedOrders.firstOrNull() ?: return
-    OrderCardDitolak(order = sampleOrder)
+    val navController = rememberNavController()
+    OrderCardDitolak(order = sampleOrder, navController = navController)
 }

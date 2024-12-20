@@ -12,8 +12,8 @@ import androidx.navigation.NavController
 import com.example.ikanku.model.Product
 
 @Composable
-fun ProductListSection(products: List<Product>, navController: NavController) {
-    var showAllProducts by remember { mutableStateOf(false) }
+fun ProductListSection(products: List<Product>, navController: NavController, showAll: Boolean) {
+    var showAllProducts by remember { mutableStateOf(showAll) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -42,7 +42,7 @@ fun ProductListSection(products: List<Product>, navController: NavController) {
 
 @Composable
 fun ProductListWithoutLiatLebihSection(products: List<Product>, navController: NavController) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(vertical = 16.dp).padding(horizontal = 8.dp)) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             products.forEach { product ->
                 ProductItemCard(product = product, navController = navController)

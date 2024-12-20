@@ -26,9 +26,39 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 import com.example.ikanku.ui.components.CustomTopAppBar
 
+import TombolMasukkanKeranjang
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
+import androidx.compose.ui.draw.clip
+
+import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+
+import com.example.ikanku.ui.components.CustomTopAppBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransferScreen(navController: NavController) {
+    var photoUris by remember { mutableStateOf<List<Uri>>(emptyList()) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { photoUris = photoUris + it }
+    }
+
     Scaffold(
         topBar = {
             CustomTopAppBar(title = "Transfer") {
@@ -47,8 +77,8 @@ fun TransferScreen(navController: NavController) {
                     .fillMaxSize()
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState())
-
             ) {
+                // Card Rincian Pesanan
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -69,9 +99,8 @@ fun TransferScreen(navController: NavController) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(text = "Subtotal", fontSize = 14.sp, color = Color.Gray)
-                            Text(text = "Rp 40.000", fontSize = 14.sp, color = Color.Black)
+                            Text(text = "Rp 45.000", fontSize = 14.sp, color = Color.Black)
                         }
-
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row(
@@ -81,7 +110,6 @@ fun TransferScreen(navController: NavController) {
                             Text(text = "Ongkos Kirim", fontSize = 14.sp, color = Color.Gray)
                             Text(text = "Rp 5.000", fontSize = 14.sp, color = Color.Black)
                         }
-
                         Divider(
                             modifier = Modifier.padding(vertical = 8.dp),
                             color = Color.Gray,
@@ -94,7 +122,7 @@ fun TransferScreen(navController: NavController) {
                         ) {
                             Text(text = "Total", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                             Text(
-                                text = "Rp 45.000",
+                                text = "Rp 50.000",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
                             )
@@ -104,6 +132,7 @@ fun TransferScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // Card Rekening Pembayaran
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -127,10 +156,9 @@ fun TransferScreen(navController: NavController) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.icon_bri), // Ganti dengan logo bank
+                                painter = painterResource(id = R.drawable.icon_bri),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(40.dp),
+                                modifier = Modifier.size(40.dp),
                                 contentScale = ContentScale.Crop
                             )
                             Spacer(modifier = Modifier.width(16.dp))
@@ -141,6 +169,7 @@ fun TransferScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // Card Upload Bukti Pembayaran
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -156,29 +185,46 @@ fun TransferScreen(navController: NavController) {
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        Box(
-                            modifier = Modifier
-                                .size(100.dp)
-                                .background(Color(0xFFE8E8E8), shape = RoundedCornerShape(16.dp))
-                                .clickable {
-                                    // Tambahkan aksi untuk upload gambar
-                                },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.icon_camera), // Ganti dengan ikon kamera
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            // Menampilkan foto yang sudah dipilih
+                            items(photoUris) { uri ->
+                                Image(
+                                    painter = rememberAsyncImagePainter(uri),
                                     contentDescription = null,
-                                    tint = Color.Gray,
-                                    modifier = Modifier.size(32.dp)
+                                    modifier = Modifier
+                                        .size(100.dp)
+                                        .clip(RoundedCornerShape(16.dp)),
+                                    contentScale = ContentScale.Crop
                                 )
-                                Text(
-                                    text = "Tambah foto",
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
-                                )
+                            }
+
+                            // Kotak Tambah Foto
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .size(100.dp)
+                                        .background(Color(0xFFE8E8E8), shape = RoundedCornerShape(16.dp))
+                                        .clickable {
+                                            launcher.launch("image/*")
+                                        },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.icon_camera),
+                                            contentDescription = null,
+                                            tint = Color.Gray,
+                                            modifier = Modifier.size(32.dp)
+                                        )
+                                        Text(
+                                            text = "Tambah foto",
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -187,13 +233,12 @@ fun TransferScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(32.dp))
             }
 
-            // Tombol Simpan di bagian bawah layar
+            // Tombol Simpan
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
                     .background(Color.White)
-
             ) {
                 TombolMasukkanKeranjang(
                     text = "Simpan",
@@ -205,6 +250,7 @@ fun TransferScreen(navController: NavController) {
         }
     }
 }
+
 
 
 

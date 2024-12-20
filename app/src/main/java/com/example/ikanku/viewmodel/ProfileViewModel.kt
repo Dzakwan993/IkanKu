@@ -7,7 +7,7 @@ import com.example.ikanku.model.OrderStatusItem
 
 class ProfileViewModel : ViewModel() {
     val profile = Profile(
-        name = "Miftahul Fazra",
+        name = "Naufal Fadhilah",
         imageRes = R.drawable.profil_kucing
     )
 
@@ -20,5 +20,5 @@ class ProfileViewModel : ViewModel() {
     )
 
     // Data counts untuk setiap status pesanan
-    val counts = listOf(3, 0, 5, 1, 2) // Sesuaikan dengan data dinamis jika ada
+    val counts = listOf(2, 2, 2, 3, 2) // Sesuaikan dengan data dinamis jika ada
 }

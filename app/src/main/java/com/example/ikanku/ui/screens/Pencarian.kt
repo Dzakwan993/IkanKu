@@ -37,7 +37,7 @@ fun Pencarian(viewModel: BerandaViewModel = viewModel(), navController: NavHostC
                 .padding(16.dp)
         ) {
             Text(
-                text = "Rekomendasi untuk anda",
+                text = "Rekomendasi untuk Anda",
                 fontSize = 16.sp,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                 color = Color.Black,
@@ -52,10 +52,11 @@ fun Pencarian(viewModel: BerandaViewModel = viewModel(), navController: NavHostC
 
             recommendations.forEach { recommendation ->
                 Row(
+
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
-                        .clickable { /* Handle click */ },
+                        .clickable { navController.navigate("search_result_screen") },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(

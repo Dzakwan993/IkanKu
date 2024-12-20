@@ -56,6 +56,10 @@ android {
 }
 
 dependencies {
+
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
+
     implementation(platform(libs.androidx.compose.bom)) // Menggunakan BOM untuk Compose
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -69,6 +73,8 @@ dependencies {
     implementation ("androidx.compose.ui:ui:1.5.0")
     implementation ("androidx.compose.ui:ui-text:1.5.0")
     implementation ("androidx.compose.material:material:1.5.0")
+    implementation ("com.google.android.material:material:1.9.0")
+
 
     implementation(libs.androidx.core.ktx)
 

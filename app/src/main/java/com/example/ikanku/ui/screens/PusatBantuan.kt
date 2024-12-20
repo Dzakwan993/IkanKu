@@ -1,5 +1,6 @@
 package com.example.ikanku.ui.screens
 
+import TombolMasukkanKeranjang
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,17 +44,17 @@ fun HelpCenterScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp)
+
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = "Apakah anda butuh bantuan atau pertanyaan? Kirimkan pesan kepada kami melalui Whatsapp!",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.SemiBold,
                 color = Color.Black,
                 textAlign = TextAlign.Start,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -75,25 +76,12 @@ fun HelpCenterScreen(navController: NavController) {
             }
 
             // Button Section
-            Button(
+            TombolMasukkanKeranjang(
+                text = "Lanjutkan ke WhatsApp",
                 onClick = {
-                    // Logika untuk melanjutkan ke WhatsApp
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp), // Padding di sekitar tombol
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF177BCD), // Warna biru
-                    contentColor = Color.White
-                )
-            ) {
-                Text(
-                    text = "Lanjutkan WhatsApp", // Teks tombol
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

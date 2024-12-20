@@ -41,12 +41,11 @@ fun Kategori(viewModel: BerandaViewModel = viewModel(), navController: NavContro
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(Color.White),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+
             contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding())
         ) {
             item { CategoryClickSection(categories = viewModel.categories, navController = navController) }
-            item { RecommendationSection(recommendations = viewModel.recommendations, navController = navController) }
-            item { ProductListSection(products = viewModel.products, navController = navController) }
+            item { ProductListSection(products = viewModel.products, navController = navController, showAll = true) }
         }
     }
 }

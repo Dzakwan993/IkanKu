@@ -93,7 +93,7 @@ fun VerificationScreen(navController: NavController) {
 
             // Tombol Lanjut
             Button(
-                onClick = { /* Handle lanjut action */ },
+                onClick = { navController.navigate("profile_screen") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),

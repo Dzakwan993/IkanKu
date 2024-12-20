@@ -1,5 +1,9 @@
 package com.example.ikanku.ui.screens
 
+import android.app.Activity
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,6 +32,10 @@ import com.example.ikanku.R
 import com.example.ikanku.ui.components.BottomNavBar
 import com.example.ikanku.ui.components.CustomTopAppBar
 import java.util.*
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,8 +44,8 @@ fun DataProfileScreen(navController: NavController) {
     var showNameBottomSheet by remember { mutableStateOf(false) }
     var showDateOfBirthBottomSheet by remember { mutableStateOf(false) }
     var selectedGender by remember { mutableStateOf("Laki-Laki") }
-    var fullName by remember { mutableStateOf("Miftahul Fazra") }
-    var dateOfBirth by remember { mutableStateOf("Atur Sekarang") }
+    var fullName by remember { mutableStateOf("Naufal Fadhilah") }
+    var dateOfBirth by remember { mutableStateOf("-") }
 
     Scaffold(
         topBar = { CustomTopAppBar(title = "Profil", onBackClick = { navController.popBackStack() }) },
@@ -80,10 +88,24 @@ fun DataProfileScreen(navController: NavController) {
         showDateOfBirthBottomSheet = false
     })
 }
-
 @Composable
 fun ProfileImage() {
-    Box(contentAlignment = Alignment.BottomEnd, modifier = Modifier.size(100.dp)) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        // Log URI gambar yang dipilih di logcat
+
+    }
+
+    Box(
+        contentAlignment = Alignment.BottomEnd,
+        modifier = Modifier
+            .size(100.dp)
+            .clickable {
+                // Memunculkan galeri ketika seluruh box diklik
+                launcher.launch("image/*")
+            }
+    ) {
         Image(
             painter = painterResource(id = R.drawable.profil_kucing),
             contentDescription = "Profile Picture",
@@ -93,15 +115,23 @@ fun ProfileImage() {
                 .clip(CircleShape)
         )
         IconButton(
-            onClick = { /* Handle edit picture */ },
+            onClick = {
+                // Alternatif: memunculkan galeri ketika ikon klik
+                launcher.launch("image/*")
+            },
             modifier = Modifier
                 .background(Color.White, shape = CircleShape)
                 .size(24.dp)
         ) {
-            Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile Picture", tint = Color(0xFF177BCD))
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = "Edit Profile Picture",
+                tint = Color(0xFF177BCD)
+            )
         }
     }
 }
+
 
 @Composable
 fun ProfileInfoItems(
@@ -119,7 +149,7 @@ fun ProfileInfoItems(
 
     // Menambahkan ProfileInfoItem untuk nomor ponsel dengan navigasi
     ProfileInfoItem(
-        title = "Nomor Ponsel", value = "6282387436427", showDropdown = true,
+        title = "Nomor Ponsel", value = "08xxxxxxx", showDropdown = true,
 
         onClick = { navController.navigate("ubah_nomor_ponsel") } // Navigasi ke UbahNomorPonselScreen
     )
@@ -271,17 +301,26 @@ fun DateOfBirthBottomSheetContent(
     onDateSelected: (String) -> Unit,
     onCancel: () -> Unit
 ) {
+
     val context = LocalContext.current
+    val customContext = ContextThemeWrapper(context, R.style.CustomDatePickerTheme)
     var selectedDate by remember { mutableStateOf(currentDate) }
 
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
 
-        HeaderRow(title = "Tanggal Lahir") { onCancel() }
+        HeaderRow(title = "Tanggal Lahir: $selectedDate") { onCancel() }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+//        Text(
+//            text = "Tanggal yang dipilih: $selectedDate",
+//            fontSize = 16.sp,
+//            color = Color.Black
+//        )
 
         Spacer(modifier = Modifier.height(16.dp))
-
             // Tombol untuk membuka DatePickerDialog
         Button(
             onClick = {
@@ -292,7 +331,7 @@ fun DateOfBirthBottomSheetContent(
 
                 // Membuka DatePickerDialog
                 android.app.DatePickerDialog(
-                    context,
+                    customContext,
 
                     { _, selectedYear, selectedMonth, selectedDay ->
                         // Format tanggal menjadi "YYYY-MM-DD"
@@ -313,27 +352,21 @@ fun DateOfBirthBottomSheetContent(
             Text("Pilih Tanggal", color = Color.White)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-        // Menampilkan tanggal yang dipilih
-        Text(
-            text = "Tanggal yang dipilih: $selectedDate",
-            fontSize = 16.sp,
-            color = Color.Black
-        )
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = { onDateSelected(selectedDate) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
-            shape = RoundedCornerShape(30.dp)
-        ) {
-            Text("Simpan", color = Color.White)
-        }
+
+//        Button(
+//            onClick = { onDateSelected(selectedDate) },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(48.dp),
+//            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF177BCD)),
+//            shape = RoundedCornerShape(30.dp)
+//        ) {
+//            Text("Simpan", color = Color.White)
+//        }
     }
 }
 

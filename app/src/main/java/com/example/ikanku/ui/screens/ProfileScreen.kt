@@ -1,11 +1,14 @@
 package com.example.ikanku.ui.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +37,7 @@ import com.example.ikanku.ui.components.OrderStatusSection
 import com.example.ikanku.utils.SharedPreferencesHelper
 import com.example.ikanku.viewmodel.ProfileViewModel
 import androidx.compose.ui.platform.LocalContext
-
+import com.example.ikanku.ui.components.AlertBottomSheet
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +50,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
             TopBarWithCart(
                 title = "Profile",
                 onBackClick = { navController.popBackStack()},
-                onCartClick = { /* Handle cart click */ },
+                onCartClick = { navController.navigate("keranjang_screen") },
                 navController = navController
             )
         },
@@ -72,11 +76,43 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
-                    text = "Pesanan Saya",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                    Text(
+                        text = "Pesanan Saya",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Lainnya",
+                            fontSize = 14.sp,
+                            modifier = Modifier.clickable(
+                                onClick = {
+                                    navController.navigate("pesanan_screen")
+                                }
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.panah_kanan), // Ganti dengan drawable Anda
+                            contentDescription = "Home Icon", // Deskripsi untuk aksesibilitas
+                            colorFilter = ColorFilter.tint(Color.Black), // Untuk memberikan warna (opsional)
+                            modifier = Modifier.clickable(
+                                onClick = {
+                                    navController.navigate("pesanan_screen")
+                                }
+                            )
+                        )
+
+                    }
+
+
+                }
 
                 // OrderStatusSection with data from ViewModel
                 OrderStatusSection(
@@ -122,65 +158,26 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
                     Text("Logout", color = Color.Red, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
-        }
+        }}
 
         // BottomSheet untuk konfirmasi logout
         // BottomSheet untuk konfirmasi logout
         if (isBottomSheetVisible) {
-            ModalBottomSheet(
-                onDismissRequest = { isBottomSheetVisible = false },
-                sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // Konfirmasi logout
-                    Text(
-                        text = "Apakah Anda yakin ingin logout?",
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Tombol Logout
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        // Tombol Ya (Logout)
-                        Button(
-                            onClick = {
-                                SharedPreferencesHelper.logout(context) // Hapus data login
-                                navController.navigate("login_screen") { popUpTo("login_screen") { inclusive = true } }
-                                isBottomSheetVisible = false
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF4238))
-                        ) {
-                            Text("Ya", color = Color.White)
-                        }
-
-                        // Tombol Tidak (Tutup BottomSheet)
-                        OutlinedButton(
-                            onClick = { isBottomSheetVisible = false },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(48.dp)
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            border = BorderStroke(1.dp, Color.Red)
-                        ) {
-                            Text("Tidak", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        }
-                    }
+            AlertBottomSheet(
+                isVisible = isBottomSheetVisible,
+                onDismiss = { isBottomSheetVisible = false },
+                imageResId = R.drawable.peringatan_pembatalan,
+                alertText = "Apakah Anda Yakin Ingin Keluar?",
+                confirmButtonText = "Ya",
+                cancelButtonText = "Tidak",
+                onConfirm = {
+                    isBottomSheetVisible = false
+                },
+                onCancel = {
+                    isBottomSheetVisible = false
                 }
-            }
+            )
         }
-
-    }
 }
 
 
@@ -188,7 +185,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), navController: NavC
 fun ProfileOptionCard(text: String, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
             .fillMaxWidth()

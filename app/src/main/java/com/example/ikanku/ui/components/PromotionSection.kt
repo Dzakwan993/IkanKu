@@ -10,9 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.ikanku.R
 import com.example.ikanku.model.Promotion
 import com.example.ikanku.ui.components.PromotionCard
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -79,4 +82,31 @@ fun PromotionSection(promotions: List<Promotion>, navController: NavController) 
 
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPromotionSection() {
+    val dummyPromotions = listOf(
+        Promotion(
+            imageRes = R.drawable.ic_launcher_foreground, // Ganti dengan resource gambar
+            title = "Diskon Spesial 50%",
+            discount = "Hanya untuk hari ini!"
+        ),
+        Promotion(
+            imageRes = R.drawable.ic_launcher_foreground, // Ganti dengan resource gambar
+            title = "Gratis Ongkir",
+            discount = "Untuk semua pembelian!"
+        ),
+        Promotion(
+            imageRes = R.drawable.ic_launcher_foreground, // Ganti dengan resource gambar
+            title = "Diskon Tambahan 20%",
+            discount = "Khusus pengguna baru!"
+        )
+    )
+
+    val navController = rememberNavController()
+
+    PromotionSection(promotions = dummyPromotions, navController = navController)
+}
+
 

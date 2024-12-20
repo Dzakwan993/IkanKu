@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.ikanku.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +58,9 @@ fun ShoppingCartScreenWithCustomAppBar(
 
             TombolMasukkanKeranjang(
                 text = "Beli Sekarang",
-                onClick = {}
+                onClick = {
+                    navController.navigate("halaman_bayar")
+                }
             )
         }
     }
@@ -65,11 +69,12 @@ fun ShoppingCartScreenWithCustomAppBar(
 @Preview(showBackground = true)
 @Composable
 fun PreviewShoppingCartScreenWithCustomAppBar() {
+    val navController = rememberNavController()
     val viewModel = ShoppingCartViewModel().apply {
         cartItems = mutableStateListOf(
             CartItemModel("Ikan Tuna", "500g", "Rp 50.000", R.drawable.ikan_nila, 1),
             CartItemModel("Ikan Salmon", "300g", "Rp 75.000", R.drawable.ikan_patin, 2)
         )
     }
-//    ShoppingCartScreenWithCustomAppBar(navController = navController, viewModel = viewModel, )
+    ShoppingCartScreenWithCustomAppBar(navController = navController, viewModel = viewModel, )
 }

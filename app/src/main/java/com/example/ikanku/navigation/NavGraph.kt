@@ -75,7 +75,7 @@ import com.example.ikanku.viewmodel.RegisterViewModelFactory
 fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "splash_screen"
+        startDestination = "startup_screen"
     ) {
         composable("splash_screen") {
             SplashScreen(navController = navController)
@@ -107,7 +107,8 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onWebsiteClick = {
                     // Handle website click here
-                }
+                },
+                navController = navController
             )
         }
         composable("beranda_screen") {
@@ -115,7 +116,7 @@ fun NavGraph(navController: NavHostController) {
         }
         composable("keranjang_screen") {
 
-//            ShoppingCartScreenWithCustomAppBar(navController = navController) // Show the shopping cart screen
+            ShoppingCartScreenWithCustomAppBar(navController = navController) // Show the shopping cart screen
 
         }
         composable("kategori_screen") {
@@ -134,12 +135,12 @@ fun NavGraph(navController: NavHostController) {
             ProfileScreen(navController = navController) // Navigasikan ke Composable Pencarian
         }
         composable(
-            route = "search_result_screen?query={query}",
-            arguments = listOf(navArgument("query") { defaultValue = "" })
-        ) { backStackEntry ->
-            val query = backStackEntry.arguments?.getString("query") ?: ""
-            SearchResultScreen(navController = navController, query = query)
-        }
+            route = "search_result_screen",
+            )
+        {
+        SearchResultScreen(navController = navController)
+    }
+
 
         composable("halaman_bayar") {
             HalamanBayar(navController =navController)
@@ -164,7 +165,7 @@ fun NavGraph(navController: NavHostController) {
             SelesaiScreen(navController = navController)/* Layar Selesai */
         }
         composable("ditolak_screen") {
-//        RejectedOrdersScreen(navController = navController)/* Layar Ditolak */
+        RejectedOrdersScreen(navController = navController)/* Layar Ditolak */
         }
         composable("detail_pengiriman") {
             DeliveryDetailScreen(onBackClick = { /*TODO*/ }, navController = navController)

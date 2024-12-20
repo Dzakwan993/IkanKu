@@ -54,7 +54,7 @@ import com.example.ikanku.R
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 1.dp),
+                        .padding(start = 16.dp, end = 16.dp, bottom = 1.dp, top = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween // Aligns the content at the ends
                 ) {
@@ -114,7 +114,17 @@ import com.example.ikanku.R
 
                     // Quantity Selector
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = onDecrease) {
+                        IconButton(
+
+                            onClick = {
+                                if (quantity == 1) {
+                                    selectedOrder = name
+                                    isBottomSheetVisible = true
+                                } else {
+                                    onDecrease()
+                                }
+                            }
+                        ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.kurang), // Replace with minus icon resource
                                 contentDescription = "Decrease quantity"

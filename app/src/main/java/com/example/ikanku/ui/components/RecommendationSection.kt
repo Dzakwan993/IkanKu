@@ -34,7 +34,7 @@ fun RecommendationSection(recommendations: List<Recommendation>, navController: 
                 text = "Rekomendasi untuk anda",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 4.dp)
+                modifier = Modifier.padding()
 
             )
 

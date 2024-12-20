@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,10 +29,12 @@ fun CategorySection(categories: List<Category>, navController: NavController, mo
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = "Semua kategori",
+            text = "Kategori",
             fontSize = 18.sp,
             color = Color.Black,
-            modifier = Modifier.padding(bottom = 8.dp, start = 4.dp)
+            fontWeight = FontWeight.Bold,
+
+            modifier = Modifier.padding(bottom = 8.dp,)
         )
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
